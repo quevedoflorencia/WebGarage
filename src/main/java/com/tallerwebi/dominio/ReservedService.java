@@ -4,8 +4,8 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 
 import java.util.List;
 
-public interface AvailabilityService {
+public interface ReservedService {
 
-    List getAvailableHours(String days);
+    List getReservedHours(String days);
 
 }

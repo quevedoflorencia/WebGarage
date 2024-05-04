@@ -11,24 +11,33 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String day;
-    private String hour;
+    private String days;
+    private String startTime;
+    private String finishTime;
     private String clientName;
 
-    public String getDay() {
-        return day;
+    public String getDays() {
+        return days;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDays(String days) {
+        this.days = days;
     }
 
-    public String getHour() {
-        return hour;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
     }
 
     public String getClientName() {
