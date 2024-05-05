@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.model.Reservation;
-import com.tallerwebi.dominio.ReservationRespository;
+import com.tallerwebi.dominio.ReservationRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("reservationRespository")
-public class ReservationRepositoryImpl implements ReservationRespository {
+public class ReservationRepositoryImpl implements ReservationRepository {
 
     private SessionFactory sessionFactory;
 

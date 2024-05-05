@@ -14,16 +14,16 @@ import java.util.Map;
 @Transactional
 public class ReservedServiceImpl implements ReservedService {
 
-    private ReservationRespository reservationRespository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservedServiceImpl(ReservationRespository reservationRespository){
-        this.reservationRespository = reservationRespository;
+    public ReservedServiceImpl(ReservationRepository reservationRepository){
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
     public List getReservedHours(String day) {
-        List reservations= reservationRespository.reservationByDate(day);
+        List reservations= reservationRepository.reservationByDate(day);
         List fullHours = hoursReservedThatDay(reservations, day);
         return fullHours;
     }
