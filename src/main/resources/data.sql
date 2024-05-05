@@ -1,4 +1,4 @@
-INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
+INSERT INTO User(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
 
 INSERT INTO Reservation(id, day, startTime, finishTime, clientName) VALUES (null, '2024-05-05',4,6,'Roberto');
 INSERT INTO Reservation(id, day, startTime, finishTime, clientName) VALUES (null, '2024-05-05',20,23,'Pedro');

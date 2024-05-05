@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.RepositorioUsuario;
-import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.dominio.UserRepository;
+import com.tallerwebi.dominio.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -9,40 +9,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("repositorioUsuario")
-public class RepositorioUsuarioImpl implements RepositorioUsuario {
+public class UserRepositoryImpl implements UserRepository {
 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public RepositorioUsuarioImpl(SessionFactory sessionFactory){
+    public UserRepositoryImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public Usuario buscarUsuario(String email, String password) {
+    public User buscarUsuario(String email, String password) {
 
         final Session session = sessionFactory.getCurrentSession();
-        return (Usuario) session.createCriteria(Usuario.class)
+        return (User) session.createCriteria(User.class)
                 .add(Restrictions.eq("email", email))
                 .add(Restrictions.eq("password", password))
                 .uniqueResult();
     }
 
     @Override
-    public void guardar(Usuario usuario) {
-        sessionFactory.getCurrentSession().save(usuario);
+    public void guardar(User user) {
+        sessionFactory.getCurrentSession().save(user);
     }
 
     @Override
-    public Usuario buscar(String email) {
-        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+    public User buscar(String email) {
+        return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                 .add(Restrictions.eq("email", email))
                 .uniqueResult();
     }
 
     @Override
-    public void modificar(Usuario usuario) {
-        sessionFactory.getCurrentSession().update(usuario);
+    public void modificar(User user) {
+        sessionFactory.getCurrentSession().update(user);
     }
 
 }
