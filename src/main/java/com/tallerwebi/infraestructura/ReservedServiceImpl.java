@@ -57,7 +57,7 @@ public class ReservedServiceImpl implements ReservedService {
                     //todo ya se que se puede optimizar los if
                     //pero para que sea mas entendible, aca validamos que el horario a ingresar en la lista
                     //de horas ocupadas no haya sido ya registrado.
-                    if(fullHours!=null && !fullHours.contains(x)){
+                    if(fullHours!=null && !fullHours.contains(String.valueOf(x))){
                         fullHours.add(String.valueOf(x));
                     }
 
