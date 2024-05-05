@@ -1,8 +1,9 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioLogin;
-import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.dominio.LoginService;
+import com.tallerwebi.dominio.model.User;
+import com.tallerwebi.dominio.excepcion.ExistUserException;
+import com.tallerwebi.presentacion.dto.LoginDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,30 +15,30 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ControladorLogin {
+public class LoginController {
 
-    private ServicioLogin servicioLogin;
+    private LoginService loginService;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin){
-        this.servicioLogin = servicioLogin;
+    public LoginController(LoginService loginService){
+        this.loginService = loginService;
     }
 
     @RequestMapping("/login")
     public ModelAndView irALogin() {
 
         ModelMap modelo = new ModelMap();
-        modelo.put("datosLogin", new DatosLogin());
+        modelo.put("loginData", new LoginDataDTO());
         return new ModelAndView("login", modelo);
     }
 
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
-    public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
+    public ModelAndView validarLogin(@ModelAttribute("loginData") LoginDataDTO loginDataDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
-        if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+        User userBuscado = loginService.consultarUsuario(loginDataDTO.getEmail(), loginDataDTO.getPassword());
+        if (userBuscado != null) {
+            request.getSession().setAttribute("ROL", userBuscado.getRol());
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -46,11 +47,11 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
-    public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
+    public ModelAndView registrarme(@ModelAttribute("usuario") User user) {
         ModelMap model = new ModelMap();
         try{
-            servicioLogin.registrar(usuario);
-        } catch (UsuarioExistente e){
+            loginService.registrar(user);
+        } catch (ExistUserException e){
             model.put("error", "El usuario ya existe");
             return new ModelAndView("nuevo-usuario", model);
         } catch (Exception e){
@@ -63,7 +64,7 @@ public class ControladorLogin {
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
-        model.put("usuario", new Usuario());
+        model.put("usuario", new User());
         return new ModelAndView("nuevo-usuario", model);
     }
 
