@@ -108,12 +108,10 @@
     }
 
     function getFiledHours(selectedDate){
-        const formData = new FormData();
-        formData.append('date', selectedDate.toString());
 
         fetch('http://localhost:8080/spring/getAvailableHours', {
             method: 'POST',
-            body: formData
+            body: selectedDate.toString()
         })
         .then(response => response.json())
         .then(data => {

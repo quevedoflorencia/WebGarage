@@ -48,7 +48,7 @@ public class ReservedServiceImpl implements ReservedService {
                     //de existir, lo sumamos
                     //pero si el contador ya llego a los 10 lo sumamos a la lista
                     int prevMapValue = (int) countingHours.get(x);
-                    if(prevMapValue==10){ //todo cuando tengamos el limite de capacidad en una variable aparte, modificarla
+                    if(prevMapValue==1){ //todo cuando tengamos el limite de capacidad en una variable aparte, modificarla
                         //todo ya se que se puede optimizar los if
                         //pero para que sea mas entendible, aca validamos que el horario a ingresar en la lista
                         //de horas ocupadas no haya sido ya registrado.
