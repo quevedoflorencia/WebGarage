@@ -36,10 +36,12 @@ public class ReservedServiceImpl implements ReservedService {
         for (Object obj: reservations
              ) {
             Reservation res = (Reservation) obj;
-            
+
             //recorre las horas una a una y las contabiliza en el mapa
-            for(int x=Integer.getInteger(res.getStartTime());
-                x < Integer.getInteger(res.getFinishTime());x++){
+            for(int x=Integer.parseInt(res.getStartTime());
+                x < Integer.parseInt(res.getFinishTime());x++){
+
+                int prevMapValue =0;
 
                 //en determinado horario, de no existir arranca el contador en uno
                 if(countingHours.get(x)==null){
@@ -47,18 +49,18 @@ public class ReservedServiceImpl implements ReservedService {
                 }else {
                     //de existir, lo sumamos
                     //pero si el contador ya llego a los 10 lo sumamos a la lista
-                    int prevMapValue = (int) countingHours.get(x);
-                    if(prevMapValue==1){ //todo cuando tengamos el limite de capacidad en una variable aparte, modificarla
-                        //todo ya se que se puede optimizar los if
-                        //pero para que sea mas entendible, aca validamos que el horario a ingresar en la lista
-                        //de horas ocupadas no haya sido ya registrado.
-                        if(fullHours!=null && !fullHours.contains(x)){
-                            fullHours.add(x);
-                        }
+                    prevMapValue = (int) countingHours.get(x);
+                    countingHours.put(x, prevMapValue++);
+                }
 
-                    }else {
-                        countingHours.put(x, prevMapValue++);
+                if(countingHours.get(x)!=null && (int)countingHours.get(x) ==1){ //todo cuando tengamos el limite de capacidad en una variable aparte, modificarla
+                    //todo ya se que se puede optimizar los if
+                    //pero para que sea mas entendible, aca validamos que el horario a ingresar en la lista
+                    //de horas ocupadas no haya sido ya registrado.
+                    if(fullHours!=null && !fullHours.contains(x)){
+                        fullHours.add(x);
                     }
+
                 }
             }
 
