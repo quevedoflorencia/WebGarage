@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Taller Web I</title>
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">UNLAM</a>
+</nav>
+
+<main role="main" class="container">
+    <h1>Reserva tu lugar en el Garage</h1>
+
+    <div class="container row">
+        <div class="col-4">
+            <label for="datepicker_from">Seleccion la fecha</label>
+            <input type="text" id="datepicker_from">
+        </div>
+
+        <div class="col-4 d-none" id="container_hour_picker">
+            <div class="form-group">
+                <label for="timepicker_from">Selecciona el horario de ingreso</label>
+                <select class="form-control" id="timepicker_from">
+                    <option value="" disabled selected>--</option>
+                    <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                </select>
+                <p class="text-danger" id="hourError"></p>
+            </div>
+
+
+            <div class="form-group d-none" id="timepicker_until_container">
+                <label for="timepicker_until">Selecciona el horario de salida</label>
+                <select class="form-control" id="timepicker_until">
+                    <option value="" disabled selected>--</option>
+                    <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                </select>
+                <p class="text-danger" id="hourErrorUntil"></p>
+            </div>
+        </div>
+        <div class="col-12 d-none" id="container-go-reservation">
+            <div class="d-flex justify-content-end">
+                <button class="btn-success btn" id="goToReservation">Continuar</button>
+            </div>
+
+
+        </div>
+
+    </div>
+</main>
+<!-- /.container -->
+
+<!-- Boostrap core js -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script th:inline="javascript">
+    var totalHours = [[${totalHours}]];
+</script>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script>
+    const errorHour = document.getElementById("hourError") //from
+    const errorHourUntil = document.getElementById("hourErrorUntil") //until
+    const containerHourPicker = document.getElementById("container_hour_picker");
+    const timepicker_until_container = document.getElementById("timepicker_until_container");
+    const containerGoReservation = document.getElementById("container-go-reservation");
+    let datePickerFrom = '';
+    let timePickerFrom = null;
+    let timePickerUntil = null;
+    let filedHours = [];
+
+
+    flatpickr("#datepicker_from", {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "F j, Y",
+        minDate: "today",
+        onChange: function(selectedDates, dateStr, instance) {
+            resetForm()
+            // format "yyyy-mm-dd"
+            const selectedDate = selectedDates[0];
+            const formattedDate = selectedDate.toISOString().split('T')[0];
+            datePickerFrom = formattedDate;
+            getFiledHours(formattedDate);
+        }
+    });
+
+
+    function resetForm(){
+        filedHours = []
+        datePickerFrom = null;
+        datePickerUntil = null;
+        errorHour.innerText="";
+        errorHourUntil.innerText="";
+
+        document.getElementById("timepicker_from").value = '';
+        document.getElementById("timepicker_until").value = '';
+        containerHourPicker.classList.add("d-none");
+        timepicker_until_container.classList.add("d-none");
+        containerGoReservation.classList.add("d-none");
+    }
+
+    function getFiledHours(selectedDate){
+        const formData = new FormData();
+        formData.append('date', selectedDate.toString());
+
+        fetch('http://localhost:8080/spring/getAvailableHours', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            //const dataDummy = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20,21,22,23];
+            const dataDummy = [0,1,2,3,4,5,6,7,8,9,15,16,17,18,19, 20,21,22,23];
+
+            filedHours = dataDummy;
+
+            if(filedHours.length !== 0){
+                if (filedHours.length === totalHours) {
+                    errorHour.innerText = "Todos los horarios están ocupados, por favor selecciona otra fecha."
+                }
+
+                // Obtener el elemento select
+                let selectElement = document.getElementById("timepicker_from");
+                filedHours.forEach(hour => {
+                    disabledFiledHour(hour, selectElement)
+                });
+            }
+        })
+        .catch(error => console.log('Error fetching data:', error));
+        containerHourPicker.classList.remove("d-none");
+    }
+
+
+    function disabledFiledHour(hour, selectElement){
+        // Convertir la hora ocupada a formato 'HH:mm'
+        console.log(hour.length, "hour", hour)
+        let formattedHour = formatHour(hour)
+        console.log("formatedd", formattedHour)
+        //obtener el option para luego deshabilitarlo
+        let option = selectElement.querySelector(`option[value='${hour.toString()}'], option[value='${formattedHour}']`);
+        if (option) {
+            option.disabled = true;
+        }
+    }
+
+
+    // al seleccionar el horario de inicio
+    document.getElementById("timepicker_from").addEventListener("change", function() {
+        timepicker_until_container.classList.remove("d-none")
+        containerGoReservation.classList.add("d-none")
+        document.getElementById("timepicker_until").value = '';
+        const selectedHourFrom = this.value;
+        timePickerFrom = parseInt(this.value, 10);
+        // deshabilita la hora para el horario Hasta para que no se elija una opcion que este antes del horario FROM
+        timePickerFromNotAllowOnPickerUntil = formatHour(this.value);
+        const timepickerUntil = document.getElementById("timepicker_until");
+        const options = timepickerUntil.options;
+
+        for (let i = 0; i < options.length; i++) {
+            const hour = parseInt(options[i].value, 10);
+            if (hour <= parseInt(selectedHourFrom, 10) || filedHours.includes(hour)) {
+                options[i].disabled = true;
+            } else {
+                options[i].disabled = false;
+            }
+        }
+    });
+
+    //al seleccionar el horario de finalizacion
+    document.getElementById("timepicker_until").addEventListener("change", function() {
+        timePickerUntil = parseInt(this.value, 10);
+        containerGoReservation.classList.remove("d-none")
+    })
+
+    //ir a la reserva
+    document.getElementById("goToReservation").addEventListener("click", function() {
+        console.log("time from", timePickerFrom) //time from 10
+        console.log("time until", timePickerUntil) //time until 13
+        console.log("date", datePickerFrom) // date 2024-05-05
+        //TODO ir al controlador y seguir el flujo y enviar estos datos..
+    })
+
+    function formatHour(hour) {
+        // Si la hora tiene un solo dígito, agrega un '0' al inicio,y despues  ':00'
+        // Si no,  agrega ':00' al final
+        return hour < 10 ? '0' + hour + ':00' : hour + ':00';
+    }
+
+</script>
+</body>
+</html>
