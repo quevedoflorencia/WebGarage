@@ -33,7 +33,7 @@ public class AvailabilityController {
 
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setGarageId(garage.getId());
-        reservationDTO.setUserId((Long) request.getSession().getAttribute("ID"));
+//        reservationDTO.setUserId((Long) request.getSession().getAttribute("ID"));
 
         model.put("totalHours", totalHoursList);
         model.put("reservation", reservationDTO);

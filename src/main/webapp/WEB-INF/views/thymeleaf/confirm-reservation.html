@@ -19,7 +19,6 @@
         </nav>
 
         <main role="main" class="container">
-
             <div class="container">
                 <div class="row">
                     <h1>¿Deseas confirmar tu reserva?</h1>
@@ -33,10 +32,15 @@
             </div>
 
 
+            <form action="#" th:action="@{/reservation/save}" method="POST" th:object="${reservation}">
+                <input type="hidden" th:field="*{garageId}">
+                <input type="hidden" th:field="*{userId}">
+                <input type="hidden" th:field="*{date}">
+                <input type="hidden" th:field="*{startTime}">
+                <input type="hidden" th:field="*{finishTime}">
 
-
-
-
+                <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+            </form>
         </main>
 
         <!-- Boostrap core js -->
