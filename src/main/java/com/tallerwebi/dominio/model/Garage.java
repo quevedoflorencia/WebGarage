@@ -11,17 +11,15 @@ public class Garage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
     private Integer capacity;
     private LocalTime openingTime;
     private LocalTime closingTime;
 
-    public Long getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

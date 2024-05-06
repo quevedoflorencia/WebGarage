@@ -7,4 +7,5 @@ import java.util.List;
 public interface GarageRepository {
 
     List<Garage> findAll();
+    Garage findById(Integer id);
 }

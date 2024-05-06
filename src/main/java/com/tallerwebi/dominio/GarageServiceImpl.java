@@ -20,4 +20,7 @@ public class GarageServiceImpl implements GarageService {
     public List<Garage> getAll() {
         return garageRepository.findAll();
     }
+
+    @Override
+    public Garage findById(Integer id) { return garageRepository.findById(id); }
 }

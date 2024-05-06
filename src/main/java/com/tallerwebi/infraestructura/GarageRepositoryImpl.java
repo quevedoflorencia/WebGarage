@@ -24,4 +24,9 @@ public class GarageRepositoryImpl implements GarageRepository {
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
     }
+
+    @Override
+    public Garage findById(Integer id) {
+        return sessionFactory.getCurrentSession().get(Garage.class, id);
+    }
 }

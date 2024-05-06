@@ -7,5 +7,6 @@ import java.util.List;
 public interface GarageService {
 
     List<Garage> getAll();
+    Garage findById(Integer id);
 
 }
