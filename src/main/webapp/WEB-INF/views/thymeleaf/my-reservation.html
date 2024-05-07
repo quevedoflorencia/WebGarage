@@ -21,9 +21,15 @@
 <main role="main" class="container">
     <div class="container">
         <div class="row">
-            <h1>Estas son tu reservas: </h1>
+            <h1>Estas son tus reservas: </h1>
         </div>
-        <!--
+
+        <ul  th:each="reserva : ${reservations}" >
+            <li th:text="${reservations.getDay()}"></li>
+            <li th:text="${reservations.getStartTime()}"></li>
+            <li th:text="${reservations.getFinishTime()}"></li>
+        </ul>
+<!--
         <div class="row">
             <h2>Garage: <span th:text="${garage.getName()}"></span></h2>
             <h2>Fecha: <span th:text="${reservation.getDate()}"></span></h2>
@@ -41,9 +47,9 @@
         <input type="hidden" th:field="*{finishTime}">
 
         <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
-    </form>
+    </form>-->
 </main>
--->
+
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

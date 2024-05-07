@@ -36,4 +36,10 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     public List allReservations() {
         return null;
     }
+
+    @Override
+    public List reservationByIdUser(Long id) {
+        final Session session = sessionFactory.getCurrentSession();
+        return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("id",id)).list();
+    }
 }

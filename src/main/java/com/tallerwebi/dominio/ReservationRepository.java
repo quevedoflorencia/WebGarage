@@ -10,5 +10,7 @@ public interface ReservationRepository {
 
     List allReservations();
 
+    List reservationByIdUser (Long id);
+
 }
 

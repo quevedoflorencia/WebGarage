@@ -28,6 +28,14 @@ public class ReservedServiceImpl implements ReservedService {
         return fullHours;
     }
 
+    @Override
+    public List getReservationByUserId(Long id) {
+
+        List <Reservation> reservations= reservationRepository.reservationByIdUser(id);
+
+        return reservations;
+    }
+
     private List hoursReservedThatDay(List reservations, String days) {
         List fullHours = new ArrayList();
         Map countingHours = new HashMap();
