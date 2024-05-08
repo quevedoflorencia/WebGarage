@@ -38,8 +38,21 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public List reservationByIdUser(Long id) {
+    public  Reservation reservationByIdUser(Long id) {
+       // final Session session = sessionFactory.getCurrentSession();
+        return sessionFactory.getCurrentSession().get(Reservation.class, id);
+       // return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("userId",id)).list();
+        // public Garage findById(Integer id) {
+        //        return sessionFactory.getCurrentSession().get(Garage.class, id);
+        //    }
+
+
+    }
+
+    @Override
+    public List obtenerReservasByUserId(Long id) {
         final Session session = sessionFactory.getCurrentSession();
-        return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("id",id)).list();
+        return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("userId",id)).list();
+
     }
 }

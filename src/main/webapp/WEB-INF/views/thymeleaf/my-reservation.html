@@ -21,15 +21,51 @@
 <main role="main" class="container">
     <div class="container">
         <div class="row">
-            <h1>Estas son tus reservas: </h1>
-        </div>
+            <!--código productivo para usuario con una sola reserva
+           <h1>Bienvenido <span th:text="${reservations.getClientName()}"></span>! estas son tus reservas: </h1>
+       </div>
 
+       <h2 >Garage: <span th:text="${garage.getName()}"></span></h2>
+       <h2 >Fecha de la reserva: <span th:text="${reservations.getDay()}"></span></h2>
+       <h2 >Hora de inicio: <span th:text="${reservations.getStartTime()}"></span>hs</h2>
+       <h2 >Hora de finalización: <span th:text="${reservations.getFinishTime()}"></span>hs</h2>-->
+
+            <h1>Bienvenido <span th:text="${reservasDeRoberto.get(0).getClientName()}"></span>! estas son tus reservas: </h1>
+            <h2 >Garage: <span th:text="${garage.getName()}"></span></h2>
+
+
+                <table style="border:1px solid black;text-align:center">
+                    <thead style="border:1px solid black">
+                    <tr >
+                        <th style="border:1px solid black">Fecha de reserva</th>
+                        <th style="border:1px solid black">Hora de inicio</th>
+                        <th style="border:1px solid black">Hora de finalización</th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="elemento: ${reservasDeRoberto}">
+                        <td style="border:1px solid black" th:text="${elemento.getDay()}"></td>
+                        <td style="border:1px solid black" th:text="${elemento.getStartTime()}">Hora</td>
+                        <td style="border:1px solid black" th:text="${elemento.getFinishTime()}">es muy raro este suceso</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+
+<!--
         <ul  th:each="reserva : ${reservations}" >
-            <li th:text="${reservations.getDay()}"></li>
+            <li th:text="${reserva.getDay()}"></li>
+            <li th:text="${reserva.getStartTime()}"></li>
+            <li th:text="${reserva.getFinishTime()}"></li>
+            <li th:text="$garage.getName()}"></li>
+           <li th:text="${reservations.getDay()}"></li>
             <li th:text="${reservations.getStartTime()}"></li>
             <li th:text="${reservations.getFinishTime()}"></li>
         </ul>
-<!--
+
         <div class="row">
             <h2>Garage: <span th:text="${garage.getName()}"></span></h2>
             <h2>Fecha: <span th:text="${reservation.getDate()}"></span></h2>
@@ -47,7 +83,12 @@
         <input type="hidden" th:field="*{finishTime}">
 
         <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
-    </form>-->
+    </form>
+    -->
+
+    </div>
+    </div>
+
 </main>
 
 <!-- Boostrap core js -->

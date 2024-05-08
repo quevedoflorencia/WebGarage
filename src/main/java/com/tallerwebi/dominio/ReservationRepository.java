@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.model.Reservation;
+
 import java.util.List;
 
 public interface ReservationRepository {
@@ -10,7 +12,9 @@ public interface ReservationRepository {
 
     List allReservations();
 
-    List reservationByIdUser (Long id);
+    Reservation reservationByIdUser (Long id);
+
+    List obtenerReservasByUserId(Long id);
 
 }
 

@@ -15,6 +15,7 @@ public class Reservation {
     private String startTime;
     private String finishTime;
     private String clientName;
+    private Long   userId;
 
     public String getDay() {
         return day;
@@ -46,5 +47,13 @@ public class Reservation {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

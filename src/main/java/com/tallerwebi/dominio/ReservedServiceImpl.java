@@ -27,13 +27,27 @@ public class ReservedServiceImpl implements ReservedService {
         List fullHours = hoursReservedThatDay(reservations, day);
         return fullHours;
     }
-
+/*
     @Override
     public List getReservationByUserId(Long id) {
 
         List <Reservation> reservations= reservationRepository.reservationByIdUser(id);
 
         return reservations;
+    }
+*/
+@Override
+    public Reservation getReservationByUserId(Long id) {
+
+        Reservation reservations= reservationRepository.reservationByIdUser(id);
+
+    return reservations;
+}
+
+    @Override
+    public List obtenerReservasByUserId(Long id) {
+        List <Reservation> reservas= reservationRepository.obtenerReservasByUserId(id);
+        return reservas;
     }
 
     private List hoursReservedThatDay(List reservations, String days) {
