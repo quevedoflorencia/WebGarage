@@ -22,23 +22,5 @@ public class AvailabilityController {
     @Autowired
     public AvailabilityController(GarageService garageService) { this.garageService = garageService; }
 
-    @RequestMapping("/pre-reservation")
-    public ModelAndView goToPreReservation(HttpServletRequest request) {
-        ModelMap model = new ModelMap();
-
-        List<String> totalHoursList = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
-
-        List<Garage> garages = garageService.getAll();
-        Garage garage = garages.get(0);
-
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setGarageId(garage.getId());
-        reservationDTO.setUserId((Long) request.getSession().getAttribute("ID"));
-
-        model.put("totalHours", totalHoursList);
-        model.put("reservation", reservationDTO);
-
-        return new ModelAndView("pre-reservation", model);
-    }
 
 }
