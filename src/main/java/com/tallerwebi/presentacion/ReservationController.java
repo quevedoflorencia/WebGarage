@@ -45,42 +45,19 @@ public class ReservationController {
     public ModelAndView listReservation(HttpServletRequest request) {
 
         //ModelMap model = new ModelMap();
-        ModelMap modelConReservasDeRoberto = new ModelMap();
+        ModelMap model = new ModelMap();
         HttpSession session = request.getSession();
 
-        //queremos guardar el ID del Usuario que inició sesión e hizo la reserva
-       // Long idUserToFind = (Long)session.getAttribute("ID");
+        Long idUserToFind = (Long)session.getAttribute("ID");
 
-        //le pedimos al reservedService que traiga las reservas hechas por ese User
+        List<Reservation> reservations = reservedService.obtenerReservasByUserId(idUserToFind);
 
-        //código que funciona para recibir y mostrar la reserva userId=1, este usuario tiene una sola reserva
-        //Long usuarioInventado =1L;
-        // Reservation reservations = reservedService.getReservationByUserId(usuarioInventado);
-       //   List<Garage> garages = garageService.getAll();
-        //        Garage garage = garages.get(0);
-       //  model.put("reservasDeRoberto", reservasDeRoberto);
-        //        model.put("garage", garage);
-        //return new ModelAndView("my-reservation", model);
-
-
-        //Obteniendo una lista de reservas para un userId
-        Long usuarioInventado =1L;
-
-        List <Reservation>reservasDeRoberto = reservedService.obtenerReservasByUserId(usuarioInventado);
-
-       //traemos el garage de la reserva del User
         List<Garage> garages = garageService.getAll();
         Garage garage = garages.get(0);
 
-        //model.put("reservations", reservations); este código
-        modelConReservasDeRoberto.put("reservasDeRoberto", reservasDeRoberto);
-        modelConReservasDeRoberto.put("garage", garage);
+        model.put("reservations", reservations);
+        model.put("garage", garage);
 
-        //de Reservation necesitamos traer la fecha y la hora de cada reserva
-        //necesitamos mostrar el Garage de las reservas
-
-
-
-        return new ModelAndView("my-reservation", modelConReservasDeRoberto);
+        return new ModelAndView("my-reservation", model);
     }
 }
