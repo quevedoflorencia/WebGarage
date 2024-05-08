@@ -22,39 +22,45 @@
     <h1>Reserva tu lugar en el Garage</h1>
 
     <div class="container row">
-        <div class="col-4">
-            <label for="datepicker_from">Seleccion la fecha</label>
-            <input type="text" id="datepicker_from">
-        </div>
 
-        <div class="col-4 d-none" id="container_hour_picker">
-            <div class="form-group">
-                <label for="timepicker_from">Selecciona el horario de ingreso</label>
-                <select class="form-control" id="timepicker_from">
-                    <option value="" disabled selected>--</option>
-                    <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                </select>
-                <p class="text-danger" id="hourError"></p>
+        <form action="#" th:action="@{/reservation/confirm}" method="POST" th:object="${reservation}">
+
+            <input type="hidden" th:field="*{garageId}">
+            <input type="hidden" th:field="*{userId}">
+
+            <div class="col-4">
+                <label for="datepicker_from">Seleccioná la fecha</label>
+                <input type="text" id="datepicker_from" th:field="*{date}">
             </div>
 
+            <div class="col-4 d-none" id="container_hour_picker">
+                <div class="form-group">
+                    <label for="timepicker_from">Seleccioná el horario de ingreso</label>
+                    <select class="form-control" id="timepicker_from" th:field="*{startTime}">
+                        <option value="" disabled selected>--</option>
+                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                    </select>
+                    <p class="text-danger" id="hourError"></p>
+                </div>
 
-            <div class="form-group d-none" id="timepicker_until_container">
-                <label for="timepicker_until">Selecciona el horario de salida</label>
-                <select class="form-control" id="timepicker_until">
-                    <option value="" disabled selected>--</option>
-                    <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                </select>
-                <p class="text-danger" id="hourErrorUntil"></p>
+
+                <div class="form-group d-none" id="timepicker_until_container">
+                    <label for="timepicker_until">Seleccioná el horario de salida</label>
+                    <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
+                        <option value="" disabled selected>--</option>
+                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                    </select>
+                    <p class="text-danger" id="hourErrorUntil"></p>
+                </div>
             </div>
-        </div>
-        <div class="col-12 d-none" id="container-go-reservation">
-            <div class="d-flex justify-content-end">
-                <button class="btn-success btn" id="goToReservation">Continuar</button>
+
+            <div class="col-12 d-none" id="container-go-reservation">
+                <div class="d-flex justify-content-end">
+                    <button class="btn-success btn" id="goToReservation" type="Submit">Continuar</button>
+                </div>
             </div>
 
-
-        </div>
-
+        </form>
     </div>
 </main>
 <!-- /.container -->

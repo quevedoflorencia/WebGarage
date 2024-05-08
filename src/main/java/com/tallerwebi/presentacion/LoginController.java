@@ -38,6 +38,7 @@ public class LoginController {
 
         User userBuscado = loginService.consultarUsuario(loginDataDTO.getEmail(), loginDataDTO.getPassword());
         if (userBuscado != null) {
+            request.getSession().setAttribute("ID", userBuscado.getId());
             request.getSession().setAttribute("ROL", userBuscado.getRol());
             return new ModelAndView("redirect:/home");
         } else {
