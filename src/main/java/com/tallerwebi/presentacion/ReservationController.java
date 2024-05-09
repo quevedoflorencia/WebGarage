@@ -2,8 +2,12 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.GarageService;
 import com.tallerwebi.dominio.ReservationService;
+import com.tallerwebi.dominio.UserService;
+import com.tallerwebi.dominio.excepcion.GarageNotFoundException;
+import com.tallerwebi.dominio.excepcion.UserNotFoundException;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservation;
+import com.tallerwebi.dominio.model.User;
 import com.tallerwebi.presentacion.dto.ReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,37 +23,46 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
+@RequestMapping("/reservations")
 public class ReservationController {
 
+    private UserService userService;
     private GarageService garageService;
     private ReservationService reservationService;
 
     @Autowired
-    public ReservationController(GarageService garageService, ReservationService reservationService) {
+    public ReservationController(UserService userService, GarageService garageService, ReservationService reservationService) {
+        this.userService = userService;
         this.garageService = garageService;
         this.reservationService = reservationService;
     }
 
-    @RequestMapping(path = "/reservations/list", method = RequestMethod.GET)
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
     public ModelAndView listReservation(HttpServletRequest request) {
 
         ModelMap model = new ModelMap();
         HttpSession session = request.getSession();
 
-        Long idUserToFind = (Long) session.getAttribute("ID");
+        Long userId = (Long) session.getAttribute("ID");
 
-        List<Reservation> reservations = reservationService.obtenerReservasByUserId(idUserToFind);
+        if(userId == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        User user = userService.get(userId);
+        List<Reservation> reservations = reservationService.obtenerReservasByUserId(userId);
 
         List<Garage> garages = garageService.getAll();
         Garage garage = garages.get(0);
 
-        model.put("reservations", reservations);
+        model.put("username", user.getName());
         model.put("garage", garage);
+        model.put("reservations", reservations);
 
         return new ModelAndView("my-reservation", model);
     }
 
-    @RequestMapping("/pre-reservation")
+    @RequestMapping("/start")
     public ModelAndView goToPreReservation(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
@@ -58,40 +71,51 @@ public class ReservationController {
         List<Garage> garages = garageService.getAll();
         Garage garage = garages.get(0);
 
+        Long userId = (Long) request.getSession().getAttribute("ID");
+
+        if(userId == null) {
+            return new ModelAndView("redirect:../login");
+        }
+
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setGarageId(garage.getId());
-        reservationDTO.setUserId((Long) request.getSession().getAttribute("ID"));
+        reservationDTO.setUserId(userId);
 
         model.put("totalHours", totalHoursList);
         model.put("reservation", reservationDTO);
 
-        // chequea si hay un mensaje de error en el modelo y pasarlo a la vista
-        String error = (String) request.getSession().getAttribute("error");
-        model.put("error", error);
-
-        // Elimina el mensaje de error de la sesión para que no se muestre en la próxima solicitud
-        request.getSession().removeAttribute("error");
-
         return new ModelAndView("pre-reservation", model);
     }
 
-    @RequestMapping(path = "/reservation/confirm", method = RequestMethod.POST)
+    @RequestMapping(path = "/confirm", method = RequestMethod.POST)
     public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservationDTO reservationDTO, HttpServletRequest request) {
-
         ModelMap model = new ModelMap();
-        try{
 
-            Garage garage = garageService.findById(reservationDTO.garageId);
+        Garage garage = garageService.findById(reservationDTO.garageId);
+
+        model.put("garage", garage);
+        model.put("reservation", reservationDTO);
+
+        return new ModelAndView("confirm-reservation", model);
+    }
+
+    @RequestMapping(path = "/save", method = RequestMethod.POST)
+    public ModelAndView create(@ModelAttribute("reservation") ReservationDTO reservationDTO, HttpServletRequest request) {
+        ModelMap model = new ModelMap();
+
+        try {
+            reservationService.addReservation(reservationDTO);
+        } catch (GarageNotFoundException e) {
+            List<Garage> garages = garageService.getAll();
+            Garage garage = garages.get(0);
             model.put("garage", garage);
             model.put("reservation", reservationDTO);
-
-            reservationService.addReservation(reservationDTO);
-
-        } catch (Exception e) {
-            request.getSession().setAttribute("error", "Error to confirm reservation" + e);
-            return new ModelAndView("redirect:/pre-reservation");
+            model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
+            return new ModelAndView("confirm-reservation", model);
+        } catch (UserNotFoundException e) {
+            return new ModelAndView("redirect:../login");
         }
-        //TODO: redirigir a mis reservas-
+
         return new ModelAndView("redirect:/reservations/list");
     }
 }

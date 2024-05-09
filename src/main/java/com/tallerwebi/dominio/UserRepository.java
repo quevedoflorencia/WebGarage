@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.model.User;
 
 public interface UserRepository {
 
+    User obtenerUsuario(Long id);
     User buscarUsuario(String email, String password);
     void guardar(User user);
     User buscar(String email);

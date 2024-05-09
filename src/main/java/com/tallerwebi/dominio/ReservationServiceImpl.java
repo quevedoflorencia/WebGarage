@@ -1,5 +1,9 @@
 package com.tallerwebi.dominio;
+import com.tallerwebi.dominio.excepcion.GarageNotFoundException;
+import com.tallerwebi.dominio.excepcion.UserNotFoundException;
+import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservation;
+import com.tallerwebi.dominio.model.User;
 import com.tallerwebi.presentacion.dto.ReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,34 +19,57 @@ import java.util.Map;
 public class ReservationServiceImpl implements ReservationService {
 
     private ReservationRepository reservationRepository;
+    private GarageService garageService;
+    private UserService userService;
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository) { this.reservationRepository = reservationRepository; }
+    public ReservationServiceImpl(ReservationRepository reservationRepository, GarageService garageService, UserService userService) {
+        this.reservationRepository = reservationRepository;
+        this.garageService = garageService;
+        this.userService = userService;
+    }
 
     @Override
-    public void addReservation(ReservationDTO reservationDTO) {
-        reservationRepository.addNewReservation(reservationDTO);
+    public void addReservation(ReservationDTO reservationDTO) throws GarageNotFoundException, UserNotFoundException {
+
+        User user = userService.get(reservationDTO.userId);
+
+        if(user == null) {
+            throw new UserNotFoundException();
+        }
+
+        Garage garage = garageService.findById(reservationDTO.garageId);
+
+        if(garage == null) {
+            throw new GarageNotFoundException();
+        }
+
+        Reservation reservation = new Reservation(
+                null,
+                user,
+                garage,
+                reservationDTO.date,
+                reservationDTO.startTime,
+                reservationDTO.finishTime
+        );
+
+        reservationRepository.addNewReservation(reservation);
     }
 
     @Override
     public List getReservedHours(String day) {
         List reservations= reservationRepository.reservationByDate(day);
-        List fullHours = hoursReservedThatDay(reservations, day);
-        return fullHours;
+        return hoursReservedThatDay(reservations, day);
     }
 
     @Override
     public Reservation getReservationByUserId(Long id) {
-
-        Reservation reservations= reservationRepository.reservationByIdUser(id);
-
-        return reservations;
+        return reservationRepository.reservationByIdUser(id);
     }
 
     @Override
-    public List obtenerReservasByUserId(Long id) {
-        List <Reservation> reservas= reservationRepository.obtenerReservasByUserId(id);
-        return reservas;
+    public List<Reservation> obtenerReservasByUserId(Long id) {
+        return reservationRepository.obtenerReservasByUserId(id);
     }
 
     private List hoursReservedThatDay(List reservations, String days) {
