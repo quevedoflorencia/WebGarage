@@ -32,7 +32,7 @@
             </div>
 
 
-            <form action="#" th:action="@{/reservation/save}" method="POST" th:object="${reservation}">
+            <form action="#" th:action="@{/reservation/confirm}" method="POST" th:object="${reservation}">
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
                 <input type="hidden" th:field="*{date}">

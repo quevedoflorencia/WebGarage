@@ -1,7 +1,10 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.excepcion.ExistUserException;
 import com.tallerwebi.dominio.model.Reservation;
 import com.tallerwebi.dominio.ReservationRepository;
+import com.tallerwebi.dominio.model.User;
+import com.tallerwebi.presentacion.dto.ReservationDTO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -33,7 +36,22 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
+    public void addNewReservation(ReservationDTO reservation) {
+        Reservation newReservation = new Reservation();
+        newReservation.setClientName(reservation.getUserId().toString());
+        newReservation.setDay(reservation.getDate());
+        newReservation.setStartTime(reservation.getStartTime());
+        newReservation.setFinishTime(reservation.getFinishTime());
+
+
+        // Guardar la reserva en la base de datos
+        sessionFactory.getCurrentSession().save(newReservation);
+    }
+
+
+    @Override
     public List allReservations() {
         return null;
     }
+
 }
