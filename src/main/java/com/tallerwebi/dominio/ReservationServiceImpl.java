@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio;
-
 import com.tallerwebi.dominio.model.Reservation;
+import com.tallerwebi.presentacion.dto.ReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service("reservedService")
+@Service("reservationService")
 @Transactional
-public class ReservedServiceImpl implements ReservedService {
+public class ReservationServiceImpl implements ReservationService {
 
     private ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservedServiceImpl(ReservationRepository reservationRepository){
-        this.reservationRepository = reservationRepository;
+    public ReservationServiceImpl(ReservationRepository reservationRepository) { this.reservationRepository = reservationRepository; }
+
+    @Override
+    public void addReservation(ReservationDTO reservationDTO) {
+        reservationRepository.addNewReservation(reservationDTO);
     }
 
     @Override
@@ -27,22 +30,22 @@ public class ReservedServiceImpl implements ReservedService {
         List fullHours = hoursReservedThatDay(reservations, day);
         return fullHours;
     }
-/*
+    /*
+        @Override
+        public List getReservationByUserId(Long id) {
+
+            List <Reservation> reservations= reservationRepository.reservationByIdUser(id);
+
+            return reservations;
+        }
+    */
     @Override
-    public List getReservationByUserId(Long id) {
-
-        List <Reservation> reservations= reservationRepository.reservationByIdUser(id);
-
-        return reservations;
-    }
-*/
-@Override
     public Reservation getReservationByUserId(Long id) {
 
         Reservation reservations= reservationRepository.reservationByIdUser(id);
 
-    return reservations;
-}
+        return reservations;
+    }
 
     @Override
     public List obtenerReservasByUserId(Long id) {
@@ -53,10 +56,10 @@ public class ReservedServiceImpl implements ReservedService {
     private List hoursReservedThatDay(List reservations, String days) {
         List fullHours = new ArrayList();
         Map countingHours = new HashMap();
-        
+
         //recorre las reservas y extrae las horas
         for (Object obj: reservations
-             ) {
+        ) {
             Reservation res = (Reservation) obj;
 
             //recorre las horas una a una y las contabiliza en el mapa
@@ -91,6 +94,4 @@ public class ReservedServiceImpl implements ReservedService {
         return fullHours;
     }
 
-
 }
-
