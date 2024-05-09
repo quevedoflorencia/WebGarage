@@ -30,15 +30,7 @@ public class ReservationServiceImpl implements ReservationService {
         List fullHours = hoursReservedThatDay(reservations, day);
         return fullHours;
     }
-    /*
-        @Override
-        public List getReservationByUserId(Long id) {
 
-            List <Reservation> reservations= reservationRepository.reservationByIdUser(id);
-
-            return reservations;
-        }
-    */
     @Override
     public Reservation getReservationByUserId(Long id) {
 

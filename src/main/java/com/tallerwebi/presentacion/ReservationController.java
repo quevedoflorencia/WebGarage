@@ -33,11 +33,10 @@ public class ReservationController {
     @RequestMapping(path = "/reservations/list", method = RequestMethod.GET)
     public ModelAndView listReservation(HttpServletRequest request) {
 
-        //ModelMap model = new ModelMap();
         ModelMap model = new ModelMap();
         HttpSession session = request.getSession();
 
-        Long idUserToFind = (Long)session.getAttribute("ID");
+        Long idUserToFind = (Long) session.getAttribute("ID");
 
         List<Reservation> reservations = reservationService.obtenerReservasByUserId(idUserToFind);
 
@@ -93,6 +92,6 @@ public class ReservationController {
             return new ModelAndView("redirect:/pre-reservation");
         }
         //TODO: redirigir a mis reservas-
-        return new ModelAndView("confirm-reservation", model);
+        return new ModelAndView("redirect:/reservations/list");
     }
 }

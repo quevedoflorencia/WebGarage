@@ -71,7 +71,7 @@ public class LoginController {
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
-        return new ModelAndView("home");
+        return new ModelAndView("redirect:/reservations/list");
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

@@ -38,11 +38,10 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public void addNewReservation(ReservationDTO reservation) {
         Reservation newReservation = new Reservation();
-        newReservation.setClientName(reservation.getUserId().toString());
+        newReservation.setUserId(reservation.getUserId());
         newReservation.setDay(reservation.getDate());
         newReservation.setStartTime(reservation.getStartTime());
         newReservation.setFinishTime(reservation.getFinishTime());
-
 
         // Guardar la reserva en la base de datos
         sessionFactory.getCurrentSession().save(newReservation);
@@ -56,14 +55,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 
     @Override
     public  Reservation reservationByIdUser(Long id) {
-       // final Session session = sessionFactory.getCurrentSession();
         return sessionFactory.getCurrentSession().get(Reservation.class, id);
-       // return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("userId",id)).list();
-        // public Garage findById(Integer id) {
-        //        return sessionFactory.getCurrentSession().get(Garage.class, id);
-        //    }
-
-
     }
 
     @Override

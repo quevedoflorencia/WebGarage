@@ -37,19 +37,17 @@
                     <tbody>
                     <tr th:each="reservation: ${reservations}">
                         <td style="border:1px solid black" th:text="${reservation.getDay()}"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getStartTime()}"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getFinishTime()}"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getStartTime()} + ' hs.'"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getFinishTime()} + ' hs.'"></td>
 
                     </tr>
                     </tbody>
                 </table>
-
-
-
-
+        </div>
+        <div>
+            <a class="btn btn-info btn-lg" href="../pre-reservation">Crear nueva reserva</a>
+        </div>
     </div>
-    </div>
-
 </main>
 
 <!-- Boostrap core js -->
