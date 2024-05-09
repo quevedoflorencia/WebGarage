@@ -2,9 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.GarageService;
 import com.tallerwebi.dominio.ReservationService;
-import com.tallerwebi.dominio.ReservationServiceImpl;
-import com.tallerwebi.dominio.excepcion.ExistUserException;
 import com.tallerwebi.dominio.model.Garage;
+import com.tallerwebi.dominio.model.Reservation;
 import com.tallerwebi.presentacion.dto.ReservationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,13 +24,31 @@ public class ReservationController {
     private GarageService garageService;
     private ReservationService reservationService;
 
-
     @Autowired
     public ReservationController(GarageService garageService, ReservationService reservationService) {
         this.garageService = garageService;
         this.reservationService = reservationService;
     }
 
+    @RequestMapping(path = "/reservations/list", method = RequestMethod.GET)
+    public ModelAndView listReservation(HttpServletRequest request) {
+
+        //ModelMap model = new ModelMap();
+        ModelMap model = new ModelMap();
+        HttpSession session = request.getSession();
+
+        Long idUserToFind = (Long)session.getAttribute("ID");
+
+        List<Reservation> reservations = reservationService.obtenerReservasByUserId(idUserToFind);
+
+        List<Garage> garages = garageService.getAll();
+        Garage garage = garages.get(0);
+
+        model.put("reservations", reservations);
+        model.put("garage", garage);
+
+        return new ModelAndView("my-reservation", model);
+    }
 
     @RequestMapping("/pre-reservation")
     public ModelAndView goToPreReservation(HttpServletRequest request) {
@@ -57,7 +75,6 @@ public class ReservationController {
 
         return new ModelAndView("pre-reservation", model);
     }
-
 
     @RequestMapping(path = "/reservation/confirm", method = RequestMethod.POST)
     public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservationDTO reservationDTO, HttpServletRequest request) {

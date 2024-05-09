@@ -13,6 +13,10 @@ public interface ReservationRepository {
 
     List allReservations();
 
+    Reservation reservationByIdUser (Long id);
+
+    List obtenerReservasByUserId(Long id);
+
     void addNewReservation(ReservationDTO reservationDTO);
 
 }

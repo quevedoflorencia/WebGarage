@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Taller Web I</title>
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">UNLAM</a>
+</nav>
+
+<main role="main" class="container">
+    <div class="container">
+        <div class="row">
+
+            <h1>Bienvenido <span th:text="${reservations.get(0).getClientName()}"></span>! estas son tus reservas: </h1>
+            <h2 >Garage: <span th:text="${garage.getName()}"></span></h2>
+
+                <table style="border:1px solid black;text-align:center">
+                    <thead style="border:1px solid black">
+                    <tr >
+                        <th style="border:1px solid black">Fecha de reserva</th>
+                        <th style="border:1px solid black">Hora de inicio</th>
+                        <th style="border:1px solid black">Hora de finalización</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reservation: ${reservations}">
+                        <td style="border:1px solid black" th:text="${reservation.getDay()}"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getStartTime()}"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getFinishTime()}"></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+
+
+
+    </div>
+    </div>
+
+</main>
+
+<!-- Boostrap core js -->
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

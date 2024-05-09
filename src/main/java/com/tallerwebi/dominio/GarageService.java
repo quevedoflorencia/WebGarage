@@ -9,4 +9,5 @@ public interface GarageService {
     List<Garage> getAll();
     Garage findById(Integer id);
 
+
 }

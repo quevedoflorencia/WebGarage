@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ReservedService;
+import com.tallerwebi.dominio.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -21,7 +21,7 @@ public class AvailabilityRestControllerTest {
 	private String dateDtoMock;
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
-	private ReservedService reservedServiceMock;
+	private ReservationService reservationServiceMock;
 
 
 	@BeforeEach
@@ -29,14 +29,14 @@ public class AvailabilityRestControllerTest {
 		dateDtoMock = "2024-07-05";
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
-		reservedServiceMock = mock(ReservedService.class);
-		reservedRestController = new ReservedRestController(reservedServiceMock);
+		reservationServiceMock = mock(ReservationService.class);
+		reservedRestController = new ReservedRestController(reservationServiceMock);
 	}
 
 	@Test
 	public void cuandoSeEligeUnaFechaQueNoTieneHorasOcupadasDebeTraerUnArrayVacio(){
 		// preparacion
-		when(reservedServiceMock.getReservedHours(anyString())).thenReturn(new ArrayList());
+		when(reservationServiceMock.getReservedHours(anyString())).thenReturn(new ArrayList());
 
 		// ejecucion
 		ResponseEntity<List<String>> responseEntity = reservedRestController.getAvailableHours(dateDtoMock);
@@ -51,7 +51,7 @@ public class AvailabilityRestControllerTest {
 	public void cuandoSeEligeUnaFechaQueTieneElCupoOcupadoDeberiaDevolverUnArrayDeLasHorasOcupadas(){
 		List<Integer> hours = Arrays.asList(10, 11, 20, 21);
 		// preparacion
-		when(reservedServiceMock.getReservedHours(anyString())).thenReturn(hours);
+		when(reservationServiceMock.getReservedHours(anyString())).thenReturn(hours);
 
 		// ejecucion
 		ResponseEntity<List<String>> responseEntity = reservedRestController.getAvailableHours(dateDtoMock);

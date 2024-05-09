@@ -65,7 +65,7 @@ public class LoginController {
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
-        model.put("user", new User());
+        model.put("usuario", new User());
         return new ModelAndView("nuevo-usuario", model);
     }
 
