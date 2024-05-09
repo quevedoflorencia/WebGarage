@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("reservationService")
 @Transactional
@@ -80,10 +77,14 @@ public class ReservationServiceImpl implements ReservationService {
         for (Object obj: reservations
         ) {
             Reservation res = (Reservation) obj;
+            String startTime = Arrays.stream(res.getStartTime().split(":"))
+                    .findFirst().orElse(null);
+            String finishTime=Arrays.stream(res.getFinishTime().split(":"))
+                    .findFirst().orElse(null);
 
             //recorre las horas una a una y las contabiliza en el mapa
-            for(int x=Integer.parseInt(res.getStartTime());
-                x < Integer.parseInt(res.getFinishTime());x++){
+            for(int x=Integer.parseInt(startTime);
+                x < Integer.parseInt(finishTime);x++){
 
                 int prevMapValue =0;
 
