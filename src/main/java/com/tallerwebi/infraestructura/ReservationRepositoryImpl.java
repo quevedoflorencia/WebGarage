@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository("reservationRespository")
@@ -36,17 +37,9 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public void addNewReservation(ReservationDTO reservation) {
-        Reservation newReservation = new Reservation();
-        newReservation.setUserId(reservation.getUserId());
-        newReservation.setDay(reservation.getDate());
-        newReservation.setStartTime(reservation.getStartTime());
-        newReservation.setFinishTime(reservation.getFinishTime());
-
-        // Guardar la reserva en la base de datos
-        sessionFactory.getCurrentSession().save(newReservation);
+    public void addNewReservation(Reservation reservation) {
+        sessionFactory.getCurrentSession().save(reservation);
     }
-
 
     @Override
     public List allReservations() {
@@ -59,9 +52,13 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public List obtenerReservasByUserId(Long id) {
-        final Session session = sessionFactory.getCurrentSession();
-        return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("userId",id)).list();
+    public List<Reservation> obtenerReservasByUserId(Long id) {
+
+        String hql = "FROM Reservation R WHERE R.user.id = :userId";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("userId", id);
+
+        return query.getResultList();
 
     }
 }

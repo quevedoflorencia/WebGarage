@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.UserRepository;
+import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,6 +17,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     public UserRepositoryImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public User obtenerUsuario(Long id) {
+        return sessionFactory.getCurrentSession().get(User.class, id);
     }
 
     @Override

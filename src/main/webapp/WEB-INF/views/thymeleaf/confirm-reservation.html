@@ -29,10 +29,15 @@
                     <h2>Hora de ingreso:  <span th:text="${reservation.getStartTime()}"></span></h2>
                     <h2>Hora de egreso:  <span th:text="${reservation.getFinishTime()}"></span></h2>
                 </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <p th:if="${error != null}" class="alert alert-danger mt-5" th:text="${error}">
+                    </div>
+                </div>
             </div>
 
-
-            <form action="#" th:action="@{/reservation/confirm}" method="POST" th:object="${reservation}">
+            <form action="#" th:action="@{save}" method="POST" th:object="${reservation}">
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
                 <input type="hidden" th:field="*{date}">

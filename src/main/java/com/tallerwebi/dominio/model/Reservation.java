@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Reservation {
@@ -11,11 +8,36 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne
+    private User user;
+    @OneToOne
+    private Garage garage;
     private String day;
     private String startTime;
     private String finishTime;
-    private String clientName;
-    private Long   userId;
+
+    public Reservation() {}
+
+    public Reservation(Long id, User user, Garage garage, String day, String startTime, String finishTime) {
+        this.id = id;
+        this.user = user;
+        this.garage = garage;
+        this.day = day;
+        this.startTime = startTime;
+        this.finishTime = finishTime;
+    }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
+
+    public Garage getGarage() { return garage; }
+
+    public void setGarage(Garage garage) { this.garage = garage; }
 
     public String getDay() {
         return day;
@@ -41,19 +63,4 @@ public class Reservation {
         this.finishTime = finishTime;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }
