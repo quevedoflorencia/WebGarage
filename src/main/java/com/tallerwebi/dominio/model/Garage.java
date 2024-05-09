@@ -17,6 +17,16 @@ public class Garage {
     private LocalTime openingTime;
     private LocalTime closingTime;
 
+    public Garage() {}
+
+    public Garage(Integer id, String name, Integer capacity, LocalTime openingTime, LocalTime closingTime) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.openingTime = openingTime;
+        this.closingTime = closingTime;
+    }
+
     public Integer getId() { return id; }
 
     public void setId(Integer id) {

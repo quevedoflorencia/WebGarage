@@ -19,16 +19,12 @@ public class AvailabilityRestControllerTest {
 
 	private ReservedRestController reservedRestController;
 	private String dateDtoMock;
-	private HttpServletRequest requestMock;
-	private HttpSession sessionMock;
 	private ReservationService reservationServiceMock;
 
 
 	@BeforeEach
 	public void init(){
 		dateDtoMock = "2024-07-05";
-		requestMock = mock(HttpServletRequest.class);
-		sessionMock = mock(HttpSession.class);
 		reservationServiceMock = mock(ReservationService.class);
 		reservedRestController = new ReservedRestController(reservationServiceMock);
 	}
@@ -59,7 +55,7 @@ public class AvailabilityRestControllerTest {
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(responseEntity.getBody());
-		assertFalse(responseEntity.getBody().isEmpty());
+		assertEquals(responseEntity.getBody(), hours);
 	}
 
 }
