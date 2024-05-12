@@ -14,20 +14,20 @@ import java.util.List;
 @RestController
 public class ControladorRestReservado {
 
-    private ServicioRepositorio availabilityService;
+    private ServicioRepositorio servicioDisponibilidad;
 
     @Autowired
-    public ControladorRestReservado(ServicioRepositorio availabilityService){
-        this.availabilityService = availabilityService;
+    public ControladorRestReservado(ServicioRepositorio servicioDisponibilidad){
+        this.servicioDisponibilidad = servicioDisponibilidad;
     }
 
     @PostMapping(path = "/getAvailableHours")
-    public ResponseEntity<List<String>> getAvailableHours(@RequestBody String date) {
+    public ResponseEntity<List<String>> traerDisponibilidad(@RequestBody String date) {
         try {
-            List<String> hours = availabilityService.traerHorasOcupadas(date); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
+            List<String> horasOcupadas = servicioDisponibilidad.traerHorasOcupadas(date); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
 
-            if (hours != null && !hours.isEmpty()) {
-                return ResponseEntity.ok(hours);
+            if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
+                return ResponseEntity.ok(horasOcupadas);
             } else {
                 return ResponseEntity.ok(Collections.emptyList()); // Devuelve una lista vacía si no hay horas disponibles
             }

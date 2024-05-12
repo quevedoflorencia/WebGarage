@@ -3,8 +3,8 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.ServicioRepositorio;
 import com.tallerwebi.dominio.ServicioUsuario;
-import com.tallerwebi.dominio.excepcion.GarageNotFoundException;
-import com.tallerwebi.dominio.excepcion.UserNotFoundException;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservacion;
 import com.tallerwebi.dominio.model.Usuario;
@@ -50,14 +50,14 @@ public class ControladorReservaciones {
         }
 
         Usuario usuario = servicioUsuario.get(userId);
-        List<Reservacion> reservacions = servicioRepositorio.obtenerReservasByUserId(userId);
+        List<Reservacion> reservaciones = servicioRepositorio.obtenerReservasByUserId(userId);
 
-        List<Garage> garages = servicioGarage.getAll();
+        List<Garage> garages = servicioGarage.traerTodos();
         Garage garage = garages.get(0);
 
         model.put("username", usuario.getName());
         model.put("garage", garage);
-        model.put("reservations", reservacions);
+        model.put("reservations", reservaciones);
 
         return new ModelAndView("my-reservation", model);
     }
@@ -66,9 +66,9 @@ public class ControladorReservaciones {
     public ModelAndView goToPreReservation(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        List<String> totalHoursList = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
+        List<String> listaTotalDeHoras = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
 
-        List<Garage> garages = servicioGarage.getAll();
+        List<Garage> garages = servicioGarage.traerTodos();
         Garage garage = garages.get(0);
 
         Long userId = (Long) request.getSession().getAttribute("ID");
@@ -81,7 +81,7 @@ public class ControladorReservaciones {
         reservacionDTO.setGarageId(garage.getId());
         reservacionDTO.setUserId(userId);
 
-        model.put("totalHours", totalHoursList);
+        model.put("totalHours", listaTotalDeHoras);
         model.put("reservation", reservacionDTO);
 
         return new ModelAndView("pre-reservation", model);
@@ -91,7 +91,7 @@ public class ControladorReservaciones {
     public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservacionDTO reservacionDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Garage garage = servicioGarage.findById(reservacionDTO.garageId);
+        Garage garage = servicioGarage.buscarPorId(reservacionDTO.garageId);
 
         model.put("garage", garage);
         model.put("reservation", reservacionDTO);
@@ -104,15 +104,15 @@ public class ControladorReservaciones {
         ModelMap model = new ModelMap();
 
         try {
-            servicioRepositorio.addReservation(reservacionDTO);
-        } catch (GarageNotFoundException e) {
-            List<Garage> garages = servicioGarage.getAll();
+            servicioRepositorio.agregarReserva(reservacionDTO);
+        } catch (ExcepcionGarageNoEncontrado e) {
+            List<Garage> garages = servicioGarage.traerTodos();
             Garage garage = garages.get(0);
             model.put("garage", garage);
             model.put("reservation", reservacionDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
             return new ModelAndView("confirm-reservation", model);
-        } catch (UserNotFoundException e) {
+        } catch (ExcepcionUsuarioNoEncontrado e) {
             return new ModelAndView("redirect:../login");
         }
 

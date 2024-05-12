@@ -59,7 +59,7 @@ public class ReservacionControllerTest {
 
         when(servicioUsuario.get(usuario.getId())).thenReturn(usuario);
 
-        when(servicioGarage.getAll()).thenReturn(garage);
+        when(servicioGarage.traerTodos()).thenReturn(garage);
 
         ModelAndView modelAndView = controladorReservaciones.listReservation(requestMock);
 
@@ -80,7 +80,7 @@ public class ReservacionControllerTest {
 
         when(servicioUsuario.get(usuario.getId())).thenReturn(usuario);
 
-        when(servicioGarage.getAll()).thenReturn(garage);
+        when(servicioGarage.traerTodos()).thenReturn(garage);
 
         ModelAndView modelAndView = controladorReservaciones.listReservation(requestMock);
 

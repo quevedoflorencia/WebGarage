@@ -2,7 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.model.Usuario;
-import com.tallerwebi.dominio.excepcion.ExistUserException;
+import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioExiste;
 import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +52,7 @@ public class ControladorLogin {
         ModelMap model = new ModelMap();
         try{
             servicioLogin.registrar(usuario);
-        } catch (ExistUserException e){
+        } catch (ExcepcionUsuarioExiste e){
             model.put("error", "El usuario ya existe");
             return new ModelAndView("nuevo-usuario", model);
         } catch (Exception e){

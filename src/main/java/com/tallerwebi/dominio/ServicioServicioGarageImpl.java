@@ -17,12 +17,12 @@ public class ServicioServicioGarageImpl implements ServicioGarage {
     public ServicioServicioGarageImpl(RepositorioGarage repositorioGarage) { this.repositorioGarage = repositorioGarage; }
 
     @Override
-    public List<Garage> getAll() {
+    public List<Garage> traerTodos() {
         return repositorioGarage.findAll();
     }
 
     @Override
-    public Garage findById(Integer id) {
+    public Garage buscarPorId(Integer id) {
         return repositorioGarage.findById(id);
     }
 }

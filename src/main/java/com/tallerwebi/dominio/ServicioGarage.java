@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ServicioGarage {
 
-    List<Garage> getAll();
-    Garage findById(Integer id);
+    List<Garage> traerTodos();
+    Garage buscarPorId(Integer id);
 
 
 }

@@ -23,35 +23,31 @@ public class RepositorioReservacionImpl implements RepositorioReservacion {
 
 
     @Override
-    public List reservationByClient(String client) {
+    public List reservasPorCliente(String cliente) {
         return null;
     }
 
     @Override
-    public List reservationByDate(String date) {
+    public List reservasPorFecha(String date) {
         final Session session = sessionFactory.getCurrentSession();
         return sessionFactory.getCurrentSession().createCriteria(Reservacion.class).add(Restrictions.eq("day",date)).list();
     }
 
     @Override
-    public void addNewReservation(Reservacion reservacion) {
+    public void agregarNuevaReserva(Reservacion reservacion) {
         sessionFactory.getCurrentSession().save(reservacion);
     }
 
     @Override
-    public List allReservations() {
+    public List todasLasReservas() {
         return null;
     }
 
-    @Override
-    public Reservacion reservationByIdUser(Long id) {
-        return sessionFactory.getCurrentSession().get(Reservacion.class, id);
-    }
 
     @Override
     public List<Reservacion> obtenerReservasByUserId(Long id) {
 
-        String hql = "FROM Reservacion R WHERE R.user.id = :userId";
+        String hql = "FROM Reservacion R WHERE R.usuario.id = :userId";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("userId", id);
 

@@ -33,7 +33,7 @@ public class AvailabilityRestControllerTest {
 		when(servicioRepositorioMock.traerHorasOcupadas(anyString())).thenReturn(new ArrayList());
 
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = controladorRestReservado.getAvailableHours(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReservado.traerDisponibilidad(dateDtoMock);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -48,7 +48,7 @@ public class AvailabilityRestControllerTest {
 		when(servicioRepositorioMock.traerHorasOcupadas(anyString())).thenReturn(hours);
 
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = controladorRestReservado.getAvailableHours(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReservado.traerDisponibilidad(dateDtoMock);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

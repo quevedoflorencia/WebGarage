@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.excepcion.GarageNotFoundException;
-import com.tallerwebi.dominio.excepcion.UserNotFoundException;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservacion;
 import com.tallerwebi.dominio.model.Usuario;
@@ -27,18 +27,18 @@ public class ServicioReservacionImpl implements ServicioRepositorio {
     }
 
     @Override
-    public void addReservation(ReservacionDTO reservacionDTO) throws GarageNotFoundException, UserNotFoundException {
+    public void agregarReserva(ReservacionDTO reservacionDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
 
         Usuario usuario = servicioUsuario.get(reservacionDTO.userId);
 
         if(usuario == null) {
-            throw new UserNotFoundException();
+            throw new ExcepcionUsuarioNoEncontrado();
         }
 
-        Garage garage = servicioGarage.findById(reservacionDTO.garageId);
+        Garage garage = servicioGarage.buscarPorId(reservacionDTO.garageId);
 
         if(garage == null) {
-            throw new GarageNotFoundException();
+            throw new ExcepcionGarageNoEncontrado();
         }
 
         Reservacion reservacion = new Reservacion(
@@ -50,18 +50,13 @@ public class ServicioReservacionImpl implements ServicioRepositorio {
                 reservacionDTO.finishTime
         );
 
-        repositorioReservacion.addNewReservation(reservacion);
+        repositorioReservacion.agregarNuevaReserva(reservacion);
     }
 
     @Override
     public List traerHorasOcupadas(String day) {
-        List reservations= repositorioReservacion.reservationByDate(day);
+        List reservations= repositorioReservacion.reservasPorFecha(day);
         return horasOcupadasEseDia(reservations);
-    }
-
-    @Override
-    public Reservacion getReservationByUserId(Long id) {
-        return repositorioReservacion.reservationByIdUser(id);
     }
 
     @Override

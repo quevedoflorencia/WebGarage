@@ -2,7 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.model.Usuario;
-import com.tallerwebi.dominio.excepcion.ExistUserException;
+import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioExiste;
 import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +68,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws ExistUserException {
+	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws ExcepcionUsuarioExiste {
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
@@ -79,9 +79,9 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws ExistUserException {
+	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws ExcepcionUsuarioExiste {
 		// preparacion
-		doThrow(ExistUserException.class).when(servicioLoginMock).registrar(usuarioMock);
+		doThrow(ExcepcionUsuarioExiste.class).when(servicioLoginMock).registrar(usuarioMock);
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
@@ -92,7 +92,7 @@ public class ControladorLoginTest {
 	}
 
 	@Test
-	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws ExistUserException {
+	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws ExcepcionUsuarioExiste {
 		// preparacion
 		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(usuarioMock);
 
