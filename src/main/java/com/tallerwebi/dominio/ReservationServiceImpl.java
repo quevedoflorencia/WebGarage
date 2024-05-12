@@ -56,7 +56,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List traerHorasOcupadas(String day) {
         List reservations= reservationRepository.reservationByDate(day);
-        return horasOcupadasEseDia(reservations, day);
+        return horasOcupadasEseDia(reservations);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.obtenerReservasByUserId(id);
     }
 
-    private List horasOcupadasEseDia(List reservas, String days) {
+    private List horasOcupadasEseDia(List reservas) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();
 
@@ -99,7 +99,7 @@ public class ReservationServiceImpl implements ReservationService {
         for(int hora=primerHora;
             hora < ultimaHora;hora++){
 
-            int auxParaContabilizar =0;
+            int auxParaContabilizar;
 
             if(spotsPorCadaHora.get(hora)==null){
                 spotsPorCadaHora.put(hora,1);
@@ -129,7 +129,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private int traeHoraComoEntero(String time) {
         return Integer.parseInt(Arrays.stream(time.split(":"))
-                .findFirst().orElse(null));
+                .findFirst().orElse("0"));
     }
 
 }
