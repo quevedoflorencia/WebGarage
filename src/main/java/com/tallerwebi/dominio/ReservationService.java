@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReservationService {
 
     void addReservation(ReservationDTO reservationDTO) throws GarageNotFoundException, UserNotFoundException;
-    List getReservedHours(String day);
+    List traerHorasOcupadas(String day);
     Reservation getReservationByUserId(Long id);
     List<Reservation> obtenerReservasByUserId(Long id);
 

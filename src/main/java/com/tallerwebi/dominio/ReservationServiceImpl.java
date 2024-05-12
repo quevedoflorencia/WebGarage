@@ -54,9 +54,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List getReservedHours(String day) {
+    public List traerHorasOcupadas(String day) {
         List reservations= reservationRepository.reservationByDate(day);
-        return hoursReservedThatDay(reservations, day);
+        return horasOcupadasEseDia(reservations, day);
     }
 
     @Override
@@ -69,49 +69,67 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.obtenerReservasByUserId(id);
     }
 
-    private List hoursReservedThatDay(List reservations, String days) {
-        List fullHours = new ArrayList();
-        Map countingHours = new HashMap();
+    private List horasOcupadasEseDia(List reservas, String days) {
+        List horasOcupadas = new ArrayList();
+        Map spotsPorCadaHora = new HashMap();
 
-        //recorre las reservas y extrae las horas
-        for (Object obj: reservations
+         horasSinCupoSegunReservas(reservas,spotsPorCadaHora, horasOcupadas);
+
+        return horasOcupadas;
+    }
+
+    private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas) {
+        for (Object obj: reservas
         ) {
-            Reservation res = (Reservation) obj;
-            String startTime = Arrays.stream(res.getStartTime().split(":"))
-                    .findFirst().orElse(null);
-            String finishTime=Arrays.stream(res.getFinishTime().split(":"))
-                    .findFirst().orElse(null);
+            Reservation reserva = (Reservation) obj;
 
-            //recorre las horas una a una y las contabiliza en el mapa
-            for(int x=Integer.parseInt(startTime);
-                x < Integer.parseInt(finishTime);x++){
-
-                int prevMapValue =0;
-
-                //en determinado horario, de no existir arranca el contador en uno
-                if(countingHours.get(x)==null){
-                    countingHours.put(x,1);
-                }else {
-                    //de existir, lo sumamos
-                    //pero si el contador ya llego a los 10 lo sumamos a la lista
-                    prevMapValue = (int) countingHours.get(x);
-                    countingHours.put(x, prevMapValue++);
-                }
-
-                if(countingHours.get(x)!=null && (int)countingHours.get(x) ==1){ //todo cuando tengamos el limite de capacidad en una variable aparte, modificarla
-                    //todo ya se que se puede optimizar los if
-                    //pero para que sea mas entendible, aca validamos que el horario a ingresar en la lista
-                    //de horas ocupadas no haya sido ya registrado.
-                    if(fullHours!=null && !fullHours.contains(String.valueOf(x))){
-                        fullHours.add(String.valueOf(x));
-                    }
-
-                }
-            }
+            recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas);
 
         }
+    }
 
-        return fullHours;
+    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reservation reserva, Map spotsPorCadaHora, List horasOcupadas) {
+        int primerHora = traeHoraComoEntero(reserva.getStartTime());
+        int ultimaHora= traeHoraComoEntero(reserva.getFinishTime());
+
+        int capacidadDeGarage = 1;
+
+
+
+        for(int hora=primerHora;
+            hora < ultimaHora;hora++){
+
+            int auxParaContabilizar =0;
+
+            if(spotsPorCadaHora.get(hora)==null){
+                spotsPorCadaHora.put(hora,1);
+            }else {
+                auxParaContabilizar = (int) spotsPorCadaHora.get(hora);
+                spotsPorCadaHora.put(hora, auxParaContabilizar++);
+            }
+
+            if(validarHoraOcupada(hora, capacidadDeGarage, horasOcupadas, spotsPorCadaHora)){
+                horasOcupadas.add(String.valueOf(hora));
+            }
+        }
+    }
+
+    private boolean validarHoraOcupada(int hora, int capacidadDeGarage, List horasOcupadas, Map spotsPorCadaHora) {
+        return validarHoraLlena(hora, capacidadDeGarage, spotsPorCadaHora) && validarAgregarlaPorUnicaVez(horasOcupadas,hora);
+    }
+
+    private boolean validarAgregarlaPorUnicaVez(List horasOcupadas, int hora) {
+        return horasOcupadas!=null && !horasOcupadas.contains(String.valueOf(hora));
+    }
+
+    private boolean validarHoraLlena(int hora, int capacidadDeGarage, Map spotsPorCadaHora) {
+        return spotsPorCadaHora.get(hora)!=null && (int)spotsPorCadaHora.get(hora) == capacidadDeGarage;
+    }
+
+
+    private int traeHoraComoEntero(String time) {
+        return Integer.parseInt(Arrays.stream(time.split(":"))
+                .findFirst().orElse(null));
     }
 
 }

@@ -24,7 +24,7 @@ public class ReservedRestController {
     @PostMapping(path = "/getAvailableHours")
     public ResponseEntity<List<String>> getAvailableHours(@RequestBody String date) {
         try {
-            List<String> hours = availabilityService.getReservedHours(date);
+            List<String> hours = availabilityService.traerHorasOcupadas(date); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
 
             if (hours != null && !hours.isEmpty()) {
                 return ResponseEntity.ok(hours);
