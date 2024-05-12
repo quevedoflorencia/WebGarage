@@ -1,8 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.UserRepository;
-import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.User;
+import com.tallerwebi.dominio.RepositorioUsuario;
+import com.tallerwebi.dominio.model.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -10,45 +9,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("repositorioUsuario")
-public class UserRepositoryImpl implements UserRepository {
+public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public UserRepositoryImpl(SessionFactory sessionFactory){
+    public RepositorioUsuarioImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public User obtenerUsuario(Long id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+    public Usuario obtenerUsuario(Long id) {
+        return sessionFactory.getCurrentSession().get(Usuario.class, id);
     }
 
     @Override
-    public User buscarUsuario(String email, String password) {
+    public Usuario buscarUsuario(String email, String password) {
 
         final Session session = sessionFactory.getCurrentSession();
-        return (User) session.createCriteria(User.class)
+        return (Usuario) session.createCriteria(Usuario.class)
                 .add(Restrictions.eq("email", email))
                 .add(Restrictions.eq("password", password))
                 .uniqueResult();
     }
 
     @Override
-    public void guardar(User user) {
-        sessionFactory.getCurrentSession().save(user);
+    public void guardar(Usuario usuario) {
+        sessionFactory.getCurrentSession().save(usuario);
     }
 
     @Override
-    public User buscar(String email) {
-        return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+    public Usuario buscar(String email) {
+        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
                 .add(Restrictions.eq("email", email))
                 .uniqueResult();
     }
 
     @Override
-    public void modificar(User user) {
-        sessionFactory.getCurrentSession().update(user);
+    public void modificar(Usuario usuario) {
+        sessionFactory.getCurrentSession().update(usuario);
     }
 
 }

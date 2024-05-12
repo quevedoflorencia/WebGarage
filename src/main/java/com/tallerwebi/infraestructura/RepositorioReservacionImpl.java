@@ -1,10 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.excepcion.ExistUserException;
-import com.tallerwebi.dominio.model.Reservation;
-import com.tallerwebi.dominio.ReservationRepository;
-import com.tallerwebi.dominio.model.User;
-import com.tallerwebi.presentacion.dto.ReservationDTO;
+import com.tallerwebi.dominio.model.Reservacion;
+import com.tallerwebi.dominio.RepositorioReservacion;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -15,12 +12,12 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository("reservationRespository")
-public class ReservationRepositoryImpl implements ReservationRepository {
+public class RepositorioReservacionImpl implements RepositorioReservacion {
 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public ReservationRepositoryImpl(SessionFactory sessionFactory){
+    public RepositorioReservacionImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
@@ -33,12 +30,12 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public List reservationByDate(String date) {
         final Session session = sessionFactory.getCurrentSession();
-        return sessionFactory.getCurrentSession().createCriteria(Reservation.class).add(Restrictions.eq("day",date)).list();
+        return sessionFactory.getCurrentSession().createCriteria(Reservacion.class).add(Restrictions.eq("day",date)).list();
     }
 
     @Override
-    public void addNewReservation(Reservation reservation) {
-        sessionFactory.getCurrentSession().save(reservation);
+    public void addNewReservation(Reservacion reservacion) {
+        sessionFactory.getCurrentSession().save(reservacion);
     }
 
     @Override
@@ -47,14 +44,14 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public  Reservation reservationByIdUser(Long id) {
-        return sessionFactory.getCurrentSession().get(Reservation.class, id);
+    public Reservacion reservationByIdUser(Long id) {
+        return sessionFactory.getCurrentSession().get(Reservacion.class, id);
     }
 
     @Override
-    public List<Reservation> obtenerReservasByUserId(Long id) {
+    public List<Reservacion> obtenerReservasByUserId(Long id) {
 
-        String hql = "FROM Reservation R WHERE R.user.id = :userId";
+        String hql = "FROM Reservacion R WHERE R.user.id = :userId";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("userId", id);
 

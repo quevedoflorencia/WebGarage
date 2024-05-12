@@ -9,20 +9,20 @@ import java.util.List;
 
 @Service("garageService")
 @Transactional
-public class GarageServiceImpl implements GarageService {
+public class ServicioServicioGarageImpl implements ServicioGarage {
 
-    private GarageRepository garageRepository;
+    private RepositorioGarage repositorioGarage;
 
     @Autowired
-    public GarageServiceImpl(GarageRepository garageRepository) { this.garageRepository = garageRepository; }
+    public ServicioServicioGarageImpl(RepositorioGarage repositorioGarage) { this.repositorioGarage = repositorioGarage; }
 
     @Override
     public List<Garage> getAll() {
-        return garageRepository.findAll();
+        return repositorioGarage.findAll();
     }
 
     @Override
     public Garage findById(Integer id) {
-        return garageRepository.findById(id);
+        return repositorioGarage.findById(id);
     }
 }

@@ -25,9 +25,9 @@
                 </div>
                 <div class="row">
                     <h2>Garage: <span th:text="${garage.getName()}"></span></h2>
-                    <h2>Fecha: <span th:text="${reservation.getDate()}"></span></h2>
-                    <h2>Hora de ingreso:  <span th:text="${reservation.getStartTime()}"></span></h2>
-                    <h2>Hora de egreso:  <span th:text="${reservation.getFinishTime()}"></span></h2>
+                    <h2>Fecha: <span th:text="${reservacion.getDate()}"></span></h2>
+                    <h2>Hora de ingreso:  <span th:text="${reservacion.getStartTime()}"></span></h2>
+                    <h2>Hora de egreso:  <span th:text="${reservacion.getFinishTime()}"></span></h2>
                 </div>
 
                 <div class="row">
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <form action="#" th:action="@{save}" method="POST" th:object="${reservation}">
+            <form action="#" th:action="@{save}" method="POST" th:object="${reservacion}">
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
                 <input type="hidden" th:field="*{date}">

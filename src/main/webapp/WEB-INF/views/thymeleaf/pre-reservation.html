@@ -23,7 +23,7 @@
 
     <div class="container row">
 
-        <form action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
+        <form action="#" th:action="@{confirm}" method="POST" th:object="${reservacion}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="col-12 d-none" id="container-go-reservation">
+            <div class="col-12 d-none" id="container-go-reservacion">
                 <div class="d-flex justify-content-end">
                     <button class="btn-success btn" id="goToReservation" type="Submit">Continuar</button>
                 </div>
@@ -80,7 +80,7 @@
     const errorHourUntil = document.getElementById("hourErrorUntil") //until
     const containerHourPicker = document.getElementById("container_hour_picker");
     const timepicker_until_container = document.getElementById("timepicker_until_container");
-    const containerGoReservation = document.getElementById("container-go-reservation");
+    const containerGoReservation = document.getElementById("container-go-reservacion");
     let datePickerFrom = '';
     let timePickerFrom = null;
     let timePickerUntil = null;

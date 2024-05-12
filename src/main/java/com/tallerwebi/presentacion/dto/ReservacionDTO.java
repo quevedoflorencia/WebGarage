@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion.dto;
 
-public class ReservationDTO {
+public class ReservacionDTO {
     public Integer garageId;
     public Long userId;
     public String date;

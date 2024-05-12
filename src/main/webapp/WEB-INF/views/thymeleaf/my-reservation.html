@@ -35,10 +35,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="reservation: ${reservations}">
-                        <td style="border:1px solid black" th:text="${reservation.getDay()}"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getStartTime()} + ' hs.'"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getFinishTime()} + ' hs.'"></td>
+                    <tr th:each="reservacion: ${reservacions}">
+                        <td style="border:1px solid black" th:text="${reservacion.getDay()}"></td>
+                        <td style="border:1px solid black" th:text="${reservacion.getStartTime()} + ' hs.'"></td>
+                        <td style="border:1px solid black" th:text="${reservacion.getFinishTime()} + ' hs.'"></td>
 
                     </tr>
                     </tbody>

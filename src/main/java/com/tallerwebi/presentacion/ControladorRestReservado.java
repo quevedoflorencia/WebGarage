@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ReservationService;
+import com.tallerwebi.dominio.ServicioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-public class ReservedRestController {
+public class ControladorRestReservado {
 
-    private ReservationService availabilityService;
+    private ServicioRepositorio availabilityService;
 
     @Autowired
-    public ReservedRestController(ReservationService availabilityService){
+    public ControladorRestReservado(ServicioRepositorio availabilityService){
         this.availabilityService = availabilityService;
     }
 

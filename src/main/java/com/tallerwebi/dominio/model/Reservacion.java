@@ -3,24 +3,24 @@ package com.tallerwebi.dominio.model;
 import javax.persistence.*;
 
 @Entity
-public class Reservation {
+public class Reservacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    private User user;
+    private Usuario usuario;
     @OneToOne
     private Garage garage;
     private String day;
     private String startTime;
     private String finishTime;
 
-    public Reservation() {}
+    public Reservacion() {}
 
-    public Reservation(Long id, User user, Garage garage, String day, String startTime, String finishTime) {
+    public Reservacion(Long id, Usuario usuario, Garage garage, String day, String startTime, String finishTime) {
         this.id = id;
-        this.user = user;
+        this.usuario = usuario;
         this.garage = garage;
         this.day = day;
         this.startTime = startTime;
@@ -31,9 +31,9 @@ public class Reservation {
 
     public void setId(Long id) { this.id = id; }
 
-    public User getUser() { return user; }
+    public Usuario getUser() { return usuario; }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(Usuario usuario) { this.usuario = usuario; }
 
     public Garage getGarage() { return garage; }
 

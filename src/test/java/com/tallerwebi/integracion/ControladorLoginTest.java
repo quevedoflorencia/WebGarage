@@ -2,7 +2,7 @@ package com.tallerwebi.integracion;
 
 import com.tallerwebi.integracion.config.HibernateTestConfig;
 import com.tallerwebi.integracion.config.SpringWebTestConfig;
-import com.tallerwebi.dominio.model.User;
+import com.tallerwebi.dominio.model.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,9 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {SpringWebTestConfig.class, HibernateTestConfig.class})
-public class LoginControllerTest {
+public class ControladorLoginTest {
 
-	private User userMock;
+	private Usuario usuarioMock;
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -40,8 +40,8 @@ public class LoginControllerTest {
 
 	@BeforeEach
 	public void init(){
-		userMock = mock(User.class);
-		when(userMock.getEmail()).thenReturn("dami@unlam.com");
+		usuarioMock = mock(Usuario.class);
+		when(usuarioMock.getEmail()).thenReturn("dami@unlam.com");
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 

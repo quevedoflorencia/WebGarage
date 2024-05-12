@@ -1,14 +1,14 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.GarageService;
-import com.tallerwebi.dominio.ReservationService;
-import com.tallerwebi.dominio.UserService;
+import com.tallerwebi.dominio.ServicioGarage;
+import com.tallerwebi.dominio.ServicioRepositorio;
+import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.excepcion.GarageNotFoundException;
 import com.tallerwebi.dominio.excepcion.UserNotFoundException;
 import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reservation;
-import com.tallerwebi.dominio.model.User;
-import com.tallerwebi.presentacion.dto.ReservationDTO;
+import com.tallerwebi.dominio.model.Reservacion;
+import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.presentacion.dto.ReservacionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,17 +24,17 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/reservations")
-public class ReservationController {
+public class ControladorReservaciones {
 
-    private UserService userService;
-    private GarageService garageService;
-    private ReservationService reservationService;
+    private ServicioUsuario servicioUsuario;
+    private ServicioGarage servicioGarage;
+    private ServicioRepositorio servicioRepositorio;
 
     @Autowired
-    public ReservationController(UserService userService, GarageService garageService, ReservationService reservationService) {
-        this.userService = userService;
-        this.garageService = garageService;
-        this.reservationService = reservationService;
+    public ControladorReservaciones(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioRepositorio servicioRepositorio) {
+        this.servicioUsuario = servicioUsuario;
+        this.servicioGarage = servicioGarage;
+        this.servicioRepositorio = servicioRepositorio;
     }
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)
@@ -49,15 +49,15 @@ public class ReservationController {
             return new ModelAndView("redirect:/login");
         }
 
-        User user = userService.get(userId);
-        List<Reservation> reservations = reservationService.obtenerReservasByUserId(userId);
+        Usuario usuario = servicioUsuario.get(userId);
+        List<Reservacion> reservacions = servicioRepositorio.obtenerReservasByUserId(userId);
 
-        List<Garage> garages = garageService.getAll();
+        List<Garage> garages = servicioGarage.getAll();
         Garage garage = garages.get(0);
 
-        model.put("username", user.getName());
+        model.put("username", usuario.getName());
         model.put("garage", garage);
-        model.put("reservations", reservations);
+        model.put("reservations", reservacions);
 
         return new ModelAndView("my-reservation", model);
     }
@@ -68,7 +68,7 @@ public class ReservationController {
 
         List<String> totalHoursList = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
 
-        List<Garage> garages = garageService.getAll();
+        List<Garage> garages = servicioGarage.getAll();
         Garage garage = garages.get(0);
 
         Long userId = (Long) request.getSession().getAttribute("ID");
@@ -77,39 +77,39 @@ public class ReservationController {
             return new ModelAndView("redirect:../login");
         }
 
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setGarageId(garage.getId());
-        reservationDTO.setUserId(userId);
+        ReservacionDTO reservacionDTO = new ReservacionDTO();
+        reservacionDTO.setGarageId(garage.getId());
+        reservacionDTO.setUserId(userId);
 
         model.put("totalHours", totalHoursList);
-        model.put("reservation", reservationDTO);
+        model.put("reservation", reservacionDTO);
 
         return new ModelAndView("pre-reservation", model);
     }
 
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
-    public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservationDTO reservationDTO, HttpServletRequest request) {
+    public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservacionDTO reservacionDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Garage garage = garageService.findById(reservationDTO.garageId);
+        Garage garage = servicioGarage.findById(reservacionDTO.garageId);
 
         model.put("garage", garage);
-        model.put("reservation", reservationDTO);
+        model.put("reservation", reservacionDTO);
 
         return new ModelAndView("confirm-reservation", model);
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("reservation") ReservationDTO reservationDTO, HttpServletRequest request) {
+    public ModelAndView create(@ModelAttribute("reservation") ReservacionDTO reservacionDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         try {
-            reservationService.addReservation(reservationDTO);
+            servicioRepositorio.addReservation(reservacionDTO);
         } catch (GarageNotFoundException e) {
-            List<Garage> garages = garageService.getAll();
+            List<Garage> garages = servicioGarage.getAll();
             Garage garage = garages.get(0);
             model.put("garage", garage);
-            model.put("reservation", reservationDTO);
+            model.put("reservation", reservacionDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
             return new ModelAndView("confirm-reservation", model);
         } catch (UserNotFoundException e) {

@@ -4,7 +4,7 @@ import com.tallerwebi.dominio.model.Garage;
 
 import java.util.List;
 
-public interface GarageService {
+public interface ServicioGarage {
 
     List<Garage> getAll();
     Garage findById(Integer id);

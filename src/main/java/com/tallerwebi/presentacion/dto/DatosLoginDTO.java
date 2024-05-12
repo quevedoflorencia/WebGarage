@@ -1,13 +1,13 @@
 package com.tallerwebi.presentacion.dto;
 
-public class LoginDataDTO {
+public class DatosLoginDTO {
     private String email;
     private String password;
 
-    public LoginDataDTO() {
+    public DatosLoginDTO() {
     }
 
-    public LoginDataDTO(String email, String password) {
+    public DatosLoginDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

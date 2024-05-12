@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +17,9 @@ public class User {
     private String rol;
     private Boolean activo = false;
 
-    public User() {}
+    public Usuario() {}
 
-    public User(Long id, String name, String email, String password, String rol, Boolean activo) {
+    public Usuario(Long id, String name, String email, String password, String rol, Boolean activo) {
         this.id = id;
         this.name = name;
         this.email = email;

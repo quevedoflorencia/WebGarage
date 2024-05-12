@@ -1,9 +1,9 @@
 package com.tallerwebi.presentacion.dto;
 
-public class DateDTO {
+public class fechaDTO {
     private String date;
 
-    public DateDTO(String date) {
+    public fechaDTO(String date) {
         this.date = date;
     }
 

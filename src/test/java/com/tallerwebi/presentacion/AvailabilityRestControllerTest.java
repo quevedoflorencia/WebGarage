@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ReservationService;
+import com.tallerwebi.dominio.ServicioRepositorio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -15,25 +15,25 @@ import static org.mockito.Mockito.*;
 
 public class AvailabilityRestControllerTest {
 
-	private ReservedRestController reservedRestController;
+	private ControladorRestReservado controladorRestReservado;
 	private String dateDtoMock;
-	private ReservationService reservationServiceMock;
+	private ServicioRepositorio servicioRepositorioMock;
 
 
 	@BeforeEach
 	public void init(){
 		dateDtoMock = "2024-07-05";
-		reservationServiceMock = mock(ReservationService.class);
-		reservedRestController = new ReservedRestController(reservationServiceMock);
+		servicioRepositorioMock = mock(ServicioRepositorio.class);
+		controladorRestReservado = new ControladorRestReservado(servicioRepositorioMock);
 	}
 
 	@Test
 	public void cuandoSeEligeUnaFechaQueNoTieneHorasOcupadasDebeTraerUnArrayVacio(){
 		// preparacion
-		when(reservationServiceMock.traerHorasOcupadas(anyString())).thenReturn(new ArrayList());
+		when(servicioRepositorioMock.traerHorasOcupadas(anyString())).thenReturn(new ArrayList());
 
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = reservedRestController.getAvailableHours(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReservado.getAvailableHours(dateDtoMock);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -45,10 +45,10 @@ public class AvailabilityRestControllerTest {
 	public void cuandoSeEligeUnaFechaQueTieneElCupoOcupadoDeberiaDevolverUnArrayDeLasHorasOcupadas(){
 		List<Integer> hours = Arrays.asList(10, 11, 20, 21);
 		// preparacion
-		when(reservationServiceMock.traerHorasOcupadas(anyString())).thenReturn(hours);
+		when(servicioRepositorioMock.traerHorasOcupadas(anyString())).thenReturn(hours);
 
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = reservedRestController.getAvailableHours(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReservado.getAvailableHours(dateDtoMock);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
