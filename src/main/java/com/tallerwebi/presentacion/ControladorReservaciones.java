@@ -55,7 +55,7 @@ public class ControladorReservaciones {
         List<Garage> garages = servicioGarage.traerTodos();
         Garage garage = garages.get(0);
 
-        model.put("username", usuario.getName());
+        model.put("username", usuario.getNombre());
         model.put("garage", garage);
         model.put("reservations", reservaciones);
 

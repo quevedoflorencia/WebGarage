@@ -12,19 +12,19 @@ public class Reservacion {
     private Usuario usuario;
     @OneToOne
     private Garage garage;
-    private String day;
-    private String startTime;
-    private String finishTime;
+    private String dia;
+    private String horarioInicio;
+    private String horarioFin;
 
     public Reservacion() {}
 
-    public Reservacion(Long id, Usuario usuario, Garage garage, String day, String startTime, String finishTime) {
+    public Reservacion(Long id, Usuario usuario, Garage garage, String dia, String horarioInicio, String horarioFin) {
         this.id = id;
         this.usuario = usuario;
         this.garage = garage;
-        this.day = day;
-        this.startTime = startTime;
-        this.finishTime = finishTime;
+        this.dia = dia;
+        this.horarioInicio = horarioInicio;
+        this.horarioFin = horarioFin;
     }
 
     public Long getId() { return id; }
@@ -39,28 +39,28 @@ public class Reservacion {
 
     public void setGarage(Garage garage) { this.garage = garage; }
 
-    public String getDay() {
-        return day;
+    public String getDia() {
+        return dia;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDia(String day) {
+        this.dia = day;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getHorarioInicio() {
+        return horarioInicio;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setHorarioInicio(String startTime) {
+        this.horarioInicio = startTime;
     }
 
-    public String getFinishTime() {
-        return finishTime;
+    public String getHorarioFin() {
+        return horarioFin;
     }
 
-    public void setFinishTime(String finishTime) {
-        this.finishTime = finishTime;
+    public void setHorarioFin(String finishTime) {
+        this.horarioFin = finishTime;
     }
 
 }

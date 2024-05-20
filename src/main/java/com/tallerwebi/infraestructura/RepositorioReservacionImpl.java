@@ -30,7 +30,7 @@ public class RepositorioReservacionImpl implements RepositorioReservacion {
     @Override
     public List reservasPorFecha(String date) {
         final Session session = sessionFactory.getCurrentSession();
-        return sessionFactory.getCurrentSession().createCriteria(Reservacion.class).add(Restrictions.eq("day",date)).list();
+        return sessionFactory.getCurrentSession().createCriteria(Reservacion.class).add(Restrictions.eq("dia",date)).list();
     }
 
     @Override

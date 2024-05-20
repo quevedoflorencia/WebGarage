@@ -84,8 +84,8 @@ public class ServicioReservacionImpl implements ServicioRepositorio {
     }
 
     private void recorreCadaHoraDeLaReservaYLaContabiliza(Reservacion reserva, Map spotsPorCadaHora, List horasOcupadas) {
-        int primerHora = traeHoraComoEntero(reserva.getStartTime());
-        int ultimaHora= traeHoraComoEntero(reserva.getFinishTime());
+        int primerHora = traeHoraComoEntero(reserva.getHorarioInicio());
+        int ultimaHora= traeHoraComoEntero(reserva.getHorarioFin());
 
         int capacidadDeGarage = 1;
 

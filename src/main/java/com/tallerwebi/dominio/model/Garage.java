@@ -12,19 +12,19 @@ public class Garage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private Integer capacity;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+    private String nombre;
+    private Integer capacidad;
+    private LocalTime horarioApertura;
+    private LocalTime horarioCierre;
 
     public Garage() {}
 
-    public Garage(Integer id, String name, Integer capacity, LocalTime openingTime, LocalTime closingTime) {
+    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre) {
         this.id = id;
-        this.name = name;
-        this.capacity = capacity;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
+        this.nombre = nombre;
+        this.capacidad = capacidad;
+        this.horarioApertura = horarioApertura;
+        this.horarioCierre = horarioCierre;
     }
 
     public Integer getId() { return id; }
@@ -33,35 +33,35 @@ public class Garage {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String name) {
+        this.nombre = name;
     }
 
-    public Integer getCapacity() {
-        return capacity;
+    public Integer getCapacidad() {
+        return capacidad;
     }
 
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
+    public void setCapacidad(Integer capacity) {
+        this.capacidad = capacity;
     }
 
-    public LocalTime getOpeningTime() {
-        return openingTime;
+    public LocalTime getHorarioApertura() {
+        return horarioApertura;
     }
 
-    public void setOpeningTime(LocalTime openingTime) {
-        this.openingTime = openingTime;
+    public void setHorarioApertura(LocalTime openingTime) {
+        this.horarioApertura = openingTime;
     }
 
-    public LocalTime getClosingTime() {
-        return closingTime;
+    public LocalTime getHorarioCierre() {
+        return horarioCierre;
     }
 
-    public void setClosingTime(LocalTime closingTime) {
-        this.closingTime = closingTime;
+    public void setHorarioCierre(LocalTime closingTime) {
+        this.horarioCierre = closingTime;
     }
 }

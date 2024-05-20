@@ -23,7 +23,7 @@
         <div class="row">
 
             <h1>Bienvenido <span th:text="${username}"></span>! estas son tus reservas: </h1>
-            <h2 >Garage: <span th:text="${garage.getName()}"></span></h2>
+            <h2 >Garage: <span th:text="${garage.getNombre()}"></span></h2>
 
                 <table style="border:1px solid black;text-align:center">
                     <thead style="border:1px solid black">
@@ -36,9 +36,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="reservation: ${reservations}">
-                        <td style="border:1px solid black" th:text="${reservation.getDay()}"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getStartTime()} + ' hs.'"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getFinishTime()} + ' hs.'"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getDia()}"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getHorarioInicio()} + ' hs.'"></td>
+                        <td style="border:1px solid black" th:text="${reservation.getHorarioFin()} + ' hs.'"></td>
 
                     </tr>
                     </tbody>
