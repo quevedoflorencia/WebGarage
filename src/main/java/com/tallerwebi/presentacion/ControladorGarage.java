@@ -31,11 +31,12 @@ public class ControladorGarage {
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
-    public ModelAndView listarGarages(HttpServletRequest request) {
+    public ModelAndView listarGarages() {
 
         ModelMap model = new ModelMap();
-        HttpSession session = request.getSession();
         /*
+        HttpSession session = request.getSession();
+
         Long userId = (Long) session.getAttribute("ID");
         if(userId == null) {
             return new ModelAndView("redirect:/login");

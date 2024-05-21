@@ -6,6 +6,7 @@ INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES
 INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Obelisco', 20, '09:00:00', '23:30:00');
 INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Pompeya', 25, '05:00:00', '22:00:00');
 INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Liniers', 30, '00:00:00', '23:59:00');
+INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Palermo', 35, '06:00:00', '22:59:00');
 
 INSERT INTO Reservacion(id, garage_id, usuario_id, dia, horarioInicio, horarioFin) VALUES (null, 1, 1, '2024-05-05', '04:00', '06:00');
 INSERT INTO Reservacion(id, garage_id, usuario_id, dia, horarioInicio, horarioFin) VALUES (null, 1, 1, '2024-05-05', '20:00', '23:00');
