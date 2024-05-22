@@ -1,8 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioRepositorio;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservacion;
 import com.tallerwebi.dominio.model.Usuario;
@@ -29,6 +27,7 @@ public class ReservacionControllerTest {
     private HttpSession sessionMock;
     private ServicioRepositorio servicioRepositorio;
     private ControladorReservaciones controladorReservaciones;
+    private ServicioTipoVehiculo servicioTipoVehiculo;
 
     @BeforeEach
     public void init(){
@@ -37,7 +36,8 @@ public class ReservacionControllerTest {
         servicioUsuario = mock(ServicioUsuario.class);
         servicioGarage = mock(ServicioGarage.class);
         servicioRepositorio = mock(ServicioRepositorio.class);
-        controladorReservaciones = new ControladorReservaciones(servicioUsuario, servicioGarage, servicioRepositorio);
+        servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
+        controladorReservaciones = new ControladorReservaciones(servicioUsuario, servicioGarage, servicioRepositorio, servicioTipoVehiculo);
     }
 
 

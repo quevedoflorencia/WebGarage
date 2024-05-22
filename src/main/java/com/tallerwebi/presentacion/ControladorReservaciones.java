@@ -1,18 +1,18 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioRepositorio;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reservacion;
+import com.tallerwebi.dominio.model.TipoVehiculo;
 import com.tallerwebi.dominio.model.Usuario;
 import com.tallerwebi.presentacion.dto.ReservacionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,15 +26,18 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class ControladorReservaciones {
 
+    private ServicioTipoVehiculo servicioTipoVehiculo;
     private ServicioUsuario servicioUsuario;
     private ServicioGarage servicioGarage;
     private ServicioRepositorio servicioRepositorio;
 
+
     @Autowired
-    public ControladorReservaciones(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioRepositorio servicioRepositorio) {
+    public ControladorReservaciones(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioRepositorio servicioRepositorio, ServicioTipoVehiculo servicioTipoVehiculo) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioRepositorio = servicioRepositorio;
+        this.servicioTipoVehiculo = servicioTipoVehiculo;
     }
 
     @RequestMapping(path = "/list", method = RequestMethod.GET)
@@ -62,14 +65,19 @@ public class ControladorReservaciones {
         return new ModelAndView("my-reservation", model);
     }
 
-    @RequestMapping("/start")
-    public ModelAndView goToPreReservation(HttpServletRequest request) {
+    @RequestMapping("/start/{id}")
+    public ModelAndView goToPreReservation(HttpServletRequest request, @PathVariable("id") Integer garageId) {
         ModelMap model = new ModelMap();
 
         List<String> listaTotalDeHoras = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
 
         List<Garage> garages = servicioGarage.traerTodos();
-        Garage garage = garages.get(0);
+        Garage garage = garages.get(garageId);
+
+        if (garage == null) {
+            //TODO: redireccionar a la nueva home!
+            return new ModelAndView("redirect:../login");
+        }
 
         Long userId = (Long) request.getSession().getAttribute("ID");
 
@@ -77,12 +85,19 @@ public class ControladorReservaciones {
             return new ModelAndView("redirect:../login");
         }
 
+        //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
+        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
+
         ReservacionDTO reservacionDTO = new ReservacionDTO();
         reservacionDTO.setGarageId(garage.getId());
         reservacionDTO.setUserId(userId);
 
+        model.put("garageId", garageId);
+
+        model.put("garage", garage);
         model.put("totalHours", listaTotalDeHoras);
         model.put("reservation", reservacionDTO);
+        model.put("tiposVehiculos", tiposVehiculos);
 
         return new ModelAndView("pre-reservation", model);
     }

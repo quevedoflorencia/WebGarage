@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalTime;
+import java.util.List;
+import javax.persistence.*;
+
 
 @Entity
 public class Garage {
@@ -16,6 +19,9 @@ public class Garage {
     private Integer capacidad;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
+
+    @Transient
+    private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}
 
@@ -64,4 +70,7 @@ public class Garage {
     public void setHorarioCierre(LocalTime closingTime) {
         this.horarioCierre = closingTime;
     }
+
+    public List<GarageTipoVehiculo> getGarageTipoVehiculos() { return garageTipoVehiculos; }
+    public void setGarageTipoVehiculos(List<GarageTipoVehiculo> garageTipoVehiculos) { this.garageTipoVehiculos = garageTipoVehiculos; }
 }
