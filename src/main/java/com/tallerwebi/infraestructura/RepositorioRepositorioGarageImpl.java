@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.model.Garage;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,5 +29,12 @@ public class RepositorioRepositorioGarageImpl implements RepositorioGarage {
     @Override
     public Garage findById(Integer id) {
         return sessionFactory.getCurrentSession().get(Garage.class, id);
+    }
+
+    @Override
+    public List getGarageSegunCapacidad(Integer capacidadBuscada) {
+
+        return sessionFactory.getCurrentSession().createCriteria(Garage.class).add(Restrictions.eq("capacidad",capacidadBuscada)).list();
+
     }
 }

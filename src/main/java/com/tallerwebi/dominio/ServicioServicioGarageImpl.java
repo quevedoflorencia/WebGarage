@@ -25,4 +25,9 @@ public class ServicioServicioGarageImpl implements ServicioGarage {
     public Garage buscarPorId(Integer id) {
         return repositorioGarage.findById(id);
     }
+
+    @Override
+    public List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada) {
+        return repositorioGarage.getGarageSegunCapacidad(capacidadBuscada);
+    }
 }
