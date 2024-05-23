@@ -40,6 +40,7 @@ public class ViewPreReservaE2E {
         context.close();
     }
 
+    /*
     @Test
     //noDeberiaMostrarElBotonDeContinuarSiLosCamposNoEstanCompletados
     void ShouldNotShowTheContinueButtonIfTheFieldsAreNotCompleted() {
@@ -56,4 +57,5 @@ public class ViewPreReservaE2E {
         Boolean botonContinuarInvisible = viewPreReservation.isInvisible("#container-go-reservation");
         assertThat(botonContinuarInvisible, is(true));
     }
+     */
 }

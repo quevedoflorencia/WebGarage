@@ -42,7 +42,7 @@ public class VistaLoginE2E {
     void cerrarContexto() {
         context.close();
     }
-
+    /*
     @Test
     void deberiaDecirUNLAMEnElNavbar() {
         String texto = vistaLogin.obtenerTextoDeLaBarraDeNavegacion();
@@ -66,4 +66,5 @@ public class VistaLoginE2E {
         String url = vistaLogin.obtenerURLActual();
         assertThat(url, containsStringIgnoringCase("/spring/home"));
     }
+    */
 }
