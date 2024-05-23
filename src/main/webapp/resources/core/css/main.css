@@ -18,3 +18,9 @@ h2{
     margin:0 2rem;
 }
 
+form label{
+    color: #555759;
+}
+
+#map { height: 300px; }
+

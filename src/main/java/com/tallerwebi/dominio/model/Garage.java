@@ -19,18 +19,22 @@ public class Garage {
     private Integer capacidad;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
+    private String latitud;
+    private String longitud;
 
-    @Transient
+    @OneToMany(mappedBy="garage")
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre) {
+    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public Integer getId() { return id; }
@@ -72,5 +76,23 @@ public class Garage {
     }
 
     public List<GarageTipoVehiculo> getGarageTipoVehiculos() { return garageTipoVehiculos; }
+
     public void setGarageTipoVehiculos(List<GarageTipoVehiculo> garageTipoVehiculos) { this.garageTipoVehiculos = garageTipoVehiculos; }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatutud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String latitud) {
+        this.longitud = longitud;
+    }
+
 }

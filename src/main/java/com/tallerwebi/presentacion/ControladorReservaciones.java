@@ -3,10 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
-import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reservacion;
-import com.tallerwebi.dominio.model.TipoVehiculo;
-import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.ReservacionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +84,7 @@ public class ControladorReservaciones {
 
         //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
         List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
+        //List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
 
         ReservacionDTO reservacionDTO = new ReservacionDTO();
         reservacionDTO.setGarageId(garage.getId());
@@ -98,6 +96,7 @@ public class ControladorReservaciones {
         model.put("totalHours", listaTotalDeHoras);
         model.put("reservation", reservacionDTO);
         model.put("tiposVehiculos", tiposVehiculos);
+       //model.put("garageTipoVehiculos", garageTipoVehiculos);
 
         return new ModelAndView("pre-reservation", model);
     }

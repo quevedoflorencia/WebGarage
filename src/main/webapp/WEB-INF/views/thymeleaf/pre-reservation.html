@@ -10,6 +10,11 @@
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <script src="https://kit.fontawesome.com/7c7d2d5fd7.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{https://unpkg.com/leaflet@1.9.4/dist/leaflet.css}" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="  crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
 
 </head>
 
@@ -20,40 +25,49 @@
 </nav>
 
 <main role="main" class="container">
-    <h1>Reserva tu lugar en el Garage : <span th:text="${garageId}"></span></h1>
+    <h1>Reserva tu lugar en el Garage : <span th:text="${garage.nombre}"></span></h1>
 
-    <div class="container row">
+    <div class="container row mt-5">
 
-        <form action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
+        <form class="col-6" action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
 
-            <div class="col-4">
-                <label for="datepicker_from">Seleccioná la fecha</label>
-                <input type="text" id="datepicker_from" th:field="*{date}">
-            </div>
-
-            <div class="col-4 d-none" id="container_hour_picker">
-                <div class="form-group">
-                    <label for="timepicker_from">Seleccioná el horario de ingreso</label>
-                    <select class="form-control" id="timepicker_from" th:field="*{startTime}">
-                        <option value="" disabled selected>--</option>
-                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                    </select>
-                    <p class="text-danger" id="hourError"></p>
-                </div>
-
-
-                <div class="form-group d-none" id="timepicker_until_container">
-                    <label for="timepicker_until">Seleccioná el horario de salida</label>
-                    <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
-                        <option value="" disabled selected>--</option>
-                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                    </select>
-                    <p class="text-danger" id="hourErrorUntil"></p>
+            <div class="row">
+                <div class="col-12">
+                    <label for="datepicker_from">Seleccioná la fecha</label>
+                    <input type="text" id="datepicker_from" th:field="*{date}">
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-none" id="container_hour_picker">
+                        <div class="form-group">
+                            <label for="timepicker_from">Seleccioná el horario de ingreso</label>
+                            <select class="form-control" id="timepicker_from" th:field="*{startTime}">
+                                <option value="" disabled selected>--</option>
+                                <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                            </select>
+                            <p class="text-danger" id="hourError"></p>
+                        </div>
+
+
+                        <div class="form-group d-none" id="timepicker_until_container">
+                            <label for="timepicker_until">Seleccioná el horario de salida</label>
+                            <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
+                                <option value="" disabled selected>--</option>
+                                <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                            </select>
+                            <p class="text-danger" id="hourErrorUntil"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" value="" name="" id="tipo_vehiculo" />
+
 
             <div class="col-12 d-none" id="container-go-reservacion">
                 <div class="d-flex justify-content-end">
@@ -61,19 +75,36 @@
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-12">
                 <p th:if="${error != null}" class="alert alert-danger mt-5" th:text="${error}">
             </div>
-
-        </form>
+         </form>
+        <div class="col-6">
+            <div id="map"></div>
+            <div class="selection_tipo_vehiculo" th:each="vehiculo : ${tipoVehiculos}">
+                <div class="unselected selection" data-id="${vehiculo.id}">
+                    <i th:if="${vehiculo.id == 1}" class="fa-solid fa-car-side"></i>
+                    <i th:if="${vehiculo.id == 2}" class="fa-solid fa-motorcycle"></i>
+                    <i th:if="${vehiculo.id == 3}" class="fa-solid fa-van-shuttle"></i>
+                    <p th:text="${vehiculo.nombre}"></p>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <!-- /.container -->
+
 
 <!-- Boostrap core js -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script th:inline="javascript">
     var totalHours = [[${totalHours}]];
+    var latitudGarage = [[${garage.latitud}]];
+    var longitudGarage = [[${garage.longitud}]];
+    var tipoVehiculos = [[${tipoVehiculos}]];
+
+    console.log(tipoVehiculos)
+
 </script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script>
@@ -203,5 +234,18 @@
     }
 
 </script>
+<script th:inline="javascript">
+
+    var map = L.map('map').setView([latitudGarage, longitudGarage], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([latitudGarage, longitudGarage]).addTo(map)
+        .bindPopup('El garage se encuentra aquí!')
+        .openPopup();
+</script>
+
 </body>
 </html>

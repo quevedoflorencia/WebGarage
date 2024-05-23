@@ -45,7 +45,7 @@ public class ReservacionControllerTest {
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadas() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
 
-        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
+        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00"), "-34.64536566775859", "58.56192234666206" ));
 
         List<Reservacion> reservacions = List.of(
                 new Reservacion(null, null, null, "2024-05-05", "04:00", "06:00"),
@@ -70,7 +70,7 @@ public class ReservacionControllerTest {
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadasAunqueLaListaEsteVacia() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
 
-        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
+        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00"), "-34.64536566775859", "58.56192234666206"));
 
         List<Reservacion> reservacions = Collections.emptyList();
 

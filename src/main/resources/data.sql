@@ -1,7 +1,7 @@
 INSERT INTO Usuario(id, nombre, email, password, rol, activo) VALUES(null, 'Test', 'test@unlam.edu.ar', 'test', 'ADMIN', true);
 
-INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Suipacha', 5, '10:00:00', '17:00:00');
-INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Ramos Mejia', 20, '11:00:00', '22:00:00');
+INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre, latitud, longitud) VALUES (null, 'Suipacha', 5, '10:00:00', '17:00:00', "1000", "-1000");
+INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre, latitud, longitud) VALUES (null, 'Ramos Mejia', 20, '11:00:00', '22:00:00',"-34.64536566775859", "-58.56192234666206");
 
 INSERT INTO Tipo_Vehiculo(id,descripcion) VALUES (null, 'Auto');
 INSERT INTO Tipo_Vehiculo(id,descripcion) VALUES (null, 'Camioneta');
