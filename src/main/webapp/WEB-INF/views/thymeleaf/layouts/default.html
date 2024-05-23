@@ -11,20 +11,31 @@
 
         <!-- custom style -->
         <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+        <th:block th:insert="~{::propiedadesAdicionales}"/>
     </head>
 
     <body>
 
         <div th:fragment="header">
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-                <a class="navbar-brand" href="#">Web Garage</a>
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Web Garage</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
+                </div>
             </nav>
         </div>
 
 
         <div th:fragment="footer">
-            <!-- Bootstrap core js -->
+
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
             <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
         </div>
     </body>
 </html>

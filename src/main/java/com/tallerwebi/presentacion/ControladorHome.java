@@ -1,4 +1,4 @@
-/** package com.tallerwebi.presentacion;
+package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.model.Garage;
@@ -30,11 +30,11 @@ public class ControladorHome {
 
         model.put("garages", garages);
 
-        return new ModelAndView("home");
+        return new ModelAndView("home", model);
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
         return new ModelAndView("redirect:/reservas/listar");
     }
-} **/
+}

@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="layouts/default.html :: head"></head>
+  <head th:replace="layouts/default.html :: head">
+    <th:block th:fragment="propiedadesAdicionales"></th:block>
+  </head>
+
   <body>
     <div th:replace="layouts/default.html :: nav"></div>
 
