@@ -96,7 +96,7 @@ public class ControladorReservaciones {
         model.put("totalHours", listaTotalDeHoras);
         model.put("reservation", reservacionDTO);
         model.put("tiposVehiculos", tiposVehiculos);
-       //model.put("garageTipoVehiculos", garageTipoVehiculos);
+        //model.put("garageTipoVehiculos", garageTipoVehiculos);
 
         return new ModelAndView("pre-reservation", model);
     }

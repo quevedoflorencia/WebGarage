@@ -81,12 +81,12 @@
          </form>
         <div class="col-6">
             <div id="map"></div>
-            <div class="selection_tipo_vehiculo" th:each="vehiculo : ${tipoVehiculos}">
+            <div class="selection_tipo_vehiculo" th:each="vehiculo : ${tiposVehiculos}">
                 <div class="unselected selection" data-id="${vehiculo.id}">
                     <i th:if="${vehiculo.id == 1}" class="fa-solid fa-car-side"></i>
                     <i th:if="${vehiculo.id == 2}" class="fa-solid fa-motorcycle"></i>
                     <i th:if="${vehiculo.id == 3}" class="fa-solid fa-van-shuttle"></i>
-                    <p th:text="${vehiculo.nombre}"></p>
+                    <p th:text="${vehiculo.descripcion}"></p>
                 </div>
             </div>
         </div>
@@ -101,9 +101,9 @@
     var totalHours = [[${totalHours}]];
     var latitudGarage = [[${garage.latitud}]];
     var longitudGarage = [[${garage.longitud}]];
-    var tipoVehiculos = [[${tipoVehiculos}]];
+    var tiposVehiculos = [[${tiposVehiculos}]];
 
-    console.log(tipoVehiculos)
+    console.log(tiposVehiculos)
 
 </script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
