@@ -105,7 +105,7 @@ public class ControladorReserva {
     }
 
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
-    public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView confirmReservation(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
@@ -117,7 +117,7 @@ public class ControladorReserva {
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("reservation") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView create(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         try {

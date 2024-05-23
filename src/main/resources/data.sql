@@ -9,17 +9,17 @@ INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES
 INSERT INTO Garage(id, nombre, capacidad, horarioApertura, horarioCierre) VALUES (null, 'Palermo', 35, '06:00:00', '22:59:00');
 
 
-INSERT INTO Tipo_Vehiculo(id,descripcion) VALUES (null, 'Auto');
-INSERT INTO Tipo_Vehiculo(id,descripcion) VALUES (null, 'Camioneta');
-INSERT INTO Tipo_Vehiculo(id,descripcion) VALUES (null, 'Moto');
+INSERT INTO tipo_vehiculo(id,descripcion) VALUES (null, 'Auto');
+INSERT INTO tipo_vehiculo(id,descripcion) VALUES (null, 'Camioneta');
+INSERT INTO tipo_vehiculo(id,descripcion) VALUES (null, 'Moto');
 
 
-INSERT INTO Garage_Tipo_Vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 1, 2000.00);
-INSERT INTO Garage_Tipo_Vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 2, 5500.00);
-INSERT INTO Garage_Tipo_Vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 3, 1200.00);
+INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 1, 2000.00);
+INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 2, 5500.00);
+INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 1, 3, 1200.00);
 
-INSERT INTO Garage_Tipo_Vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 2, 1, 3500.00);
-INSERT INTO Garage_Tipo_Vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 2, 2, 6000.00);
+INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 2, 1, 3500.00);
+INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora) VALUES (null, 2, 2, 6000.00);
 
 
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin) VALUES (null, 1, 1, '2024-05-05', '04:00', '06:00');

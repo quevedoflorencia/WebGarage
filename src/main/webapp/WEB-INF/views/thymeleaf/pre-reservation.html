@@ -29,7 +29,7 @@
 
     <div class="container row mt-5">
 
-        <form class="col-6" action="#" th:action="@{confirm}" method="POST" th:object="${reserva}">
+        <form class="col-6" action="#" th:action="@{../confirm}" method="POST" th:object="${reserva}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
@@ -71,7 +71,7 @@
 
 
             <div class="row">
-                <div class="col-12 d-none" id="container-go-reservacion">
+                <div class="col-12 d-none" id="container-go-reserva">
                     <div class="d-flex justify-content-end">
                         <button class="btn" id="goToReservation" type="Submit">Continuar</button>
                     </div>
@@ -119,7 +119,7 @@
     const errorHourUntil = document.getElementById("hourErrorUntil") //until
     const containerHourPicker = document.getElementById("container_hour_picker");
     const timepicker_until_container = document.getElementById("timepicker_until_container");
-    const containerGoReservation = document.getElementById("container-go-reservacion");
+    const containerGoReserva = document.getElementById("container-go-reserva");
     let tipo_vehiculo = document.getElementById("tipo_vehiculo");
     let datePickerFrom = '';
     let timePickerFrom = null;
@@ -154,7 +154,7 @@
         document.getElementById("timepicker_until").value = '';
         containerHourPicker.classList.add("d-none");
         timepicker_until_container.classList.add("d-none");
-        containerGoReservation.classList.add("d-none");
+        containerGoReserva.classList.add("d-none");
     }
 
     function getFiledHours(selectedDate) {
@@ -201,7 +201,7 @@
     // al seleccionar el horario de inicio
     document.getElementById("timepicker_from").addEventListener("change", function () {
         timepicker_until_container.classList.remove("d-none")
-        containerGoReservation.classList.add("d-none")
+        containerGoReserva.classList.add("d-none")
         document.getElementById("timepicker_until").value = '';
         const selectedHourFrom = this.value;
         timePickerFrom = parseInt(this.value, 10);
@@ -224,7 +224,7 @@
     document.getElementById("timepicker_until").addEventListener("change", function () {
         timePickerUntil = parseInt(this.value, 10);
         if(tipo_vehiculo.value != null && tipo_vehiculo.value != undefined && tipo_vehiculo.value != ''){
-            containerGoReservation.classList.remove("d-none")
+            containerGoReserva.classList.remove("d-none")
         }
     })
 
@@ -283,7 +283,7 @@
                 // verificar si se seleccionó todos los campos y en caso de que sí mostrar el btn para continuar:
 
                 if(datePickerFrom != null && timePickerFrom != null && timePickerUntil != null){
-                    containerGoReservation.classList.remove("d-none");
+                    containerGoReserva.classList.remove("d-none");
                 }
             });
         }
