@@ -29,8 +29,8 @@ public class ServicioGarageTest {
         // preparacion
         List<Garage> garagesMock = new ArrayList<>();
        Integer capacidadBuscada= 20;
-        garagesMock.add(new Garage(null, "Gurruchaga", 20, LocalTime.of(9,30), LocalTime.of(23,45)));
-        garagesMock.add(new Garage(null, "Gurruchaga", 20, LocalTime.of(9,30), LocalTime.of(23,45)));
+        garagesMock.add(new Garage(null, "Gurruchaga", 20, LocalTime.of(9,30), LocalTime.of(23,45), "1234", "-1234"));
+        garagesMock.add(new Garage(null, "Gurruchaga", 20, LocalTime.of(9,30), LocalTime.of(23,45), "1234", "-1234"));
         //garagesMock.add(new Garage(null, "Gurruchaga", 77, LocalTime.of(9,30), LocalTime.of(23,45)));
         when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
 
@@ -49,8 +49,8 @@ public class ServicioGarageTest {
         // preparacion
         List<Garage> garagesMock = new ArrayList<>();
         Integer capacidadBuscada= 30;
-        garagesMock.add(new Garage(null, "Gurruchaga", 30, LocalTime.of(9,30), LocalTime.of(23,45)));
-        garagesMock.add(new Garage(null, "Gurruchaga", 45, LocalTime.of(9,30), LocalTime.of(23,45)));
+        garagesMock.add(new Garage(null, "Gurruchaga", 30, LocalTime.of(9,30), LocalTime.of(23,45), "1234", "-1234"));
+        garagesMock.add(new Garage(null, "Gurruchaga", 45, LocalTime.of(9,30), LocalTime.of(23,45), "1234", "-1234"));
         //garagesMock.add(new Garage(null, "Gurruchaga", 77, LocalTime.of(9,30), LocalTime.of(23,45)));
         when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
 

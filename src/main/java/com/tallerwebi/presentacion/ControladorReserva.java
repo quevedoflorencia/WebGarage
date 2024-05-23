@@ -2,17 +2,17 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.ServicioReserva;
+import com.tallerwebi.dominio.ServicioTipoVehiculo;
 import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
-import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reserva;
-import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,15 +26,18 @@ import java.util.List;
 @RequestMapping("/reservas")
 public class ControladorReserva {
 
+    private ServicioTipoVehiculo servicioTipoVehiculo;
     private ServicioUsuario servicioUsuario;
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
 
+
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
+        this.servicioTipoVehiculo = servicioTipoVehiculo;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -62,14 +65,19 @@ public class ControladorReserva {
         return new ModelAndView("my-reservation", model);
     }
 
-    @RequestMapping("/start")
-    public ModelAndView goToPreReservation(HttpServletRequest request) {
+    @RequestMapping("/start/{id}")
+    public ModelAndView goToPreReservation(HttpServletRequest request, @PathVariable("id") Integer garageId) {
         ModelMap model = new ModelMap();
 
         List<String> listaTotalDeHoras = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
 
         List<Garage> garages = servicioGarage.traerTodos();
-        Garage garage = garages.get(0);
+        Garage garage = garages.get(garageId);
+
+        if (garage == null) {
+            //TODO: redireccionar a la nueva home!
+            return new ModelAndView("redirect:../login");
+        }
 
         Long userId = (Long) request.getSession().getAttribute("ID");
 
@@ -77,18 +85,27 @@ public class ControladorReserva {
             return new ModelAndView("redirect:../login");
         }
 
+        //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
+        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
+        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setGarageId(garage.getId());
         reservaDTO.setUserId(userId);
 
+        model.put("garageId", garageId);
+
+        model.put("garage", garage);
         model.put("totalHours", listaTotalDeHoras);
         model.put("reserva", reservaDTO);
+        model.put("tiposVehiculos", tiposVehiculos);
+        model.put("garageTipoVehiculos", garageTipoVehiculos);
 
         return new ModelAndView("pre-reservation", model);
     }
 
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
-    public ModelAndView confirmReservation(@ModelAttribute("reservation") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView confirmReservation(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
@@ -100,7 +117,7 @@ public class ControladorReserva {
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("reservation") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView create(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         try {
