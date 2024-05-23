@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service("garageService")
+@Service("servicioGarage")
 @Transactional
-public class ServicioServicioGarageImpl implements ServicioGarage {
+public class ServicioGarageImpl implements ServicioGarage {
 
     private RepositorioGarage repositorioGarage;
 
     @Autowired
-    public ServicioServicioGarageImpl(RepositorioGarage repositorioGarage) { this.repositorioGarage = repositorioGarage; }
+    public ServicioGarageImpl(RepositorioGarage repositorioGarage) { this.repositorioGarage = repositorioGarage; }
 
     @Override
     public List<Garage> traerTodos() {
@@ -24,5 +24,10 @@ public class ServicioServicioGarageImpl implements ServicioGarage {
     @Override
     public Garage buscarPorId(Integer id) {
         return repositorioGarage.findById(id);
+    }
+
+    @Override
+    public List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada) {
+        return repositorioGarage.getGarageSegunCapacidad(capacidadBuscada);
     }
 }

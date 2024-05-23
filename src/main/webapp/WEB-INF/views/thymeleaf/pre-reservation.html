@@ -29,7 +29,7 @@
 
     <div class="container row mt-5">
 
-        <form class="col-6" action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
+        <form class="col-6" action="#" th:action="@{confirm}" method="POST" th:object="${reserva}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-12">
                     <label for="datepicker_from">Seleccioná la fecha</label>
-                    <input type="text" id="datepicker_from" th:field="*{date}">
+                    <input type="text" id="datepicker_from" th:field="*{dia}">
                 </div>
             </div>
 
@@ -46,7 +46,7 @@
                     <div class="d-none" id="container_hour_picker">
                         <div class="form-group">
                             <label for="timepicker_from">Seleccioná el horario de ingreso</label>
-                            <select class="form-control" id="timepicker_from" th:field="*{startTime}">
+                            <select class="form-control" id="timepicker_from" th:field="*{horarioInicio}">
                                 <option value="" disabled selected>--</option>
                                 <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                             </select>
@@ -56,7 +56,7 @@
 
                         <div class="form-group d-none" id="timepicker_until_container">
                             <label for="timepicker_until">Seleccioná el horario de salida</label>
-                            <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
+                            <select class="form-control" id="timepicker_until" th:field="*{horarioFin}">
                                 <option value="" disabled selected>--</option>
                                 <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                             </select>

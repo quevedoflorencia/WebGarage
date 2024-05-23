@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class ViewPreReservacionE2E {
+public class ViewPreReservaE2E {
 
     static Playwright playwright;
     static Browser browser;
