@@ -22,7 +22,7 @@ public class Garage {
     private String latitud;
     private String longitud;
 
-    @OneToMany(mappedBy="garage")
+    @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}

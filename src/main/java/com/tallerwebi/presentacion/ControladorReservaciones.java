@@ -84,7 +84,7 @@ public class ControladorReservaciones {
 
         //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
         List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
-        //List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
 
         ReservacionDTO reservacionDTO = new ReservacionDTO();
         reservacionDTO.setGarageId(garage.getId());
@@ -96,7 +96,7 @@ public class ControladorReservaciones {
         model.put("totalHours", listaTotalDeHoras);
         model.put("reservation", reservacionDTO);
         model.put("tiposVehiculos", tiposVehiculos);
-        //model.put("garageTipoVehiculos", garageTipoVehiculos);
+        model.put("garageTipoVehiculos", garageTipoVehiculos);
 
         return new ModelAndView("pre-reservation", model);
     }
