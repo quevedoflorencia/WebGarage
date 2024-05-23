@@ -13,6 +13,9 @@ public class TipoVehiculo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descripcion;
+    
+    @OneToMany(mappedBy = "tipoVehiculo")
+    private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public TipoVehiculo() {}
 
