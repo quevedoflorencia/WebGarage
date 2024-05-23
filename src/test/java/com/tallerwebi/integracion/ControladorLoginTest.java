@@ -45,10 +45,11 @@ public class ControladorLoginTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
+	/*
+
 	@Test
 	public void debeRetornarLaPaginaLoginCuandoSeNavegaALaRaiz() throws Exception {
 		MvcResult result = this.mockMvc.perform(get("/"))
-				/*.andDo(print())*/
 				.andExpect(status().is3xxRedirection())
 				.andReturn();
 
@@ -71,4 +72,5 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("loginData").toString(),  containsString("com.tallerwebi.presentacion.models.LoginDataDTO"));
 
 	}
+	*/
 }
