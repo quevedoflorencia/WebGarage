@@ -1,6 +1,3 @@
-body {
-  padding-top: 5rem;
-}
 .starter-template {
   padding: 3rem 1.5rem;
   text-align: center;
@@ -71,5 +68,14 @@ form label{
 
 #container-go-reserva button{
     background: #34ADD7;
+    color: white;
+}
+
+.btn-buscar-estacionamiento{
+    width: 20%;
+    border-radius: 20px;
+    background-color: #64CAED;
+    font-size: 18px;
+    font-weight: 600;
     color: white;
 }

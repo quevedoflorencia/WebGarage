@@ -1,6 +1,5 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.model.Garage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/garages")
-public class ControladorGarage {
+public class ControladorHome {
 
     private ServicioGarage servicioGarage;
 
     @Autowired
-    public ControladorGarage(ServicioGarage servicioGarage, RepositorioGarage repositorioGarage) {
+    public ControladorHome(ServicioGarage servicioGarage) {
         this.servicioGarage = servicioGarage;
     }
 
-    @RequestMapping(path = "/listar", method = RequestMethod.GET)
-    public ModelAndView listarGarages() {
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public ModelAndView inicio() {
 
         ModelMap model = new ModelMap();
 
@@ -32,9 +30,11 @@ public class ControladorGarage {
 
         model.put("garages", garages);
 
-        return new ModelAndView("listar-garages", model);
+        return new ModelAndView("home", model);
     }
 
-
-
+    @RequestMapping(path = "/home", method = RequestMethod.GET)
+    public ModelAndView irAHome() {
+        return new ModelAndView("redirect:/reservas/listar");
+    }
 }
