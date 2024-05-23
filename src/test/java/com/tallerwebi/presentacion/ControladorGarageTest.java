@@ -47,9 +47,9 @@ public class ControladorGarageTest {
         List<Garage> garagesMock = new ArrayList<>();
         LocalTime horarioApertura= LocalTime.of(8,0);
         LocalTime horarioCierre= LocalTime.of(23,0);
-        garagesMock.add(new Garage(null, "Sarmiento", 5, horarioApertura, horarioCierre));
+        garagesMock.add(new Garage(null, "Sarmiento", 5, horarioApertura, horarioCierre, "1234", "-1234"));
 
-        garagesMock.add(new Garage(null, "Gurruchaga", 22, LocalTime.of(9,30), LocalTime.of(23,45)));
+        garagesMock.add(new Garage(null, "Gurruchaga", 22, LocalTime.of(9,30), LocalTime.of(23,45), "1234", "-1234"));
         when(this.servicioGarage.traerTodos()).thenReturn(garagesMock);
 
         // ejecucion

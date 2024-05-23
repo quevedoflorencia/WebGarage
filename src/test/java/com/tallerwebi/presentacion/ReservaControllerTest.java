@@ -1,8 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioReserva;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.dominio.model.Usuario;
@@ -29,6 +27,7 @@ public class ReservaControllerTest {
     private HttpSession sessionMock;
     private ServicioReserva servicioReserva;
     private ControladorReserva controladorReserva;
+    private ServicioTipoVehiculo servicioTipoVehiculo;
 
     @BeforeEach
     public void init(){
@@ -37,7 +36,8 @@ public class ReservaControllerTest {
         servicioUsuario = mock(ServicioUsuario.class);
         servicioGarage = mock(ServicioGarage.class);
         servicioReserva = mock(ServicioReserva.class);
-        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva);
+        servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
+        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo);
     }
 
 
@@ -45,7 +45,7 @@ public class ReservaControllerTest {
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadas() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
 
-        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
+        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00"), "-34.64536566775859", "58.56192234666206" ));
 
         List<Reserva> reservas = List.of(
                 new Reserva(null, null, null, "2024-05-05", "04:00", "06:00"),
@@ -70,7 +70,7 @@ public class ReservaControllerTest {
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadasAunqueLaListaEsteVacia() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
 
-        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
+        List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00"), "-34.64536566775859", "58.56192234666206"));
 
         List<Reserva> reservas = Collections.emptyList();
 
