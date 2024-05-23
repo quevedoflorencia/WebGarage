@@ -1,35 +1,108 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Web Garage</title>
+  <head th:replace="layouts/default.html :: head">
+    <th:block th:fragment="propiedadesAdicionales">
+      <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    </th:block>
+  </head>
 
-  <!-- Boostrap core css -->
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <body>
 
-  <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <div th:replace="layouts/default.html :: nav"></div>
 
-</head>
+    <main role="main">
 
-<body>
+      <section>
+        <div class="foto">
+          <h2>WebGarage, estacionamiento seguro y #SinVueltas</h2>
+        </div>
+        <div class="cards">
+          <div class="card adicional" style="width: 18rem;">
+            <img class="card-img-top" src="/img/home/encontra.svg" alt="Card image cap">
+            <div class="card-body">
+              <h3>Encontrá</h3>
+              <p class="card-text">Buscas tu evento y elegís tu estacionamiento</p>
+            </div>
+          </div>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="home">Web Garage</a>
-</nav>
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/home/paga.svg" alt="Card image cap">
+            <div class="card-body">
+              <h3>Pagá</h3>
+              <p class="card-text">¡Pagás y listo! Tu lugar ya está reservado</p>
+            </div>
+          </div>
 
-<main role="main" class="container">
-  <div class = "container">
-    <h1>Bienvenidos a Web Garage</h1>
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="img/home/disfruta.svg" alt="Card image cap">
+            <div class="card-body">
+              <h3>Disfrutá</h3>
+              <p class="card-text">Solo te queda disfrutar de tu salida</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <a href="login.html" class="btn btn-lg btn-primary btn-block">Volver</a>
-  </div>
-</main>
-<!-- /.container -->
+      <div class="container pt-2">
+        <h1>Estacionamientos </h1>
+        <p> Contamos con estacionamientos en toda la Ciudad para que solo te preocupes de #disfrutar!</p>
+        <div class="row justify-content-around">
+          <div class="col-3 my-3" th:each="garage : ${garages}">
+            <div class="card grid-item round" style="width: 18rem;">
+              <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
+              <div class="card-body">
+                <h5 class="card-title" th:text="${garage.nombre}"></h5>
+                <p class="card-text">Podés reservar de <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
+                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<!-- Boostrap core js -->
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-</body>
+      <div class="suscribite">
+
+        <div class="contenedor-suscripcion">
+          <div class="contenedor-imagen"></div>
+        </div>
+
+        <div class="contenedor-texto">
+          <div class="contenedor-texto-adentro">
+            <h3>¿Por qué elegirnos?</h3>
+            <p>Tu estacionamiento está 100% garantizado.</p>
+            <p>Cuando pagás con WebGarage te aseguramos que vas a tener tu lugar para estacionar al precio acordado o te devolvemos tu dinero.</p>
+
+            <ul class="lista">
+              <li><span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs><style>.cls-1{fill:#66c7eb;}.cls-2{fill:#fff;fill-rule:evenodd;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><circle class="cls-1" cx="250" cy="250" r="250"></circle><path class="cls-2" d="M202.43,115.22a91,91,0,0,0-54.7,18.24l-34.89,26.16A43.6,43.6,0,0,0,95.4,194.5V331.33c0,35.09,40.06,55.12,68.13,34.06a64.82,64.82,0,0,1,77.8,0l1.53,1.15a91.16,91.16,0,0,0,109.41,0l34.88-26.16A43.6,43.6,0,0,0,404.6,305.5V168.67c0-35.09-40.06-55.12-68.13-34.06a64.86,64.86,0,0,1-77.8,0l-1.53-1.15A91.06,91.06,0,0,0,202.43,115.22ZM162,152.48a67.25,67.25,0,0,1,28.54-12.42V329.44a88.54,88.54,0,0,0-41.28,16.92,18.79,18.79,0,0,1-30.07-15V194.5a19.8,19.8,0,0,1,7.92-15.85Zm93.6,193.88a88.54,88.54,0,0,0-41.28-16.92V140.06a67.25,67.25,0,0,1,28.54,12.42l1.54,1.16a88.54,88.54,0,0,0,41.28,16.92V359.94a67.09,67.09,0,0,1-28.54-12.43Zm82.4,1.15a67.14,67.14,0,0,1-28.54,12.43V170.56a88.54,88.54,0,0,0,41.28-16.92,18.79,18.79,0,0,1,30.07,15V305.5a19.78,19.78,0,0,1-7.93,15.85Z"></path></g></g></svg>
+            </span>
+                <span>Compará y elegí la mejor opción</span>
+              </li>
+
+              <li> <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs><style>.cls-1{fill:#66c7eb;}.cls-2,.cls-3{fill:#fff;}.cls-3{fill-rule:evenodd;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><circle class="cls-1" cx="250" cy="250" r="250"></circle><path class="cls-2" d="M291.14,251.28a8.48,8.48,0,0,0,0,17H322a8.48,8.48,0,1,0,0-17Z"></path><path class="cls-3" d="M336.47,152.56a113,113,0,0,1,1.15,17.8c1,.51,1.94,1,2.89,1.63A65,65,0,0,1,362,193.45c5.9,9.62,8,20.78,8.93,35,.64,10.32.64,22.86.64,38.28V267c0,8.83,0,16.71-.11,23.71-.36,21.79-1.77,37.19-9.46,49.74a65.07,65.07,0,0,1-21.45,21.45c-8.35,5.12-17.82,7.4-29.39,8.5-11.35,1.07-25.55,1.07-43.67,1.07h-34.8c-18.12,0-32.32,0-43.67-1.07-11.57-1.1-21-3.38-29.39-8.5a65.07,65.07,0,0,1-21.45-21.45c-5.12-8.35-7.4-17.82-8.5-29.39-1.07-11.35-1.07-25.55-1.07-43.67v-5.95c-.15-5.58-.11-11.82-.06-18.55,0-3.55.06-7.24.06-11v-.49c0-19.35,0-34.54,1.25-46.59,1.28-12.29,3.93-22.32,9.92-30.92a60.57,60.57,0,0,1,13-13.57c8.35-6.32,18.11-9.13,30-10.47,11.62-1.31,26.23-1.31,44.74-1.31h61.8c9,0,16.67,0,22.77.85,6.51.91,12.49,2.94,17.27,7.93C333.51,141.63,335.48,146.85,336.47,152.56Zm-47.75-7.09c9.78,0,16.23,0,21,.69,4.5.63,6.26,1.68,7.4,2.87s2,2.76,2.64,6.44a67.49,67.49,0,0,1,.79,9.3,130,130,0,0,0-15.18-1.72c-10.29-.63-22.78-.63-38.12-.63H232.65c-18.12,0-32.32,0-43.67,1.08-11.57,1.1-21,3.38-29.39,8.49a65.14,65.14,0,0,0-12.31,9.78c1.24-8.22,3.27-13.76,6.37-18.21a43.54,43.54,0,0,1,9.35-9.75c4.95-3.74,11.31-6,21.68-7.14,10.56-1.19,24.21-1.2,43.37-1.2Zm-120.27,41c5.24-3.21,11.81-5.1,22.14-6.08s23.85-1,42.51-1H267c15.65,0,27.63,0,37.33.6s16.48,1.77,21.82,3.79a32.29,32.29,0,0,1,5.5,2.69,48.06,48.06,0,0,1,15.86,15.85c2.78,4.55,4.56,10.08,5.62,18.16h-62a39.3,39.3,0,0,0,0,78.6h63.1c-.66,16.5-2.46,25.56-6.73,32.54a48.09,48.09,0,0,1-15.86,15.86c-5.24,3.21-11.81,5.09-22.14,6.07s-23.85,1-42.51,1H233.1c-18.66,0-32.06,0-42.51-1s-16.9-2.86-22.14-6.07a48.09,48.09,0,0,1-15.86-15.86c-3.21-5.24-5.09-11.81-6.07-22.14s-1-23.85-1-42.51,0-32.06,1-42.51,2.86-16.9,6.07-22.14A48.06,48.06,0,0,1,168.45,186.45ZM268.8,259.76a22.34,22.34,0,0,1,22.34-22.34h63.19c.25,8.18.25,17.83.25,29.53,0,5.47,0,10.5,0,15.15H291.14A22.34,22.34,0,0,1,268.8,259.76Z"></path></g></g></svg></span>
+                <span>Pagá por adelantado</span></li>
+
+              <li> <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs><style>.cls-1{fill:#66c7eb;}.cls-2,.cls-3{fill:#fff;}.cls-2{fill-rule:evenodd;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><circle class="cls-1" cx="250" cy="250" r="250"></circle><path class="cls-2" d="M214,121.1a9,9,0,0,1,9,9v15.11c8-.13,16.94-.13,26.85-.13h.26c9.91,0,18.82,0,26.85.13V130.1a9,9,0,1,1,18,0v15.75c18.13,1.13,32.06,4.07,43.53,12.4a68.94,68.94,0,0,1,15.25,15.25c7,9.67,10.17,21,11.68,35,1.49,13.7,1.49,31,1.49,53v.68c0,13.9,0,25.86-.36,36.14-.77,22.46-3.2,39-12.81,52.21a68.94,68.94,0,0,1-15.25,15.25c-13.24,9.61-29.75,12-52.21,12.81-10.28.36-22.24.36-36.15.36h-.67c-22,0-39.28,0-53-1.49-14-1.51-25.3-4.66-35-11.68a68.94,68.94,0,0,1-15.25-15.25c-7-9.67-10.17-21-11.68-35-1.49-13.69-1.49-31-1.49-53v-1.08c0-22,0-39.28,1.49-53,1.51-14,4.66-25.3,11.68-35a68.94,68.94,0,0,1,15.25-15.25C173,149.92,186.91,147,205,145.85V130.1A9,9,0,0,1,214,121.1Zm-9,42.78c-16.34,1.12-25.76,3.7-33,8.92a50.89,50.89,0,0,0-11.27,11.28c-4.42,6.09-7,13.88-8.35,26.33-1.37,12.61-1.38,28.9-1.38,51.58s0,39,1.38,51.58c1.35,12.45,3.93,20.24,8.35,26.34a51.05,51.05,0,0,0,11.27,11.27c6.1,4.42,13.89,7,26.34,8.35,12.61,1.37,28.9,1.38,51.58,1.38,10.17,0,19.09,0,27-.13a92.8,92.8,0,0,1,.83-13.65,68.94,68.94,0,0,1,57.31-57.31,92.8,92.8,0,0,1,13.65-.83c.13-7.91.13-16.83.13-27,0-22.68,0-39-1.38-51.58-1.35-12.45-3.93-20.24-8.35-26.33a50.89,50.89,0,0,0-11.27-11.28c-7.2-5.22-16.62-7.8-33-8.92v2.19a9,9,0,1,1-18,0V163.2c-7.91-.13-16.82-.13-27-.13s-19.07,0-27,.13v2.87a9,9,0,0,1-18,0ZM348.11,307a70.13,70.13,0,0,0-10.16.59,51,51,0,0,0-42.36,42.36A70.13,70.13,0,0,0,295,360.1c16.31-1.12,25.73-3.7,32.92-8.92a51.05,51.05,0,0,0,11.27-11.27C344.41,332.72,347,323.3,348.11,307Z"></path><path class="cls-3" d="M202,214a12,12,0,1,1-12-12A12,12,0,0,1,202,214Z"></path><path class="cls-3" d="M202,262a12,12,0,1,1-12-12A12,12,0,0,1,202,262Z"></path><path class="cls-3" d="M262,214a12,12,0,1,1-12-12A12,12,0,0,1,262,214Z"></path><path class="cls-3" d="M262,262a12,12,0,1,1-12-12A12,12,0,0,1,262,262Z"></path><path class="cls-3" d="M262,310a12,12,0,1,1-12-12A12,12,0,0,1,262,310Z"></path><path class="cls-3" d="M321.94,214a12,12,0,1,1-12-12A12,12,0,0,1,321.94,214Z"></path><path class="cls-3" d="M321.94,262a12,12,0,1,1-12-12A12,12,0,0,1,321.94,262Z"></path><path class="cls-3" d="M202,310a12,12,0,1,1-12-12A12,12,0,0,1,202,310Z"></path></g></g></svg></span>
+                <span>Reservá tu lugar</span></li>
+
+              <li> <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs><style>.cls-1{fill:#66c7eb;}.cls-2{fill:#fff;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><circle class="cls-1" cx="250" cy="250" r="250"></circle><path class="cls-2" d="M404.81,229.87l-51-17.2a19.51,19.51,0,0,1-8.76-6.49l-30.83-40.9a32.44,32.44,0,0,0-24.67-12.65H161.72a32.43,32.43,0,0,0-29.21,20.77l-11.36,32.45a17.87,17.87,0,0,1-9.08,10.39l-22.4,11.68a28,28,0,0,0-14.93,24.67V287a19.15,19.15,0,0,0,19.15,19.15h11.68a46.74,46.74,0,0,0,92.83,0H299.33a46.74,46.74,0,0,0,92.82,0h14a19.2,19.2,0,0,0,13.54-5.61,19.45,19.45,0,0,0,4.15-6.21,19.24,19.24,0,0,0,1.45-7.33V259.08a30.51,30.51,0,0,0-20.44-29.21ZM152,332.43a33.6,33.6,0,1,1,23.76-9.84A33.6,33.6,0,0,1,152,332.43Zm194.73,0a33.58,33.58,0,1,1,23.76-9.84A33.6,33.6,0,0,1,346.71,332.43Zm64.91-46.09a5.38,5.38,0,0,1-.32,2.21,5.65,5.65,0,0,1-1.17,1.9,5.41,5.41,0,0,1-1.83,1.28,5.54,5.54,0,0,1-2.19.45h-14a46.73,46.73,0,0,0-92.82,0H198.4a46.74,46.74,0,0,0-92.83,0H94.22a5.47,5.47,0,0,1-2.19-.45,5.36,5.36,0,0,1-1.84-1.28,5.65,5.65,0,0,1-1.17-1.9,5.38,5.38,0,0,1-.32-2.21v-34.4a14.31,14.31,0,0,1,7.46-12.66l22.4-11.68a32.46,32.46,0,0,0,15.57-17.85l11.36-32.46a17.54,17.54,0,0,1,16.56-12H288.94a17.87,17.87,0,0,1,14,7.14l32.45,41.22a32.56,32.56,0,0,0,14.93,11l51.28,17.85a16.86,16.86,0,0,1,11.36,15.9Z"></path></g></g></svg></span>
+                <span>Tu vehículo seguro siempre</span>
+              </li>
+
+              <li> <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs><style>.cls-1{fill:#66c7eb;}.cls-2,.cls-3{fill:#fff;}.cls-3{fill-rule:evenodd;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><circle class="cls-1" cx="250" cy="250" r="250"></circle><path class="cls-2" d="M177.22,131.88a9,9,0,1,0-11.3-14.13l-30.17,24.13A9,9,0,0,0,147.06,156Z"></path><path class="cls-2" d="M334.08,117.75a9,9,0,1,0-11.3,14.13L352.94,156a9,9,0,0,0,11.31-14.13Z"></path><path class="cls-2" d="M259.05,206.26a9,9,0,0,0-18.1,0v32.89c0,6.44,0,11.92.45,16.46a30.09,30.09,0,0,0,13.81,23.92c3.71,2.66,8.46,5.4,14,8.62l7.58,4.38a9.05,9.05,0,1,0,9.05-15.68l-7.21-4.16c-6-3.49-10-5.79-12.91-7.87-2.74-2-3.93-3.32-4.68-4.62s-1.33-3-1.66-6.36c-.35-3.56-.36-8.14-.36-15.11Z"></path><path class="cls-3" d="M250,124.81A129.72,129.72,0,1,0,379.71,254.53,129.71,129.71,0,0,0,250,124.81ZM138.39,254.53A111.61,111.61,0,1,1,250,366.14,111.61,111.61,0,0,1,138.39,254.53Z"></path></g></g></svg></span>
+                <span>Ahorrá tiempo</span></li>
+
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <div th:replace="layouts/default.html :: footer"></div>
+  </body>
 </html>

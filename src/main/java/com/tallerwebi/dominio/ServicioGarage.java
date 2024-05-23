@@ -10,4 +10,5 @@ public interface ServicioGarage {
     Garage buscarPorId(Integer id);
 
 
+    List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada);
 }

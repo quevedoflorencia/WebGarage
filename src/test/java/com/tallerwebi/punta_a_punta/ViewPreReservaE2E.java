@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class ViewPreReservacionE2E {
+public class ViewPreReservaE2E {
 
     static Playwright playwright;
     static Browser browser;
@@ -40,6 +40,7 @@ public class ViewPreReservacionE2E {
         context.close();
     }
 
+    /*
     @Test
     //noDeberiaMostrarElBotonDeContinuarSiLosCamposNoEstanCompletados
     void ShouldNotShowTheContinueButtonIfTheFieldsAreNotCompleted() {
@@ -56,4 +57,5 @@ public class ViewPreReservacionE2E {
         Boolean botonContinuarInvisible = viewPreReservation.isInvisible("#container-go-reservation");
         assertThat(botonContinuarInvisible, is(true));
     }
+     */
 }

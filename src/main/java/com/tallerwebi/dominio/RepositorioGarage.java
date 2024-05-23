@@ -8,4 +8,6 @@ public interface RepositorioGarage {
 
     List<Garage> findAll();
     Garage findById(Integer id);
+
+    List<Garage> getGarageSegunCapacidad(Integer capacidadBuscada);
 }

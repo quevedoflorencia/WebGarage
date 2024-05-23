@@ -9,78 +9,116 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script src="https://kit.fontawesome.com/7c7d2d5fd7.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{https://unpkg.com/leaflet@1.9.4/dist/leaflet.css}" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="  crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="../home">Web Garage</a>
-</nav>
+    <div th:replace="layouts/default.html :: nav"></div>
 
-<main role="main" class="container">
-    <h1>Reserva tu lugar en el Garage</h1>
+    <main role="main" class="container">
+        <h1>Reserva tu lugar en el Garage : <span th:text="${garage.nombre}"></span></h1>
 
-    <div class="container row">
+        <div class="container row mt-5">
 
-        <form action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
+        <form class="col-6" action="#" th:action="@{../confirm}" method="POST" th:object="${reserva}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
 
-            <div class="col-4">
-                <label for="datepicker_from">Seleccioná la fecha</label>
-                <input type="text" id="datepicker_from" th:field="*{date}">
-            </div>
-
-            <div class="col-4 d-none" id="container_hour_picker">
-                <div class="form-group">
-                    <label for="timepicker_from">Seleccioná el horario de ingreso</label>
-                    <select class="form-control" id="timepicker_from" th:field="*{startTime}">
-                        <option value="" disabled selected>--</option>
-                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                    </select>
-                    <p class="text-danger" id="hourError"></p>
-                </div>
-
-
-                <div class="form-group d-none" id="timepicker_until_container">
-                    <label for="timepicker_until">Seleccioná el horario de salida</label>
-                    <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
-                        <option value="" disabled selected>--</option>
-                        <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
-                    </select>
-                    <p class="text-danger" id="hourErrorUntil"></p>
+            <div class="row">
+                <div class="col-12">
+                    <label for="datepicker_from">Seleccioná la fecha</label>
+                    <input type="text" id="datepicker_from" th:field="*{dia}">
                 </div>
             </div>
 
-            <div class="col-12 d-none" id="container-go-reservacion">
-                <div class="d-flex justify-content-end">
-                    <button class="btn-success btn" id="goToReservation" type="Submit">Continuar</button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-none" id="container_hour_picker">
+                        <div class="form-group">
+                            <label for="timepicker_from">Seleccioná el horario de ingreso</label>
+                            <select class="form-control" id="timepicker_from" th:field="*{horarioInicio}">
+                                <option value="" disabled selected>--</option>
+                                <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                            </select>
+                            <p class="text-danger" id="hourError"></p>
+                        </div>
+
+
+                        <div class="form-group d-none" id="timepicker_until_container">
+                            <label for="timepicker_until">Seleccioná el horario de salida</label>
+                            <select class="form-control" id="timepicker_until" th:field="*{horarioFin}">
+                                <option value="" disabled selected>--</option>
+                                <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
+                            </select>
+                            <p class="text-danger" id="hourErrorUntil"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-4">
+            <input type="hidden" name="tipo_vehiculo" id="tipo_vehiculo" />
+            <input type="hidden" value="" id="garage_tipo_vehiculos"  th:value="${garageTipoVehiculos}" />
+
+
+            <div class="row">
+                <div class="col-12 d-none" id="container-go-reserva">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn" id="goToReservation" type="Submit">Continuar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
                 <p th:if="${error != null}" class="alert alert-danger mt-5" th:text="${error}">
             </div>
+         </form>
+        <div class="col-6">
+            <div id="map"></div>
+            <div class="selection_tipo_vehiculo d-flex w-100">
+                <div class="unselected selection" th:id="${vehiculo.id}" th:each="vehiculo : ${tiposVehiculos}">
+                    <i th:if="${vehiculo.id == 1}" class="fas fa-car-side"></i>
+                    <i th:if="${vehiculo.id == 2}" class="fas fa-truck"></i>
+                    <i th:if="${vehiculo.id == 3}" class="fas fa-motorcycle"></i>
+                    <p th:text="${vehiculo.descripcion}"></p>
+                </div>
+            </div>
 
-        </form>
+            <!-- <div class="selection_tipo_vehiculo" th:each="garageVehiculo : ${garageTipoVehiculos}">
+                <div class="unselected selection" data-id="${garageVehiculo.id}">
+                    <p th:text="${garageVehiculo.precioHora}"></p>
+                </div>
+            </div> -->
+        </div>
     </div>
 </main>
 <!-- /.container -->
+
 
 <!-- Boostrap core js -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script th:inline="javascript">
     var totalHours = [[${totalHours}]];
+    var latitudGarage = [[${garage.latitud}]];
+    var longitudGarage = [[${garage.longitud}]];
+
 </script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
 <script>
     const errorHour = document.getElementById("hourError") //from
     const errorHourUntil = document.getElementById("hourErrorUntil") //until
     const containerHourPicker = document.getElementById("container_hour_picker");
     const timepicker_until_container = document.getElementById("timepicker_until_container");
-    const containerGoReservation = document.getElementById("container-go-reservacion");
+    const containerGoReserva = document.getElementById("container-go-reserva");
+    let tipo_vehiculo = document.getElementById("tipo_vehiculo");
     let datePickerFrom = '';
     let timePickerFrom = null;
     let timePickerUntil = null;
@@ -92,7 +130,7 @@
         altInput: true,
         altFormat: "F j, Y",
         minDate: "today",
-        onChange: function(selectedDates, dateStr, instance) {
+        onChange: function (selectedDates, dateStr, instance) {
             resetForm()
             // format "yyyy-mm-dd"
             const selectedDate = selectedDates[0];
@@ -103,50 +141,50 @@
     });
 
 
-    function resetForm(){
+    function resetForm() {
         filedHours = []
         datePickerFrom = null;
         datePickerUntil = null;
-        errorHour.innerText="";
-        errorHourUntil.innerText="";
+        errorHour.innerText = "";
+        errorHourUntil.innerText = "";
 
         document.getElementById("timepicker_from").value = '';
         document.getElementById("timepicker_until").value = '';
         containerHourPicker.classList.add("d-none");
         timepicker_until_container.classList.add("d-none");
-        containerGoReservation.classList.add("d-none");
+        containerGoReserva.classList.add("d-none");
     }
 
-    function getFiledHours(selectedDate){
+    function getFiledHours(selectedDate) {
         fetch('http://localhost:8080/spring/getAvailableHours', {
             method: 'POST',
             body: selectedDate.toString()
         })
-        .then(response => response.json())
-        .then(data => {
-            //const dataDummy = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20,21,22,23];
-            const dataDummy = [0,1,2,3,4,5,6,7,8,9,15,16,17,18,19,20,21,22,23];
+            .then(response => response.json())
+            .then(data => {
+                //const dataDummy = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20,21,22,23];
+                const dataDummy = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
-            filedHours = data;
+                filedHours = data;
 
-            if(filedHours.length !== 0){
-                if (filedHours.length === totalHours) {
-                    errorHour.innerText = "Todos los horarios están ocupados, por favor selecciona otra fecha."
+                if (filedHours.length !== 0) {
+                    if (filedHours.length === totalHours) {
+                        errorHour.innerText = "Todos los horarios están ocupados, por favor selecciona otra fecha."
+                    }
+
+                    // Obtener el elemento select
+                    let selectElement = document.getElementById("timepicker_from");
+                    filedHours.forEach(hour => {
+                        disabledFiledHour(hour, selectElement)
+                    });
                 }
-
-                // Obtener el elemento select
-                let selectElement = document.getElementById("timepicker_from");
-                filedHours.forEach(hour => {
-                    disabledFiledHour(hour, selectElement)
-                });
-            }
-        })
-        .catch(error => console.log('Error fetching data:', error));
+            })
+            .catch(error => console.log('Error fetching data:', error));
         containerHourPicker.classList.remove("d-none");
     }
 
 
-    function disabledFiledHour(hour, selectElement){
+    function disabledFiledHour(hour, selectElement) {
         // Convertir la hora ocupada a formato 'HH:mm'
         let formattedHour = formatHour(hour)
         console.log("formatedd", formattedHour)
@@ -159,9 +197,9 @@
 
 
     // al seleccionar el horario de inicio
-    document.getElementById("timepicker_from").addEventListener("change", function() {
+    document.getElementById("timepicker_from").addEventListener("change", function () {
         timepicker_until_container.classList.remove("d-none")
-        containerGoReservation.classList.add("d-none")
+        containerGoReserva.classList.add("d-none")
         document.getElementById("timepicker_until").value = '';
         const selectedHourFrom = this.value;
         timePickerFrom = parseInt(this.value, 10);
@@ -181,14 +219,15 @@
     });
 
     //al seleccionar el horario de finalizacion
-    document.getElementById("timepicker_until").addEventListener("change", function() {
+    document.getElementById("timepicker_until").addEventListener("change", function () {
         timePickerUntil = parseInt(this.value, 10);
-
-        containerGoReservation.classList.remove("d-none")
+        if(tipo_vehiculo.value != null && tipo_vehiculo.value != undefined && tipo_vehiculo.value != ''){
+            containerGoReserva.classList.remove("d-none")
+        }
     })
 
     //ir a la reserva
-    document.getElementById("goToReservation").addEventListener("click", function() {
+    document.getElementById("goToReservation").addEventListener("click", function () {
         console.log("time from", timePickerFrom) //time from 10
         console.log("time until", timePickerUntil) //time until 13
         console.log("date", datePickerFrom) // date 2024-05-05
@@ -201,6 +240,68 @@
         return hour < 10 ? '0' + hour + ':00' : hour + ':00';
     }
 
+
+    //var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}, {id_tipo_vehiculo: 3, precioHora: 1100}];
+    var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}];
+
+    // Iterar sobre cada elemento ".selection"
+    document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(function (element) {
+        var id = element.getAttribute("id")
+        console.log(id);
+
+        // Verifica si el vehículo está presente en garageTipoVehiculo
+        let vehiculoEnGarage = garageTipoVehiculo.find(function (vehiculo) {
+            console.log(vehiculo)
+            console.log(id)
+
+            return vehiculo.id_tipo_vehiculo == id;
+        });
+
+        console.log("vehiculoEnGarage", vehiculoEnGarage)
+
+        if (!vehiculoEnGarage) {
+            // Si el vehículo no está en garageTipoVehiculo, agrega la clase "bloqueado"
+            element.classList.add("disabled");
+            // También deshabilita el evento de click para este elemento
+            element.addEventListener("click", function (event) {
+                event.preventDefault();
+            });
+        } else {
+            // Si el vehículo está en garageTipoVehiculo, agregar evento click para selección
+            element.addEventListener("click", function () {
+                // Primero, desmarcar todos los elementos
+                document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(function (el) {
+                    el.classList.remove("active");
+                });
+
+                // Marcar el elemento actual
+                element.classList.add("active");
+                tipo_vehiculo.value = element.id
+
+                // verificar si se seleccionó todos los campos y en caso de que sí mostrar el btn para continuar:
+
+                if(datePickerFrom != null && timePickerFrom != null && timePickerUntil != null){
+                    containerGoReserva.classList.remove("d-none");
+                }
+            });
+        }
+    });
+
+
 </script>
+
+<script th:inline="javascript">
+    // MAPA!
+    var map = L.map('map').setView([latitudGarage, longitudGarage], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([latitudGarage, longitudGarage]).addTo(map)
+        .bindPopup('El garage se encuentra aquí!')
+        .openPopup();
+</script>
+
 </body>
 </html>

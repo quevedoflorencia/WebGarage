@@ -1,18 +1,12 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <title>Taller Web I</title>
-        <!-- Boostrap core css -->
-        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-        <!-- custom style -->
-        <link rel="stylesheet" th:href="@{/css/main.css}"/>
-
+    <head th:replace="layouts/default.html :: head">
+        <th:block th:fragment="propiedadesAdicionales"></th:block>
     </head>
 
     <body>
+        <div th:replace="layouts/default.html :: nav"></div>
+
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <a class="navbar-brand" href="../home">Web Garage</a>
@@ -25,9 +19,9 @@
                 </div>
                 <div class="row">
                     <h2>Garage: <span th:text="${garage.getNombre()}"></span></h2>
-                    <h2>Fecha: <span th:text="${reservation.getDate()}"></span></h2>
-                    <h2>Hora de ingreso:  <span th:text="${reservation.getStartTime()}"></span></h2>
-                    <h2>Hora de egreso:  <span th:text="${reservation.getFinishTime()}"></span></h2>
+                    <h2>Fecha: <span th:text="${reserva.getDia()}"></span></h2>
+                    <h2>Hora de ingreso:  <span th:text="${reserva.getHorarioInicio()}"></span></h2>
+                    <h2>Hora de egreso:  <span th:text="${reserva.getHorarioFin()}"></span></h2>
                 </div>
 
                 <div class="row">
@@ -37,12 +31,12 @@
                 </div>
             </div>
 
-            <form action="#" th:action="@{save}" method="POST" th:object="${reservation}">
+            <form action="#" th:action="@{save}" method="POST" th:object="${reserva}">
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
-                <input type="hidden" th:field="*{date}">
-                <input type="hidden" th:field="*{startTime}">
-                <input type="hidden" th:field="*{finishTime}">
+                <input type="hidden" th:field="*{dia}">
+                <input type="hidden" th:field="*{horarioInicio}">
+                <input type="hidden" th:field="*{horarioFin}">
 
                 <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
             </form>

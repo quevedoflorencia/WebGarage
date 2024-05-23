@@ -1,22 +1,11 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <title>Taller Web I</title>
-    <!-- Boostrap core css -->
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-    <!-- custom style -->
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
-
+<head th:replace="layouts/default.html :: head">
+    <th:block th:fragment="propiedadesAdicionales"></th:block>
 </head>
 
 <body>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="../home">Web Garage</a>
-</nav>
+<div th:replace="layouts/default.html :: nav"></div>
 
 <main role="main" class="container">
     <div class="container">
@@ -35,17 +24,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="reservation: ${reservations}">
-                        <td style="border:1px solid black" th:text="${reservation.getDia()}"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getHorarioInicio()} + ' hs.'"></td>
-                        <td style="border:1px solid black" th:text="${reservation.getHorarioFin()} + ' hs.'"></td>
+                    <tr th:each="reserva: ${reservas}">
+                        <td style="border:1px solid black" th:text="${reserva.getDia()}"></td>
+                        <td style="border:1px solid black" th:text="${reserva.getHorarioInicio()} + ' hs.'"></td>
+                        <td style="border:1px solid black" th:text="${reserva.getHorarioFin()} + ' hs.'"></td>
 
                     </tr>
                     </tbody>
                 </table>
         </div>
         <div>
-            <a class="btn btn-info btn-lg" href="start">Crear nueva reserva</a>
+            <a class="btn btn-info btn-lg" href="/">Volver</a>
         </div>
     </div>
 </main>
