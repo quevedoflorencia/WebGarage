@@ -14,9 +14,6 @@ public class TipoVehiculo {
     private Integer id;
     private String descripcion;
 
-    @OneToMany(mappedBy = "tipoVehiculo")
-    private List<GarageTipoVehiculo> garageTipoVehiculos;
-
     public TipoVehiculo() {}
 
     public TipoVehiculo(Integer id, String descripcion) {
