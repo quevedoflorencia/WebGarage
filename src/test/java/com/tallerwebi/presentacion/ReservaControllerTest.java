@@ -1,10 +1,10 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioRepositorio;
+import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reservacion;
+import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.dominio.model.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,14 +21,14 @@ import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ReservacionControllerTest {
+public class ReservaControllerTest {
 
     private ServicioUsuario servicioUsuario;
     private ServicioGarage servicioGarage;
     private HttpServletRequest requestMock;
     private HttpSession sessionMock;
-    private ServicioRepositorio servicioRepositorio;
-    private ControladorReservaciones controladorReservaciones;
+    private ServicioReserva servicioReserva;
+    private ControladorReserva controladorReserva;
 
     @BeforeEach
     public void init(){
@@ -36,8 +36,8 @@ public class ReservacionControllerTest {
         sessionMock = mock(HttpSession.class);
         servicioUsuario = mock(ServicioUsuario.class);
         servicioGarage = mock(ServicioGarage.class);
-        servicioRepositorio = mock(ServicioRepositorio.class);
-        controladorReservaciones = new ControladorReservaciones(servicioUsuario, servicioGarage, servicioRepositorio);
+        servicioReserva = mock(ServicioReserva.class);
+        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva);
     }
 
 
@@ -47,21 +47,21 @@ public class ReservacionControllerTest {
 
         List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
 
-        List<Reservacion> reservacions = List.of(
-                new Reservacion(null, null, null, "2024-05-05", "04:00", "06:00"),
-                new Reservacion(null, null, null, "2024-05-05", "20:00", "23:00"),
-                new Reservacion(null, null, null, "2024-05-05", "10:00", "12:00")
+        List<Reserva> reservas = List.of(
+                new Reserva(null, null, null, "2024-05-05", "04:00", "06:00"),
+                new Reserva(null, null, null, "2024-05-05", "20:00", "23:00"),
+                new Reserva(null, null, null, "2024-05-05", "10:00", "12:00")
         );
 
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(usuario.getId());
-        when(servicioRepositorio.obtenerReservasByUserId(usuario.getId())).thenReturn(reservacions);
+        when(servicioReserva.obtenerReservasByUserId(usuario.getId())).thenReturn(reservas);
 
         when(servicioUsuario.get(usuario.getId())).thenReturn(usuario);
 
         when(servicioGarage.traerTodos()).thenReturn(garage);
 
-        ModelAndView modelAndView = controladorReservaciones.listReservation(requestMock);
+        ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
     }
@@ -72,29 +72,29 @@ public class ReservacionControllerTest {
 
         List<Garage> garage = List.of(new Garage(null, "Suipacha", 5, LocalTime.parse("10:00:00"), LocalTime.parse("17:00:00")));
 
-        List<Reservacion> reservacions = Collections.emptyList();
+        List<Reserva> reservas = Collections.emptyList();
 
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(usuario.getId());
-        when(servicioRepositorio.obtenerReservasByUserId(usuario.getId())).thenReturn(reservacions);
+        when(servicioReserva.obtenerReservasByUserId(usuario.getId())).thenReturn(reservas);
 
         when(servicioUsuario.get(usuario.getId())).thenReturn(usuario);
 
         when(servicioGarage.traerTodos()).thenReturn(garage);
 
-        ModelAndView modelAndView = controladorReservaciones.listReservation(requestMock);
+        ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
     }
 
     @Test
     public void listaDeReservaDebeLlevarteALoginSiNoHayUsuarioLogueado() {
-        List<Reservacion> reservacions = Collections.emptyList();
+        List<Reserva> reservas = Collections.emptyList();
 
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(null);
 
-        ModelAndView modelAndView = controladorReservaciones.listReservation(requestMock);
+        ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
     }

@@ -2,66 +2,66 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reservacion;
+import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.dominio.model.Usuario;
-import com.tallerwebi.presentacion.dto.ReservacionDTO;
+import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
 
-@Service("reservationService")
+@Service("servicioReserva")
 @Transactional
-public class ServicioReservacionImpl implements ServicioRepositorio {
+public class ServicioReservaImpl implements ServicioReserva {
 
-    private RepositorioReservacion repositorioReservacion;
+    private RepositorioReserva repositorioReserva;
     private ServicioGarage servicioGarage;
     private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ServicioReservacionImpl(RepositorioReservacion repositorioReservacion, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario) {
-        this.repositorioReservacion = repositorioReservacion;
+    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario) {
+        this.repositorioReserva = repositorioReserva;
         this.servicioGarage = servicioGarage;
         this.servicioUsuario = servicioUsuario;
     }
 
     @Override
-    public void agregarReserva(ReservacionDTO reservacionDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
+    public void agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
 
-        Usuario usuario = servicioUsuario.get(reservacionDTO.userId);
+        Usuario usuario = servicioUsuario.get(reservaDTO.userId);
 
         if(usuario == null) {
             throw new ExcepcionUsuarioNoEncontrado();
         }
 
-        Garage garage = servicioGarage.buscarPorId(reservacionDTO.garageId);
+        Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
         if(garage == null) {
             throw new ExcepcionGarageNoEncontrado();
         }
 
-        Reservacion reservacion = new Reservacion(
+        Reserva reserva = new Reserva(
                 null,
                 usuario,
                 garage,
-                reservacionDTO.date,
-                reservacionDTO.startTime,
-                reservacionDTO.finishTime
+                reservaDTO.dia,
+                reservaDTO.horarioInicio,
+                reservaDTO.horarioFin
         );
 
-        repositorioReservacion.agregarNuevaReserva(reservacion);
+        repositorioReserva.agregarNuevaReserva(reserva);
     }
 
     @Override
     public List traerHorasOcupadas(String day) {
-        List reservations= repositorioReservacion.reservasPorFecha(day);
-        return horasOcupadasEseDia(reservations);
+        List reservas = repositorioReserva.reservasPorFecha(day);
+        return horasOcupadasEseDia(reservas);
     }
 
     @Override
-    public List<Reservacion> obtenerReservasByUserId(Long id) {
-        return repositorioReservacion.obtenerReservasByUserId(id);
+    public List<Reserva> obtenerReservasByUserId(Long id) {
+        return repositorioReserva.obtenerReservasByUserId(id);
     }
 
     private List horasOcupadasEseDia(List reservas) {
@@ -76,14 +76,14 @@ public class ServicioReservacionImpl implements ServicioRepositorio {
     private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas) {
         for (Object obj: reservas
         ) {
-            Reservacion reserva = (Reservacion) obj;
+            Reserva reserva = (Reserva) obj;
 
             recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas);
 
         }
     }
 
-    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reservacion reserva, Map spotsPorCadaHora, List horasOcupadas) {
+    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reserva reserva, Map spotsPorCadaHora, List horasOcupadas) {
         int primerHora = traeHoraComoEntero(reserva.getHorarioInicio());
         int ultimaHora= traeHoraComoEntero(reserva.getHorarioFin());
 

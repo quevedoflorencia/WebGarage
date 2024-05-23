@@ -21,7 +21,7 @@ public class ServicioGarageTest {
     @BeforeEach
     public void init(){
         this.repositorioGarage = mock(RepositorioGarage.class);
-        this.servicioGarage = new ServicioServicioGarageImpl(this.repositorioGarage);
+        this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage);
     }
 
     @Test

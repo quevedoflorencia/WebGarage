@@ -23,20 +23,20 @@
 
     <div class="container row">
 
-        <form action="#" th:action="@{confirm}" method="POST" th:object="${reservation}">
+        <form action="#" th:action="@{confirm}" method="POST" th:object="${reserva}">
 
             <input type="hidden" th:field="*{garageId}">
             <input type="hidden" th:field="*{userId}">
 
             <div class="col-4">
                 <label for="datepicker_from">Seleccioná la fecha</label>
-                <input type="text" id="datepicker_from" th:field="*{date}">
+                <input type="text" id="datepicker_from" th:field="*{dia}">
             </div>
 
             <div class="col-4 d-none" id="container_hour_picker">
                 <div class="form-group">
                     <label for="timepicker_from">Seleccioná el horario de ingreso</label>
-                    <select class="form-control" id="timepicker_from" th:field="*{startTime}">
+                    <select class="form-control" id="timepicker_from" th:field="*{horarioInicio}">
                         <option value="" disabled selected>--</option>
                         <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                     </select>
@@ -46,7 +46,7 @@
 
                 <div class="form-group d-none" id="timepicker_until_container">
                     <label for="timepicker_until">Seleccioná el horario de salida</label>
-                    <select class="form-control" id="timepicker_until" th:field="*{finishTime}">
+                    <select class="form-control" id="timepicker_until" th:field="*{horarioFin}">
                         <option value="" disabled selected>--</option>
                         <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                     </select>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="col-12 d-none" id="container-go-reservacion">
+            <div class="col-12 d-none" id="container-go-reserva">
                 <div class="d-flex justify-content-end">
                     <button class="btn-success btn" id="goToReservation" type="Submit">Continuar</button>
                 </div>
@@ -80,7 +80,7 @@
     const errorHourUntil = document.getElementById("hourErrorUntil") //until
     const containerHourPicker = document.getElementById("container_hour_picker");
     const timepicker_until_container = document.getElementById("timepicker_until_container");
-    const containerGoReservation = document.getElementById("container-go-reservacion");
+    const containerGoReservation = document.getElementById("container-go-reserva");
     let datePickerFrom = '';
     let timePickerFrom = null;
     let timePickerUntil = null;

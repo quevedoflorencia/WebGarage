@@ -3,7 +3,7 @@ package com.tallerwebi.dominio.model;
 import javax.persistence.*;
 
 @Entity
-public class Reservacion {
+public class Reserva {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Reservacion {
     private String horarioInicio;
     private String horarioFin;
 
-    public Reservacion() {}
+    public Reserva() {}
 
-    public Reservacion(Long id, Usuario usuario, Garage garage, String dia, String horarioInicio, String horarioFin) {
+    public Reserva(Long id, Usuario usuario, Garage garage, String dia, String horarioInicio, String horarioFin) {
         this.id = id;
         this.usuario = usuario;
         this.garage = garage;

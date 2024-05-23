@@ -9,12 +9,12 @@ import javax.transaction.Transactional;
 
 @Service("servicioLogin")
 @Transactional
-public class ServicioServicioLoginImpl implements ServicioLogin {
+public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
 
     @Autowired
-    public ServicioServicioLoginImpl(RepositorioUsuario repositorioUsuario){
+    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
         this.repositorioUsuario = repositorioUsuario;
     }
 
