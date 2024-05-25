@@ -9,30 +9,24 @@
 
 <main role="main" class="container">
     <div class="container">
+        <h1>Bienvenido <span th:text="${username}"></span>! estas son tus reservas: </h1>
         <div class="row">
+            <div class="col-3 my-3" th:each="reserva : ${reservas}">
+                <div class="card grid-item round">
+                    <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
+                    <div class="card-body mx-2">
+                            <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
+                            <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                            <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
+                            <div class="d-flex justify-content-end w-100
+">
+                                <a class="btn btn-danger align-content-end"><i class="far fa-trash-alt"></i></i></a>
+                            </div>
 
-            <h1>Bienvenido <span th:text="${username}"></span>! estas son tus reservas: </h1>
-            <h2 >Garage: <span th:text="${garage.getNombre()}"></span></h2>
-
-                <table style="border:1px solid black;text-align:center">
-                    <thead style="border:1px solid black">
-                    <tr >
-                        <th style="border:1px solid black">Fecha de reserva</th>
-                        <th style="border:1px solid black">Hora de inicio</th>
-                        <th style="border:1px solid black">Hora de finalización</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="reserva: ${reservas}">
-                        <td style="border:1px solid black" th:text="${reserva.getDia()}"></td>
-                        <td style="border:1px solid black" th:text="${reserva.getHorarioInicio()} + ' hs.'"></td>
-                        <td style="border:1px solid black" th:text="${reserva.getHorarioFin()} + ' hs.'"></td>
-
-                    </tr>
-                    </tbody>
-                </table>
-        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div>
             <a class="btn btn-info btn-lg" href="/">Volver</a>
         </div>
@@ -41,5 +35,7 @@
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
+
 </body>
 </html>
