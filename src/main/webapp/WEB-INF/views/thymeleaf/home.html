@@ -49,7 +49,7 @@
         <p> Contamos con estacionamientos en toda la Ciudad para que solo te preocupes de #disfrutar!</p>
         <div class="row justify-content-around">
           <div class="col-3 my-3" th:each="garage : ${garages}">
-            <div class="card grid-item round" style="width: 18rem;">
+            <div class="card grid-item round">
               <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
               <div class="card-body">
                 <h5 class="card-title" th:text="${garage.nombre}"></h5>
