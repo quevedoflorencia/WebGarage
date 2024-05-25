@@ -83,11 +83,11 @@
         <div class="col-6">
             <div id="map"></div>
             <div class="selection_tipo_vehiculo d-flex w-100">
-                <div class="unselected selection" th:id="${vehiculo.id}" th:each="vehiculo : ${tiposVehiculos}">
-                    <i th:if="${vehiculo.id == 1}" class="fas fa-car-side"></i>
-                    <i th:if="${vehiculo.id == 2}" class="fas fa-truck"></i>
-                    <i th:if="${vehiculo.id == 3}" class="fas fa-motorcycle"></i>
-                    <p th:text="${vehiculo.descripcion}"></p>
+                <div class="unselected selection" th:id="${GarageTipoVehiculoDTO.id}" th:each="GarageTipoVehiculoDTO : ${garageTipoVehiculoDto}">
+                    <i th:if="${GarageTipoVehiculoDTO.id == 1}" class="fas fa-car-side"></i>
+                    <i th:if="${GarageTipoVehiculoDTO.id == 2}" class="fas fa-truck"></i>
+                    <i th:if="${GarageTipoVehiculoDTO.id == 3}" class="fas fa-motorcycle"></i>
+                    <p th:text="${GarageTipoVehiculoDTO.descripcion}"></p>
                 </div>
             </div>
 
@@ -242,7 +242,7 @@
 
 
     //var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}, {id_tipo_vehiculo: 3, precioHora: 1100}];
-    var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}];
+    //var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}];
 
     // Iterar sobre cada elemento ".selection"
     document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(function (element) {

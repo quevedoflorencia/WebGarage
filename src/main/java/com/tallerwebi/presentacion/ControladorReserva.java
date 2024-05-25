@@ -7,6 +7,7 @@ import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
+import com.tallerwebi.presentacion.dto.GarageTipoVehiculoDTO;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,9 +87,10 @@ public class ControladorReserva {
             return new ModelAndView("redirect:../login");
         }
 
+        List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
+
         //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
-        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
-        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+
 
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setGarageId(garage.getId());
@@ -98,10 +101,37 @@ public class ControladorReserva {
         model.put("garage", garage);
         model.put("totalHours", listaTotalDeHoras);
         model.put("reserva", reservaDTO);
-        model.put("tiposVehiculos", tiposVehiculos);
-        model.put("garageTipoVehiculos", garageTipoVehiculos);
+        model.put("garageTipoVehiculoDto", garageTipoVehiculoDTOList);
 
         return new ModelAndView("pre-reservation", model);
+    }
+
+    private List<GarageTipoVehiculoDTO> generarDTOTipoVehiculo(Garage garage) {
+        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
+        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+
+        return combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(tiposVehiculos, garageTipoVehiculos);
+    }
+
+    private List<GarageTipoVehiculoDTO> combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(List<TipoVehiculo> tiposVehiculos, List<GarageTipoVehiculo> garageTipoVehiculos) {
+        List garageTipoVehiculoDtoList = new ArrayList();
+
+        for (TipoVehiculo tipoVehiculo : tiposVehiculos) {
+            boolean habilitado = false;
+            GarageTipoVehiculoDTO tipoVehiculoDTO = new GarageTipoVehiculoDTO();
+            tipoVehiculoDTO.setIdTipoVehiculo(tipoVehiculo.getId());
+            tipoVehiculoDTO.setDescripcion(tipoVehiculo.getDescripcion());
+            for (GarageTipoVehiculo garageTipoVehiculo : garageTipoVehiculos) {
+                if(tipoVehiculo.equals(garageTipoVehiculo.getTipoVehiculo())){
+                    habilitado = true;
+                    tipoVehiculoDTO.setPrecio(garageTipoVehiculo.getPrecioHora());
+                }
+            }
+
+            tipoVehiculoDTO.setHabilitado(habilitado);
+            garageTipoVehiculoDtoList.add(tipoVehiculoDTO);
+        }
+        return garageTipoVehiculoDtoList;
     }
 
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
