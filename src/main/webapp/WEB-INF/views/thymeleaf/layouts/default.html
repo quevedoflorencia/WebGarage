@@ -24,8 +24,14 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div th:if="${session.ID == null}">
+                        <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
+                    </div>
+                    <div th:if="${session.ID != null}">
+                        <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
+                        <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
+                    </div>
 
-                    <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
                 </div>
             </nav>
         </div>
