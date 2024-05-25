@@ -2,6 +2,7 @@ package com.tallerwebi.dominio.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Table;
 
 
@@ -32,4 +33,17 @@ public class TipoVehiculo {
 
     public List<GarageTipoVehiculo> getGarageTipoVehiculos() { return garageTipoVehiculos; }
     public void setGarageTipoVehiculos(List<GarageTipoVehiculo> garageTipoVehiculos) { this.garageTipoVehiculos = garageTipoVehiculos; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TipoVehiculo that = (TipoVehiculo) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
