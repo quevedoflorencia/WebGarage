@@ -39,8 +39,8 @@ form label{
 }
 
 .selection_tipo_vehiculo .selection:hover{
-    border: 1px solid #34ADD7;
-    color: #34ADD7
+    border: 1px solid #394A8F;
+    color: #394A8F
 }
 
 .selection_tipo_vehiculo p{
@@ -67,14 +67,13 @@ form label{
 }
 
 #container-go-reserva button{
-    background: #34ADD7;
+    background: #394A8F;
     color: white;
 }
 
 .btn-buscar-estacionamiento{
-    width: 20%;
     border-radius: 20px;
-    background-color: #64CAED;
+    background-color: #394A8F;
     font-size: 18px;
     font-weight: 600;
     color: white;
