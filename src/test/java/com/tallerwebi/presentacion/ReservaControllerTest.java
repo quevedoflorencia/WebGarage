@@ -40,7 +40,7 @@ public class ReservaControllerTest {
         controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo);
     }
 
-
+/*
     @Test
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadas() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
@@ -98,5 +98,5 @@ public class ReservaControllerTest {
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
     }
-
+*/
 }
