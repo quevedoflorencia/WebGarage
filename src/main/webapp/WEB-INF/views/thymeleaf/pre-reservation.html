@@ -34,32 +34,33 @@
 
             <div class="row">
                 <div class="col-12">
-                    <label for="datepicker_from">Seleccioná la fecha</label>
+                    <label for="datepicker_from">Seleccione los horarios</label>
                     <input type="text" id="datepicker_from" th:field="*{dia}">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    <div class="d-none" id="container_hour_picker">
-                        <div class="form-group">
-                            <label for="timepicker_from">Seleccioná el horario de ingreso</label>
+                    <div class="d-none row" id="container_hour_picker">
+                        <label class="mt-2 mb-1">Selecciona los horarios</label>
+                        <div class="form-group col-6">
+                            <label for="timepicker_from">Desde</label>
                             <select class="form-control" id="timepicker_from" th:field="*{horarioInicio}">
                                 <option value="" disabled selected>--</option>
                                 <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                             </select>
-                            <p class="text-danger" id="hourError"></p>
                         </div>
 
 
-                        <div class="form-group d-none" id="timepicker_until_container">
-                            <label for="timepicker_until">Seleccioná el horario de salida</label>
+                        <div class="form-group d-none col-6" id="timepicker_until_container">
+                            <label for="timepicker_until">Hasta</label>
                             <select class="form-control" id="timepicker_until" th:field="*{horarioFin}">
                                 <option value="" disabled selected>--</option>
                                 <option th:each="option : ${totalHours}" th:value="${option}" th:text="${option}"></option>
                             </select>
                             <p class="text-danger" id="hourErrorUntil"></p>
                         </div>
+                        <p class="text-danger" id="hourError"></p>
                     </div>
                 </div>
             </div>
@@ -83,11 +84,14 @@
         <div class="col-6">
             <div id="map"></div>
             <div class="selection_tipo_vehiculo d-flex w-100">
-                <div class="unselected selection" th:id="${vehiculo.id}" th:each="vehiculo : ${tiposVehiculos}">
-                    <i th:if="${vehiculo.id == 1}" class="fas fa-car-side"></i>
-                    <i th:if="${vehiculo.id == 2}" class="fas fa-truck"></i>
-                    <i th:if="${vehiculo.id == 3}" class="fas fa-motorcycle"></i>
-                    <p th:text="${vehiculo.descripcion}"></p>
+                <div class="unselected selection" th:classappend="${garageTipoVehiculoDtoItem.habilitado != true ? ' disabled' : ''}" th:id="${garageTipoVehiculoDtoItem.idTipoVehiculo}" th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}">
+                    <i th:if="${garageTipoVehiculoDtoItem.idTipoVehiculo == 1}" class="fas fa-car-side"></i>
+                    <i th:if="${garageTipoVehiculoDtoItem.idTipoVehiculo == 2}" class="fas fa-truck"></i>
+                    <i th:if="${garageTipoVehiculoDtoItem.idTipoVehiculo == 3}" class="fas fa-motorcycle"></i>
+                    <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
+                    <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
+                        Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
+                    </p>
                 </div>
             </div>
 
@@ -241,32 +245,17 @@
     }
 
 
-    //var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}, {id_tipo_vehiculo: 3, precioHora: 1100}];
-    var garageTipoVehiculo = [{id_tipo_vehiculo: 1, precioHora: 1800}, {id_tipo_vehiculo: 2, precioHora: 5500}];
+
 
     // Iterar sobre cada elemento ".selection"
     document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(function (element) {
         var id = element.getAttribute("id")
         console.log(id);
-
-        // Verifica si el vehículo está presente en garageTipoVehiculo
-        let vehiculoEnGarage = garageTipoVehiculo.find(function (vehiculo) {
-            console.log(vehiculo)
-            console.log(id)
-
-            return vehiculo.id_tipo_vehiculo == id;
-        });
-
-        console.log("vehiculoEnGarage", vehiculoEnGarage)
-
-        if (!vehiculoEnGarage) {
-            // Si el vehículo no está en garageTipoVehiculo, agrega la clase "bloqueado"
-            element.classList.add("disabled");
-            // También deshabilita el evento de click para este elemento
+        if(element.classList.contains('disabled')){
             element.addEventListener("click", function (event) {
                 event.preventDefault();
             });
-        } else {
+        }else{
             // Si el vehículo está en garageTipoVehiculo, agregar evento click para selección
             element.addEventListener("click", function () {
                 // Primero, desmarcar todos los elementos
