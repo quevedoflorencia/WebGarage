@@ -47,6 +47,19 @@ public class ControladorLogin {
         return new ModelAndView("login", model);
     }
 
+    @RequestMapping(path = "/cerrar-sesion")
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+
+
+        if (request.getSession().getAttribute("ID") != null) {
+            request.getSession().removeAttribute("ID");
+            request.getSession().removeAttribute("ROL");
+        }
+        return new ModelAndView("redirect:/home");
+    }
+
+
+
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
         ModelMap model = new ModelMap();
