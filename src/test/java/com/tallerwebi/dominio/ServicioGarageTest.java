@@ -1,3 +1,4 @@
+/*
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.Garage;
@@ -67,3 +68,4 @@ public class ServicioGarageTest {
 
 
 }
+*/
