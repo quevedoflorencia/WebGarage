@@ -11,6 +11,7 @@
 
         <!-- custom style -->
         <link rel="stylesheet" th:href="@{/css/main.css}"/>
+        <script src="https://kit.fontawesome.com/7c7d2d5fd7.js" crossorigin="anonymous"></script>
 
         <th:block th:insert="~{::propiedadesAdicionales}"/>
     </head>
@@ -18,14 +19,20 @@
     <body>
 
         <div th:fragment="header">
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="/">Web Garage</a>
+                    <a class="navbar-brand" href="/"><img src="/img/navbar/logo.png" alt="isotipo de la marca" id="logo"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div th:if="${session.ID == null}">
+                        <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
+                    </div>
+                    <div th:if="${session.ID != null}">
+                        <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
+                        <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
+                    </div>
 
-                    <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
                 </div>
             </nav>
         </div>

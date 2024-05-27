@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("garageRepository")
-public class RepositorioRepositorioGarageImpl implements RepositorioGarage {
+public class RepositorioGarageImpl implements RepositorioGarage {
 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public RepositorioRepositorioGarageImpl(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
+    public RepositorioGarageImpl(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     @Override
     public List<Garage> findAll() {
