@@ -1,0 +1,51 @@
+.cancelada {
+    color: lightgray;
+    box-shadow: 5px 5px 10px rgba(255, 0, 0, 0.5);
+}
+
+.botonCancelarReserva{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.botonCancelarReserva .infoBotonCancelarReserva{
+    visibility: hidden;
+    width: 160px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Posiciona el tooltip arriba del botón */
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.botonCancelarReserva:hover .infoBotonCancelarReserva {
+    visibility: visible;
+    opacity: 1;
+}
+
+.btnreserva{
+    color : white;
+    --bs-btn-color: #000;
+    --bs-btn-bg: #394A8F;
+    --bs-btn-border-color: #394A8F;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: white;
+    --bs-btn-hover-border-color: #394A8F;
+    --bs-btn-focus-shadow-rgb: 11, 172, 204;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: white;
+    --bs-btn-active-border-color: white;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #394A8F;
+    --bs-btn-disabled-border-color: #394A8F;
+    margin-bottom: 5px;
+}
