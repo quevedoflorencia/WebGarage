@@ -1,11 +1,18 @@
 package com.tallerwebi.presentacion.dto;
 
+import com.tallerwebi.dominio.model.TipoVehiculo;
+
 public class ReservaDTO {
     public Integer garageId;
     public Long userId;
+    public Integer garageTipoVehiculoId;
+    public TipoVehiculo tipoVehiculo;
     public String dia;
     public String horarioInicio;
     public String horarioFin;
+    public Double precio;
+    public Integer estado;
+
 
     public Integer getGarageId() {
         return garageId;
@@ -27,6 +34,10 @@ public class ReservaDTO {
         return dia;
     }
 
+    public Integer getGarageTipoVehiculoId() { return garageTipoVehiculoId; }
+
+    public void setGarageTipoVehiculoId(Integer garageTipoVehiculoId) { this.garageTipoVehiculoId = garageTipoVehiculoId; }
+
     public void setDia(String dia) {
         this.dia = dia;
     }
@@ -46,4 +57,14 @@ public class ReservaDTO {
     public void setHorarioFin(String horarioFin) {
         this.horarioFin = horarioFin;
     }
+
+    public Double getPrecio() { return precio; }
+
+    public void setPrecio(Double precio) { this.precio = precio; }
+
+    public Integer getEstado() { return estado; }
+
+    public void setEstado(Integer estado) { this.estado = estado; }
+
+
 }

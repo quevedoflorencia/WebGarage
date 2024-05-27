@@ -28,6 +28,8 @@ public class ReservaControllerTest {
     private ServicioReserva servicioReserva;
     private ControladorReserva controladorReserva;
     private ServicioTipoVehiculo servicioTipoVehiculo;
+    private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
+    private ServicioEstadoReserva servicioEstadoReserva;
 
     @BeforeEach
     public void init(){
@@ -37,7 +39,9 @@ public class ReservaControllerTest {
         servicioGarage = mock(ServicioGarage.class);
         servicioReserva = mock(ServicioReserva.class);
         servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
-        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo);
+        servicioGarageTipoVehiculo = mock(ServicioGarageTipoVehiculo.class);
+        servicioEstadoReserva = mock(ServicioEstadoReserva.class);
+        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, servicioEstadoReserva);
     }
 
 /*
