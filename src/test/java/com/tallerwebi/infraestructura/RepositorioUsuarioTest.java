@@ -34,7 +34,7 @@ public class RepositorioUsuarioTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnUsuarioPorIdentificadorYQueDevuelvaUno() {
-        Usuario usuario = dadoUnUsuario("test@example.com", "password123");
+        Usuario usuario = dadoUnUsuario();
 
         Usuario result = this.repositorioUsuario.obtenerUsuario(usuario.getId());
 
@@ -55,20 +55,20 @@ public class RepositorioUsuarioTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnUsuarioPorEmailYPasswordYQueDevuelvaElUsuarioCorrecto() {
-        Usuario usuario = dadoUnUsuario("test@example.com", "password123");
+        Usuario usuario = dadoUnUsuario();
 
-        Usuario result = this.repositorioUsuario.buscarUsuario("test@example.com", "password123");
+        Usuario result = this.repositorioUsuario.buscarUsuario("prueba@webgarage.com", "12345");
 
         assertThat(result, is(notNullValue()));
-        assertThat(result.getEmail(), equalTo("test@example.com"));
-        assertThat(result.getPassword(), equalTo("password123"));
+        assertThat(result.getEmail(), equalTo(usuario.getEmail()));
+        assertThat(result.getPassword(), equalTo(usuario.getPassword()));
     }
 
     @Test
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnUsuarioPorEmailYPasswordPeroNoEncuentreUsuario() {
-        Usuario result = this.repositorioUsuario.buscarUsuario("nonexistent@example.com", "wrongpassword");
+        Usuario result = this.repositorioUsuario.buscarUsuario("noexiste@webgarage.com", "contraseniaerronea");
 
         assertThat(result, is(nullValue()));
     }
@@ -78,34 +78,34 @@ public class RepositorioUsuarioTest {
     @Rollback
     public void queSePuedaCrearUnUsuarioNuevo() {
         Usuario usuario = new Usuario();
-        usuario.setEmail("newuser@example.com");
-        usuario.setPassword("newpassword123");
+        usuario.setEmail("nuevousuario@webgarage.com");
+        usuario.setPassword("nuevacontrasenia");
 
         this.repositorioUsuario.guardar(usuario);
 
-        Usuario result = this.repositorioUsuario.buscar("newuser@example.com");
+        Usuario result = this.repositorioUsuario.buscar("nuevousuario@webgarage.com");
 
         assertThat(result, is(notNullValue()));
-        assertThat(result.getEmail(), equalTo("newuser@example.com"));
+        assertThat(result.getEmail(), equalTo("nuevousuario@webgarage.com"));
     }
 
     @Test
     @Transactional
     @Rollback
     public void queSePuedaBuscarUnUsuarioPorEmailYEncuentreUno() {
-        Usuario usuario = dadoUnUsuario("test@example.com", "password123");
+        Usuario usuario = dadoUnUsuario();
 
-        Usuario result = this.repositorioUsuario.buscar("test@example.com");
+        Usuario result = this.repositorioUsuario.buscar("prueba@webgarage.com");
 
         assertThat(result, is(notNullValue()));
-        assertThat(result.getEmail(), equalTo("test@example.com"));
+        assertThat(result.getEmail(), equalTo(usuario.getEmail()));
     }
 
     @Test
     @Transactional
     @Rollback
     public void queSePuedaBuscarUnUsuarioPorEmailPeroNoEncuentreNinguno() {
-        Usuario result = this.repositorioUsuario.buscar("nonexistent@example.com");
+        Usuario result = this.repositorioUsuario.buscar("noexiste@webgarage.com");
 
         assertThat(result, is(nullValue()));
     }
@@ -114,24 +114,24 @@ public class RepositorioUsuarioTest {
     @Transactional
     @Rollback
     public void queSePuedaModificarLosDatosDeUnUsuarioCorrectamente() {
-        Usuario usuario = dadoUnUsuario("test@example.com", "password123");
+        Usuario usuario = dadoUnUsuario();
 
-        usuario.setEmail("updated@example.com");
-        usuario.setPassword("updatedpassword123");
+        usuario.setEmail("usuario-actualizado@webgarage.com");
+        usuario.setPassword("actualizado123");
 
         this.repositorioUsuario.modificar(usuario);
 
         Usuario result = this.repositorioUsuario.obtenerUsuario(usuario.getId());
 
         assertThat(result, is(notNullValue()));
-        assertThat(result.getEmail(), equalTo("updated@example.com"));
-        assertThat(result.getPassword(), equalTo("updatedpassword123"));
+        assertThat(result.getEmail(), equalTo("usuario-actualizado@webgarage.com"));
+        assertThat(result.getPassword(), equalTo("actualizado123"));
     }
 
-    private Usuario dadoUnUsuario(String email, String password) {
+    private Usuario dadoUnUsuario() {
         Usuario usuario = new Usuario();
-        usuario.setEmail(email);
-        usuario.setPassword(password);
+        usuario.setEmail("prueba@webgarage.com");
+        usuario.setPassword("12345");
         this.sessionFactory.getCurrentSession().save(usuario);
         return usuario;
     }
