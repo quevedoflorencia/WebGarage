@@ -39,9 +39,9 @@ public class Reserva {
 
     public void setId(Long id) { this.id = id; }
 
-    public Usuario getUser() { return usuario; }
+    public Usuario getUsuario() { return usuario; }
 
-    public void setUser(Usuario usuario) { this.usuario = usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
     public Garage getGarage() { return garage; }
 
