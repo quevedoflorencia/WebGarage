@@ -32,7 +32,6 @@ public class ControladorReserva {
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
     private ServicioEstadoReserva servicioEstadoReserva;
 
-
     @Autowired
     public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
         this.servicioUsuario = servicioUsuario;
@@ -113,7 +112,6 @@ public class ControladorReserva {
         return combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(tiposVehiculos, garageTipoVehiculos);
     }
 
-
     private List<GarageTipoVehiculoDTO> combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(List<TipoVehiculo> tiposVehiculos, List<GarageTipoVehiculo> garageTipoVehiculos) {
         List garageTipoVehiculoDtoList = new ArrayList();
 
@@ -156,7 +154,6 @@ public class ControladorReserva {
         return new ModelAndView("confirm-reservation", model);
     }
 
-
     @RequestMapping(path = "/save", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
@@ -174,9 +171,6 @@ public class ControladorReserva {
             return new ModelAndView("redirect:../login");
         }
 
-
         return new ModelAndView("redirect:/reservas/listar");
     }
-
-
 }
