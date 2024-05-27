@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/default.html :: head">
+  <th:block th:fragment="propiedadesAdicionales"></th:block>
+</head>
+
+<body>
+
+<div th:replace="layouts/default.html :: nav"></div>
+
+<main role="main" class="container">
+        <p th:if="${exitoso != null}" class="alert alert-danger" th:text="'Exitoso ' + ${exitoso}"></p>
+        <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
+
+</main>
+<!-- /.container -->
+
+
+<div th:replace="layouts/default.html :: footer"></div>
+</body>
+</html>

@@ -17,5 +17,6 @@ public interface RepositorioReserva {
 
     void agregarNuevaReserva(Reserva reserva);
 
+    Reserva obtenerReservaPorId (Long reservaId);
 }
 

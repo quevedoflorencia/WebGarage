@@ -64,6 +64,11 @@ public class ServicioReservaImpl implements ServicioReserva {
         return repositorioReserva.obtenerReservasByUserId(id);
     }
 
+    @Override
+    public Reserva buscarPorId(Long reservaId) {
+        return repositorioReserva.obtenerReservaPorId(reservaId);
+    }
+
     private List horasOcupadasEseDia(List reservas) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();

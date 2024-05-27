@@ -8,15 +8,15 @@ import javax.persistence.Id;
 @Entity
 public class Pago {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Reserva reserva;
+    private Long id_reserva;
 
     public Pago() {}
 
-    public Pago(Long id, Reserva reserva) {
+    public Pago(Long id, Long id_reserva) {
         this.id = id;
-        this.reserva = reserva;
+        this.id_reserva = id_reserva;
     }
 
     public Long getId() {
@@ -27,11 +27,11 @@ public class Pago {
         this.id = id;
     }
 
-    public Reserva getReserva() {
-        return reserva;
+    public Long getId_reserva() {
+        return id_reserva;
     }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
+    public void setId_reserva(Long id_reserva) {
+        this.id_reserva = id_reserva;
     }
 }

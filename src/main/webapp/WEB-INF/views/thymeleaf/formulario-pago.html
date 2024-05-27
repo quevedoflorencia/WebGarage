@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/card/2.5.0/card.min.js"></script>
+<head th:replace="layouts/default.html :: head">
+    <th:block th:fragment="propiedadesAdicionales">
+        <link rel="stylesheet" th:href="@{/css/home.css}"/>
+        <link rel="stylesheet" th:href="@{/css/formulario-pago.css}"/>
+    </th:block>
+</head>
+
+<body>
+
+<div th:replace="layouts/default.html :: nav"></div>
+
+<main role="main" class="container">
+    <div class="container">
+        <div class="payment-form">
+            <h2>Pagar con Tarjeta</h2>
+            <div id="card-wrapper"></div>
+            <form id="payment-form" action="#" th:action="@{../validar}" method="POST" th:object="${pagoData}">
+                <div class="form-group">
+                    <label for="card-name">Nombre en la Tarjeta</label>
+                    <input th:field="*{titularTarjeta}" type="text" id="card-name" name="card-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="card-number">Número de la Tarjeta</label>
+                    <input th:field="*{numeroTarjeta}" type="text" id="card-number" name="card-number" required>
+                </div>
+                <div class="form-group">
+                    <label for=>Fecha de Expiración</label>
+                    <input th:field="*{fechaVencimiento}"type="text" id="card-expiry" name="expiry-date" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for=>Código CVV</label>
+                    <input th:field="*{cvv}" type="text" id="card-cvc" name="cvv" required>
+                </div>
+                <button type="submit" class="submit-btn">Pagar</button>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    new Card({
+        form: '#payment-form',
+        container: '#card-wrapper',
+        formSelectors: {
+            numberInput: 'input[name="card-number"]',
+            expiryInput: 'input[name="expiry-date"]',
+            cvcInput: 'input[name="cvv"]',
+            nameInput: 'input[name="card-name"]'
+        },
+        messages: {
+            validDate: 'valid\ndate',
+            monthYear: 'mm/yyyy',
+        },
+        placeholders: {
+            number: '•••• •••• •••• ••••',
+            name: 'Nombre Completo',
+            expiry: '••/••',
+            cvc: '•••'
+        }
+    });
+</script>
+
+
+<div th:replace="layouts/default.html :: footer"></div>
+</body>
+</html>
