@@ -1,9 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioReserva;
-import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reserva;
-import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +36,10 @@ public class RepositorioReservaTest {
     public void queSePuedaCrearUnaNuevaReserva() {
         Usuario usuario = dadoUnUsuario();
         Garage garage = dadoUnGarage();
+        GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
+        EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva = new Reserva(null, usuario, garage, "2024-05-26", "10:00", "12:00");
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
 
         this.repositorioReserva.agregarNuevaReserva(reserva);
 
@@ -58,9 +58,11 @@ public class RepositorioReservaTest {
     public void queSePuedanObtenerLasReservasSegunUnaFechaDadaYDevuelvaUnaListaDeReservas() {
         Usuario usuario = dadoUnUsuario();
         Garage garage = dadoUnGarage();
+        GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
+        EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva1 = new Reserva(null, usuario, garage, "2024-05-26", "10:00", "12:00");
-        Reserva reserva2 = new Reserva(null, usuario, garage, "2024-05-26", "10:00", "12:00");
+        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
 
         this.sessionFactory.getCurrentSession().save(reserva1);
         this.sessionFactory.getCurrentSession().save(reserva2);
@@ -86,9 +88,11 @@ public class RepositorioReservaTest {
     public void queSePuedanObtenerLasReservasDeUnUsuarioConSuIDyDevuelvaUnaListaDeSusReservas() {
         Usuario usuario = dadoUnUsuario();
         Garage garage = dadoUnGarage();
+        GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
+        EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva1 = new Reserva(null, usuario, garage, "2024-05-26", "10:00", "12:00");
-        Reserva reserva2 = new Reserva(null, usuario, garage, "2024-05-27", "10:00", "12:00");
+        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-27", "10:00", "12:00", 1000.00, estadoReserva);
 
         this.sessionFactory.getCurrentSession().save(reserva1);
         this.sessionFactory.getCurrentSession().save(reserva2);
@@ -118,11 +122,27 @@ public class RepositorioReservaTest {
         return garage;
     }
 
+    private GarageTipoVehiculo dadoUnGarageTipoVehiculo() {
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo();
+
+        this.sessionFactory.getCurrentSession().save(garageTipoVehiculo);
+
+        return garageTipoVehiculo;
+    }
+
     private Usuario dadoUnUsuario() {
         Usuario usuario = new Usuario();
 
         this.sessionFactory.getCurrentSession().save(usuario);
 
         return usuario;
+    }
+
+    private EstadoReserva dadoUnEstadoReserva() {
+        EstadoReserva estadoReserva = new EstadoReserva();
+
+        this.sessionFactory.getCurrentSession().save(estadoReserva);
+
+        return estadoReserva;
     }
 }
