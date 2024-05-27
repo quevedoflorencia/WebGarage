@@ -19,6 +19,7 @@
         <mockito.version>5.3.1</mockito.version>
         <hibernate.version>5.4.24.Final</hibernate.version>
         <playwright.version>1.36.0</playwright.version>
+        <hsqldb.version>2.3.2</hsqldb.version>
         <mysql.version>8.0.33</mysql.version>
         <jackson.version>2.9.6</jackson.version>
     </properties>
@@ -41,6 +42,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
         </dependency>
 
         <dependency>
