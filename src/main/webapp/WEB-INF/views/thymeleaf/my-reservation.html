@@ -24,6 +24,10 @@
                             <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
                             <div class="d-flex justify-content-end w-100">
                                 <div class="botonCancelarReserva" th:if="${reserva.getDia() != 'cancelado'}">
+
+
+                                    <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn btn-warning">Ir a Pago</a>
+
                                     <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar-reserva/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></i></a>
                                     <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
                                 </div>
