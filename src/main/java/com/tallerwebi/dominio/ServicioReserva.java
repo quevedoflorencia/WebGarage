@@ -15,6 +15,7 @@ public interface ServicioReserva {
     List<Reserva> obtenerReservasByUserId(Long id);
     Double calcularPrecio(String horarioInicio, String horarioFin, GarageTipoVehiculo garageTipoVehiculo);
 
+    void cancelarReserva(Long reservaId);
 }
 
 

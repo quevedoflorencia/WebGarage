@@ -76,6 +76,17 @@ public class ServicioReservaImpl implements ServicioReserva {
         return repositorioReserva.obtenerReservasByUserId(id);
     }
 
+    @Override
+    public void cancelarReserva(Long reservaId) {
+        Reserva reserva = repositorioReserva.obtenerReservasByReservaId(reservaId);
+        reserva.setEstado(setearEstadoCancelado());
+        repositorioReserva.modificarReserva(reserva);
+    }
+
+    private EstadoReserva setearEstadoCancelado() {
+        return servicioEstadoReserva.obtenerEstadoSegunDescripcion("Cancelado");
+    }
+
     private List horasOcupadasEseDia(List reservas) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();

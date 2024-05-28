@@ -67,6 +67,14 @@ public class ControladorReserva {
         return new ModelAndView("my-reservation", model);
     }
 
+    @RequestMapping(path = "/cancelar-reserva/{id}", method = RequestMethod.GET)
+    public ModelAndView cancelarReserva(@PathVariable("id") Long reservaId) {
+
+        servicioReserva.cancelarReserva(reservaId);
+
+        return new ModelAndView("redirect:/reservas/listar");
+    }
+
     @RequestMapping("/start/{id}")
     public ModelAndView goToPreReservation(HttpServletRequest request, @PathVariable("id") Integer garageId) {
         ModelMap model = new ModelMap();
