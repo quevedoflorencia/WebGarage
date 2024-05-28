@@ -1,25 +1,27 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/card/2.5.0/card.min.js"></script>
 <head th:replace="layouts/default.html :: head">
     <th:block th:fragment="propiedadesAdicionales">
         <link rel="stylesheet" th:href="@{/css/home.css}"/>
         <link rel="stylesheet" th:href="@{/css/formulario-pago.css}"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/card/2.5.0/card.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/card/2.5.0/card.min.js"></script>
     </th:block>
+    <
 </head>
 
 <body>
 
 <div th:replace="layouts/default.html :: nav"></div>
-
 <main role="main" class="container">
     <div class="container">
         <div class="payment-form">
             <h2>Pagar con Tarjeta</h2>
             <div id="card-wrapper"></div>
+
             <form id="payment-form" action="#" th:action="@{../validar}" method="POST" th:object="${pagoData}">
                 <div class="form-group">
                     <label for="card-name">Nombre en la Tarjeta</label>
@@ -31,13 +33,18 @@
                 </div>
                 <div class="form-group">
                     <label for=>Fecha de Expiración</label>
-                    <input th:field="*{fechaVencimiento}"type="text" id="card-expiry" name="expiry-date" placeholder="MM/YY" required>
+                    <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" name="expiry-date" placeholder="MM/YY" required>
                 </div>
                 <div class="form-group">
                     <label for=>Código CVV</label>
                     <input th:field="*{cvv}" type="text" id="card-cvc" name="cvv" required>
                 </div>
+
+                <!--<input  type="hidden" th:field="${reserva.getId()}">-->
+                <input type="hidden" th:text="${reserva.getId()}">
                 <button type="submit" class="submit-btn">Pagar</button>
+                <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
+                <p th:if="${exitoso != null}" class="alert alert-danger" th:text="'Exitoso ' + ${exitoso}"></p>
             </form>
         </div>
     </div>

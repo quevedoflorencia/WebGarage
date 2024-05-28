@@ -27,53 +27,72 @@ public class ControladorPago {
 
     @Autowired
     public ControladorPago(ServicioPago servicioPago, ServicioReserva servicioReserva) {
-        this.servicioPago= servicioPago;
-        this.servicioReserva= servicioReserva;
+        this.servicioPago = servicioPago;
+        this.servicioReserva = servicioReserva;
     }
 
-    @RequestMapping("/formulario-pago")
-    public ModelAndView irPago() {
+    @RequestMapping("/formulario-pago/{id}")
+    public ModelAndView irPago(@PathVariable("id") Long reservaId, HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
+        Reserva reserva = servicioReserva.buscarPorId(reservaId);
         modelo.put("pagoData", new DatosPagoDTO());
+        modelo.put("reserva", reserva);
         return new ModelAndView("formulario-pago", modelo);
     }
-    @RequestMapping(path = "/validar/{id}", method = RequestMethod.POST)
+
+    @RequestMapping(path = "/validar", method = RequestMethod.POST)
+    public ModelAndView validarPago(@ModelAttribute("pagoData") DatosPagoDTO datosPagoDTO, HttpServletRequest request) {
+        ModelMap model = new ModelMap();
+
+        Long numeroTarjeta = datosPagoDTO.getNumeroTarjeta();
+        Boolean resultadoValidacion = servicioPago.validarNumeroTarjeta(numeroTarjeta);
+
+        if (resultadoValidacion == true) {
+            servicioPago.registrarPago(datosPagoDTO);
+            model.put("exitoso", "Pago exitoso!");
+        } else {
+            model.put("error", "Número de Tarjeta Inválido");
+        }
+
+
+
+        return new ModelAndView("formulario-pago", model);
+    }
+
+    /*
+    @RequestMapping(path = "/validar", method = RequestMethod.POST)
     public ModelAndView validarPago(@ModelAttribute("pagoData") DatosPagoDTO datosPagoDTO, @PathVariable("id") Long reservaId, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Reserva reserva = servicioReserva.buscarPorId(reservaId);
-       // String titularTarjeta= datosPagoDTO.getTitularTarjeta();
+        // String titularTarjeta= datosPagoDTO.getTitularTarjeta();
         Long numeroTarjeta = datosPagoDTO.getNumeroTarjeta();
-      //  LocalDate fechaVencimiento = datosPagoDTO.getFechaVencimiento();
+        //  LocalDate fechaVencimiento = datosPagoDTO.getFechaVencimiento();
 
 
         Boolean resultadoValidacion = servicioPago.validarNumeroTarjeta(numeroTarjeta);
 
-        if(resultadoValidacion ==true){
-            servicioPago.registrarPago (datosPagoDTO, reserva.getId());
+        if (resultadoValidacion == true) {
+            servicioPago.registrarPago(datosPagoDTO, reserva);
             model.put("exitoso", "Pago exitoso!");
-        }else {
+        } else {
             model.put("error", "Número de Tarjeta Inválido");
         }
-
-    /*
-        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
-        if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ID", usuarioBuscado.getId());
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            return new ModelAndView("redirect:/home");
-        } else {
-            model.put("error", "Usuario o clave incorrecta");
-        }
-
-     */
         return new ModelAndView("mostrar-mensaje", model);
     }
-
-
+    */
 
 }
+
+
+
+
+
+
+
+
+
 
 
 

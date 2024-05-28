@@ -19,7 +19,7 @@
                             <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                             <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
                             <div class="d-flex justify-content-end w-100">
-                                <a class="btn align-content-end btn-pdf" ><i class="fas fa-file-pdf"></i></a>
+                                <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pdf" ><i class="fas fa-file-pdf"></i></a>
                                 <a class="btn btn-danger align-content-end"><i class="far fa-trash-alt"></i></i></a>
 
 

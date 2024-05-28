@@ -8,15 +8,23 @@ public class DatosPagoDTO {
     private Long numeroTarjeta;
     private LocalDate fechaVencimiento;
     private Integer cvv;
+    private Long idReserva;
 
     public DatosPagoDTO() {
     }
 
-    public DatosPagoDTO(String titularTarjeta, Long numeroTarjeta, LocalDate fechaVencimiento, Integer cvv) {
+    public DatosPagoDTO(String titularTarjeta, Long numeroTarjeta, LocalDate fechaVencimiento, Integer cvv, Long idReserva) {
         this.titularTarjeta = titularTarjeta;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaVencimiento = fechaVencimiento;
         this.cvv = cvv;
+        this.idReserva= idReserva;
+    }
+
+
+
+    public void setIdReserva(Long idReserva) {
+        this.idReserva = idReserva;
     }
 
     public String getTitularTarjeta() {
@@ -50,4 +58,6 @@ public class DatosPagoDTO {
     public void setCvv(Integer cvv) {
         this.cvv = cvv;
     }
+
+    public Long getIdReserva() {return idReserva; }
 }

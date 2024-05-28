@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.Pago;
+import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.presentacion.dto.DatosPagoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import javax.transaction.Transactional;
 public class ServicioPagoImpl implements ServicioPago{
 
     private RepositorioPago repositorioPago;
+    private ServicioReserva servicioReserva;
 
     @Autowired
-    public ServicioPagoImpl(RepositorioPago repositorioPago){
+    public ServicioPagoImpl(RepositorioPago repositorioPago, ServicioReserva servicioReserva){
+
         this.repositorioPago= repositorioPago;
+        this.servicioReserva=servicioReserva;
     }
 
     @Override
@@ -29,9 +33,11 @@ public class ServicioPagoImpl implements ServicioPago{
     }
 
     @Override
-    public void registrarPago(DatosPagoDTO datosPagoDTO, Long idReserva) {
+    public void registrarPago(DatosPagoDTO datosPagoDTO) {
 
-        Pago pago = new Pago(null, idReserva);
+        Long idReserva= datosPagoDTO.getIdReserva();
+        Reserva reserva = servicioReserva.buscarPorId(idReserva);
+        Pago pago = new Pago(null, reserva);
 
         repositorioPago.guardarPago(pago);
     }
