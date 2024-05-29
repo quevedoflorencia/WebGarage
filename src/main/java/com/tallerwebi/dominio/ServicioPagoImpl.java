@@ -30,7 +30,15 @@ public class ServicioPagoImpl implements ServicioPago{
         }
         return false;
     }
+    @Override
+    public Boolean validarCvv(String cvv) {
 
+        if (cvv.length()==3){
+            return true;
+        }
+        return false;
+
+    }
     @Override
     public void registrarPago(DatosPagoDTO datosPagoDTO) {
 
@@ -41,5 +49,7 @@ public class ServicioPagoImpl implements ServicioPago{
 
         repositorioPago.guardarPago(pago);
     }
+
+
 
 }
