@@ -37,25 +37,15 @@ public class ControladorPago {
         ModelMap modelo = new ModelMap();
         Reserva reserva = servicioReserva.buscarPorId(reservaId);
         modelo.put("pagoData", new DatosPagoDTO());
-        modelo.put("reserva", reserva);
+        modelo.put("idReserva", reservaId);
         return new ModelAndView("formulario-pago", modelo);
     }
 
     @RequestMapping(path = "/validar", method = RequestMethod.POST)
-    public ModelAndView validarPago(@ModelAttribute("pagoData") DatosPagoDTO datosPagoDTO, HttpServletRequest request) {
+    public ModelAndView validarPago(@ModelAttribute("pagoData") DatosPagoDTO datosPagoDTO) {
         ModelMap model = new ModelMap();
 
-        Long numeroTarjeta = datosPagoDTO.getNumeroTarjeta();
-        Boolean resultadoValidacion = servicioPago.validarNumeroTarjeta(numeroTarjeta);
-
-        if (resultadoValidacion == true) {
-            servicioPago.registrarPago(datosPagoDTO);
-            model.put("exitoso", "Pago exitoso!");
-        } else {
-            model.put("error", "Número de Tarjeta Inválido");
-        }
-
-
+        model.put("error", "Número de Tarjeta Inválido");
 
         return new ModelAndView("formulario-pago", model);
     }

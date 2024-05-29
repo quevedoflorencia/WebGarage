@@ -22,26 +22,26 @@
             <h2>Pagar con Tarjeta</h2>
             <div id="card-wrapper"></div>
 
-            <form id="payment-form" action="#" th:action="@{../validar}" method="POST" th:object="${pagoData}">
+            <form id="payment-form" action="#" th:action="@{/pago/validar}" method="POST" th:object="${pagoData}">
                 <div class="form-group">
                     <label for="card-name">Nombre en la Tarjeta</label>
                     <input th:field="*{titularTarjeta}" type="text" id="card-name" name="card-name" required>
                 </div>
                 <div class="form-group">
                     <label for="card-number">Número de la Tarjeta</label>
-                    <input th:field="*{numeroTarjeta}" type="text" id="card-number" name="card-number" required>
+                    <input th:field="*{numeroTarjeta}" type="number" id="card-number" name="card-number" required>
                 </div>
                 <div class="form-group">
-                    <label for=>Fecha de Expiración</label>
+                    <label for="card-expiry">Fecha de Expiración</label>
                     <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" name="expiry-date" placeholder="MM/YY" required>
                 </div>
                 <div class="form-group">
-                    <label for=>Código CVV</label>
+                    <label for="">Código CVV</label>
                     <input th:field="*{cvv}" type="text" id="card-cvc" name="cvv" required>
                 </div>
 
                 <!--<input  type="hidden" th:field="${reserva.getId()}">-->
-                <input type="hidden" th:text="${reserva.getId()}">
+                <input type="hidden" th:field="*{idReserva}" th:value="${idReserva}">
                 <button type="submit" class="submit-btn">Pagar</button>
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
                 <p th:if="${exitoso != null}" class="alert alert-danger" th:text="'Exitoso ' + ${exitoso}"></p>
