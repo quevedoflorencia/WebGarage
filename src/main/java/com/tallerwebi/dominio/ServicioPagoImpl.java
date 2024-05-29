@@ -23,13 +23,12 @@ public class ServicioPagoImpl implements ServicioPago{
     }
 
     @Override
-    public Boolean validarNumeroTarjeta(Long numeroTarjeta) {
-        Boolean resultado=false;
-        String variablePrueba = numeroTarjeta.toString();
-        if (variablePrueba.length()==16){
-            resultado=true;
+    public Boolean validarNumeroTarjeta(String numeroTarjeta) {
+
+        if (numeroTarjeta.length()==16){
+            return true;
         }
-        return resultado;
+        return false;
     }
 
     @Override
@@ -37,7 +36,8 @@ public class ServicioPagoImpl implements ServicioPago{
 
         Long idReserva= datosPagoDTO.getIdReserva();
         Reserva reserva = servicioReserva.buscarPorId(idReserva);
-        Pago pago = new Pago(null, reserva);
+
+        Pago pago = new Pago(reserva);
 
         repositorioPago.guardarPago(pago);
     }

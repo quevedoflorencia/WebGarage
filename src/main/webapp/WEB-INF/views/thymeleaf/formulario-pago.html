@@ -36,12 +36,12 @@
                     <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" name="expiry-date" placeholder="MM/YY" required>
                 </div>
                 <div class="form-group">
-                    <label for="">Código CVV</label>
+                    <label for="card-cvc">Código CVV</label>
                     <input th:field="*{cvv}" type="text" id="card-cvc" name="cvv" required>
                 </div>
 
                 <!--<input  type="hidden" th:field="${reserva.getId()}">-->
-                <input type="hidden" th:field="*{idReserva}" th:value="${idReserva}">
+                <input type="hidden" th:field="*{idReserva}" th:value="${pagoData.idReserva}">
                 <button type="submit" class="submit-btn">Pagar</button>
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
                 <p th:if="${exitoso != null}" class="alert alert-danger" th:text="'Exitoso ' + ${exitoso}"></p>

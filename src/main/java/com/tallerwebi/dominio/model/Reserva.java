@@ -15,6 +15,8 @@ public class Reserva {
     private String dia;
     private String horarioInicio;
     private String horarioFin;
+    @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
+    private Pago pago;
 
     public Reserva() {}
 
@@ -25,6 +27,25 @@ public class Reserva {
         this.dia = dia;
         this.horarioInicio = horarioInicio;
         this.horarioFin = horarioFin;
+
+    }
+
+    public Reserva(Long id, Usuario usuario, Garage garage, String dia, String horarioInicio, String horarioFin, Pago pago) {
+        this.id = id;
+        this.usuario = usuario;
+        this.garage = garage;
+        this.dia = dia;
+        this.horarioInicio = horarioInicio;
+        this.horarioFin = horarioFin;
+        this.pago = pago;
+    }
+
+    public Pago getPago() {
+        return pago;
+    }
+
+    public void setPago(Pago pago) {
+        this.pago = pago;
     }
 
     public Long getId() { return id; }

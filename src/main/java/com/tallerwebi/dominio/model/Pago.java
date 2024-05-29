@@ -7,13 +7,16 @@ public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
+    @JoinColumn(name = "reserva_id")
     private Reserva reserva;
+
 
     public Pago() {}
 
-    public Pago(Long id, Reserva reserva) {
-        this.id = id;
+    public Pago(Reserva reserva) {
+
         this.reserva = reserva;
     }
 

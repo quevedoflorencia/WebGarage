@@ -13,11 +13,11 @@
     <h1>llegamos acá</h1>
     <h5  th:text="${mensaje}"></h5>
 
+    <p th:if="${exitoso != null}" class="alert alert-success" role ="alert" th:text="'Exitoso ' + ${exitoso}"></p>
 
-    <!--
-        <p th:if="${exitoso != null}" class="alert alert-danger" th:text="'Exitoso ' + ${exitoso}"></p>
+        <p th:if="${exito != null}" class="alert alert-danger" th:text="'Feliticaciones ' + ${exito}"></p>
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
--->
+
 </main>
 <!-- /.container -->
 

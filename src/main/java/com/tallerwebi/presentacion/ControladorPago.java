@@ -36,8 +36,10 @@ public class ControladorPago {
 
         ModelMap modelo = new ModelMap();
         Reserva reserva = servicioReserva.buscarPorId(reservaId);
-        modelo.put("pagoData", new DatosPagoDTO());
-        modelo.put("idReserva", reservaId);
+        DatosPagoDTO pagoData= new DatosPagoDTO();
+        pagoData.setIdReserva(reservaId);
+        modelo.put("pagoData", pagoData);
+
         return new ModelAndView("formulario-pago", modelo);
     }
 
@@ -45,8 +47,18 @@ public class ControladorPago {
     public ModelAndView validarPago(@ModelAttribute("pagoData") DatosPagoDTO datosPagoDTO) {
         ModelMap model = new ModelMap();
 
-        model.put("error", "Número de Tarjeta Inválido");
+        String numeroTarjeta= datosPagoDTO.getNumeroTarjeta();
+        Boolean  resultadoValidacionNumero = servicioPago.validarNumeroTarjeta(numeroTarjeta);
 
+        if(resultadoValidacionNumero){
+
+            servicioPago.registrarPago(datosPagoDTO);
+            model.put("exito", "Su pago ha sido exitoso, te esperamos!");
+            return new ModelAndView("mensaje", model);
+        }else {
+
+            model.put("error", "Número de Tarjeta Inválido");
+        }
         return new ModelAndView("formulario-pago", model);
     }
 
