@@ -119,7 +119,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:../login"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
     }
 
     @Test
