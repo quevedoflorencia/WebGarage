@@ -6,20 +6,15 @@ import java.util.List;
 
 public interface RepositorioReserva {
 
-    List reservasPorCliente(String client);
+    Reserva guardar(Reserva reserva);
+
+    void actualizar(Reserva reserva);
+
+    Reserva obtenerPorId(Long reservaId);
 
     List reservasPorFecha(String date);
 
+    List<Reserva> obtenerPorUserId(Long id);
 
-
-    List<Reserva> obtenerReservasByUserId(Long id);
-
-    Reserva agregarNuevaReserva(Reserva reserva);
-
-    Reserva obtenerReservasByReservaId(Long reservaId);
-
-
-    void modificarReserva(Reserva reserva);
-    Reserva obtenerReservaPorId (Long reservaId);
 }
 

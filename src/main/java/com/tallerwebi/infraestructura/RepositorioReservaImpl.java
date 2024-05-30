@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.dominio.RepositorioReserva;
+import com.tallerwebi.dominio.model.Reserva;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -21,12 +21,6 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         this.sessionFactory = sessionFactory;
     }
 
-
-    @Override
-    public List reservasPorCliente(String cliente) {
-        return null;
-    }
-
     @Override
     public List reservasPorFecha(String date) {
         final Session session = sessionFactory.getCurrentSession();
@@ -34,39 +28,33 @@ public class RepositorioReservaImpl implements RepositorioReserva {
     }
 
     @Override
-    public Reserva agregarNuevaReserva(Reserva reserva) {
+    public Reserva guardar(Reserva reserva) {
         sessionFactory.getCurrentSession().save(reserva);
         return reserva;
     }
 
     @Override
-    public Reserva obtenerReservaPorId(Long reservaId) {
+    public Reserva obtenerPorId(Long reservaId) {
         String hql = "FROM Reserva R WHERE R.id = :reservaId";
         Query  query = this.sessionFactory.getCurrentSession().createQuery(hql, Reserva.class);
         query.setParameter("reservaId", reservaId );
 
-        return (Reserva) query.getSingleResult();
+        List<Reserva> result = query.getResultList();
+
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
     }
 
     @Override
-    public Reserva obtenerReservasByReservaId(Long reservaId) {
-        String hql = "FROM Reserva R WHERE R.id = :id";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("id",reservaId );
-
-        return (Reserva) query.getSingleResult();
-    }
-
-    @Override
-    public void modificarReserva(Reserva reserva) {
+    public void actualizar(Reserva reserva) {
         sessionFactory.getCurrentSession().update(reserva);
     }
 
-
-
-
     @Override
-    public List<Reserva> obtenerReservasByUserId(Long id) {
+    public List<Reserva> obtenerPorUserId(Long id) {
 
         String hql = "FROM Reserva R WHERE R.usuario.id = :userId order by R.dia";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);

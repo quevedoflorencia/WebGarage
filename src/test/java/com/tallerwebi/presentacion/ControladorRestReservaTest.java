@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class AvailabilityRestControllerTest {
+public class ControladorRestReservaTest {
 
 	private ControladorRestReserva controladorRestReserva;
 	private String dateDtoMock;

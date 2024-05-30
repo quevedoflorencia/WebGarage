@@ -62,7 +62,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         );
 
-        repositorioReserva.agregarNuevaReserva(reserva);
+        repositorioReserva.guardar(reserva);
         return reserva;
     }
 
@@ -74,19 +74,19 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public List<Reserva> obtenerReservasByUserId(Long id) {
-        return repositorioReserva.obtenerReservasByUserId(id);
+        return repositorioReserva.obtenerPorUserId(id);
     }
 
     @Override
     public Reserva buscarPorId(Long reservaId) {
-        return repositorioReserva.obtenerReservaPorId(reservaId);
+        return repositorioReserva.obtenerPorId(reservaId);
     }
 
     @Override
     public void cancelar(Long reservaId) {
-        Reserva reserva = repositorioReserva.obtenerReservasByReservaId(reservaId);
+        Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
         reserva.setEstado(setearEstadoCancelado());
-        repositorioReserva.modificarReserva(reserva);
+        repositorioReserva.actualizar(reserva);
     }
 
     private EstadoReserva setearEstadoCancelado() {
