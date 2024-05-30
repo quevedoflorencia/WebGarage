@@ -1,6 +1,5 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.model.Garage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class ControladorGarage {
     private ServicioGarage servicioGarage;
 
     @Autowired
-    public ControladorGarage(ServicioGarage servicioGarage, RepositorioGarage repositorioGarage) {
+    public ControladorGarage(ServicioGarage servicioGarage) {
         this.servicioGarage = servicioGarage;
     }
 
@@ -34,7 +33,4 @@ public class ControladorGarage {
 
         return new ModelAndView("listar-garages", model);
     }
-
-
-
 }

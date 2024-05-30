@@ -1,5 +1,5 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
@@ -32,7 +32,7 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
-    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
+    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoExiste, ExcepcionUsuarioNoEncontrado {
 
         Usuario usuario = servicioUsuario.get(reservaDTO.userId);
 
@@ -47,7 +47,7 @@ public class ServicioReservaImpl implements ServicioReserva {
         EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente");
 
         if(garage == null) {
-            throw new ExcepcionGarageNoEncontrado();
+            throw new ExcepcionGarageNoExiste();
         }
 
         Reserva reserva = new Reserva(
@@ -83,7 +83,7 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
-    public void cancelarReserva(Long reservaId) {
+    public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerReservasByReservaId(reservaId);
         reserva.setEstado(setearEstadoCancelado());
         repositorioReserva.modificarReserva(reserva);
