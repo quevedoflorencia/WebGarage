@@ -3,20 +3,39 @@
     <head th:replace="layouts/default.html :: head">
         <th:block th:fragment="propiedadesAdicionales"></th:block>
     </head>
+    <style>
+        .card h5, .card h6, .card .text-gray{
+            color: #26282a;
+        }
+    </style>
 
     <body>
         <div th:replace="layouts/default.html :: nav"></div>
 
         <main role="main" class="container">
             <div class="container">
-                <div class="row">
+                <div class="row my-4">
                     <h1>¿Deseas confirmar tu reserva?</h1>
                 </div>
+
                 <div class="row">
-                    <h2>Garage: <span th:text="${garage.getNombre()}"></span></h2>
-                    <h2>Fecha: <span th:text="${reserva.getDia()}"></span></h2>
-                    <h2>Hora de ingreso:  <span th:text="${reserva.getHorarioInicio()}"></span></h2>
-                    <h2>Hora de egreso:  <span th:text="${reserva.getHorarioFin()}"></span></h2>
+                    <div class="card col-10">
+                        <div class="card-body">
+                            <h4 style="color: #394A8F">Detalles de la reserva:</h4>
+                            <h5 class="card-title text-muted">Garage <span th:text="${garage.getNombre()}"></span>  en la fecha:  <span th:text="${reserva.getDia()}"></span></h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Horario de inicio: <span th:text="${reserva.getHorarioInicio()}"></span> - Horario de finalización:<span th:text="${reserva.getHorarioFin()}"></span></h6>
+                            <div class="selection_tipo_vehiculo d-flex w-100 text-muted">
+                                <p class="text-gray">Tipo Vehículo</p>
+                                <div class="unselected selection active">
+                                    <i class="fas" th:classappend="${tipoVehiculo.icono}"></i>
+                                    <p th:text="${tipoVehiculo.descripcion}"></p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-gray fw-bolder">Precio Total de la reserva: $<span th:text="${reserva.getPrecio()}"></span></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -32,8 +51,12 @@
                 <input type="hidden" th:field="*{dia}">
                 <input type="hidden" th:field="*{horarioInicio}">
                 <input type="hidden" th:field="*{horarioFin}">
-
+                <input type="hidden" th:field="*{garageTipoVehiculoId}">
+                <input type="hidden" th:field="*{precio}">
+                <input type="hidden" th:field="*{estado}">
                 <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning">Modificar</a>
+                <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
             </form>
 
 

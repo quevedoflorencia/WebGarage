@@ -11,6 +11,10 @@ h2{
 	color:#394A8F;
 }
 
+main{
+    margin-top: 7rem;
+}
+
 .navbar-brand{
     margin:0 2rem;
 }
@@ -85,4 +89,8 @@ form label{
 .btn-pdf{
     background-color: #64CAED;
     margin-right: 5px;
+}
+
+#logo{
+    width:4rem;
 }

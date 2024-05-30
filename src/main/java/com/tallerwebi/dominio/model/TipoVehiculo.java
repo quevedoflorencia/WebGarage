@@ -14,15 +14,18 @@ public class TipoVehiculo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descripcion;
-    
+    private String icono;
+
+
     @OneToMany(mappedBy = "tipoVehiculo")
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public TipoVehiculo() {}
 
-    public TipoVehiculo(Integer id, String descripcion) {
+    public TipoVehiculo(Integer id, String descripcion, String icono) {
         this.id = id;
         this.descripcion = descripcion;
+        this.icono = icono;
     }
 
     public Integer getId() { return id; }
@@ -30,6 +33,9 @@ public class TipoVehiculo {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getIcono() { return icono; }
+    public void setIcono(String icono) { this.icono = icono; }
 
     public List<GarageTipoVehiculo> getGarageTipoVehiculos() { return garageTipoVehiculos; }
     public void setGarageTipoVehiculos(List<GarageTipoVehiculo> garageTipoVehiculos) { this.garageTipoVehiculos = garageTipoVehiculos; }

@@ -10,13 +10,16 @@ public interface RepositorioReserva {
 
     List reservasPorFecha(String date);
 
-    List todasLasReservas();
 
 
     List<Reserva> obtenerReservasByUserId(Long id);
 
     void agregarNuevaReserva(Reserva reserva);
 
+    Reserva obtenerReservasByReservaId(Long reservaId);
+
+
+    void modificarReserva(Reserva reserva);
     Reserva obtenerReservaPorId (Long reservaId);
 }
 

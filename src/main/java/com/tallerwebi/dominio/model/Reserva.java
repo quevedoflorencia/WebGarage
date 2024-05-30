@@ -12,21 +12,29 @@ public class Reserva {
     private Usuario usuario;
     @OneToOne
     private Garage garage;
+    @OneToOne
+    private GarageTipoVehiculo garageTipoVehiculo;
     private String dia;
     private String horarioInicio;
     private String horarioFin;
     @OneToOne(mappedBy = "reserva", cascade = CascadeType.ALL)
     private Pago pago;
+    private Double precio;
+    @OneToOne
+    private EstadoReserva estado;
+
 
     public Reserva() {}
 
-    public Reserva(Long id, Usuario usuario, Garage garage, String dia, String horarioInicio, String horarioFin) {
-        this.id = id;
+    public Reserva(Usuario usuario, Garage garage, GarageTipoVehiculo garageTipoVehiculo, String dia, String horarioInicio, String horarioFin, Double precio, EstadoReserva estado) {
         this.usuario = usuario;
         this.garage = garage;
+        this.garageTipoVehiculo = garageTipoVehiculo;
         this.dia = dia;
         this.horarioInicio = horarioInicio;
         this.horarioFin = horarioFin;
+        this.precio = precio;
+        this.estado = estado;
 
     }
 
@@ -52,9 +60,9 @@ public class Reserva {
 
     public void setId(Long id) { this.id = id; }
 
-    public Usuario getUser() { return usuario; }
+    public Usuario getUsuario() { return usuario; }
 
-    public void setUser(Usuario usuario) { this.usuario = usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
     public Garage getGarage() { return garage; }
 
@@ -82,6 +90,14 @@ public class Reserva {
 
     public void setHorarioFin(String finishTime) {
         this.horarioFin = finishTime;
+    }
+
+    public EstadoReserva getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoReserva estado) {
+        this.estado = estado;
     }
 
 }

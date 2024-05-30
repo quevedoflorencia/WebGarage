@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioReserva;
-import com.tallerwebi.dominio.ServicioTipoVehiculo;
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
@@ -32,14 +29,17 @@ public class ControladorReserva {
     private ServicioUsuario servicioUsuario;
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
-
+    private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
+    private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
+        this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
+        this.servicioEstadoReserva = servicioEstadoReserva;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -65,6 +65,14 @@ public class ControladorReserva {
         model.put("reservas", reservas);
 
         return new ModelAndView("my-reservation", model);
+    }
+
+    @RequestMapping(path = "/cancelar-reserva/{id}", method = RequestMethod.GET)
+    public ModelAndView cancelarReserva(@PathVariable("id") Long reservaId) {
+
+        servicioReserva.cancelarReserva(reservaId);
+
+        return new ModelAndView("redirect:/reservas/listar");
     }
 
     @RequestMapping("/start/{id}")
@@ -120,13 +128,14 @@ public class ControladorReserva {
             GarageTipoVehiculoDTO tipoVehiculoDTO = new GarageTipoVehiculoDTO();
             tipoVehiculoDTO.setIdTipoVehiculo(tipoVehiculo.getId());
             tipoVehiculoDTO.setDescripcion(tipoVehiculo.getDescripcion());
+            tipoVehiculoDTO.setIcono(tipoVehiculo.getIcono());
             for (GarageTipoVehiculo garageTipoVehiculo : garageTipoVehiculos) {
                 if(tipoVehiculo.equals(garageTipoVehiculo.getTipoVehiculo())){
                     habilitado = true;
                     tipoVehiculoDTO.setPrecio(garageTipoVehiculo.getPrecioHora());
+                    tipoVehiculoDTO.setIdGarageTipoVehiculo(garageTipoVehiculo.getId());
                 }
             }
-
             tipoVehiculoDTO.setHabilitado(habilitado);
             garageTipoVehiculoDtoList.add(tipoVehiculoDTO);
         }
@@ -139,8 +148,16 @@ public class ControladorReserva {
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.traerPorId(reservaDTO.garageTipoVehiculoId);
+        TipoVehiculo tipoVehiculo = garageTipoVehiculo.getTipoVehiculo();
+
+
+        double precioCalculado = servicioReserva.calcularPrecio(reservaDTO.horarioInicio, reservaDTO.horarioFin, garageTipoVehiculo);
+        reservaDTO.setPrecio(precioCalculado);
+
         model.put("garage", garage);
         model.put("reserva", reservaDTO);
+        model.put("tipoVehiculo", tipoVehiculo);
 
         return new ModelAndView("confirm-reservation", model);
     }
@@ -157,7 +174,7 @@ public class ControladorReserva {
             model.put("garage", garage);
             model.put("reserva", reservaDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
-            return new ModelAndView("confirm-reservation", model);
+            return new ModelAndView("pago/{idReserva}", model);
         } catch (ExcepcionUsuarioNoEncontrado e) {
             return new ModelAndView("redirect:../login");
         }

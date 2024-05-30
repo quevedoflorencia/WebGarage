@@ -2,7 +2,9 @@ package com.tallerwebi.presentacion.dto;
 
 public class GarageTipoVehiculoDTO {
     public Integer idTipoVehiculo;
+    public Integer idGarageTipoVehiculo;
     public String descripcion ;
+    public String icono;
     public Boolean habilitado;
     public Double Precio;
 
@@ -14,6 +16,14 @@ public class GarageTipoVehiculoDTO {
         this.idTipoVehiculo = idTipoVehiculo;
     }
 
+    public Integer getIdGarageTipoVehiculo() {
+        return idGarageTipoVehiculo;
+    }
+
+    public void setIdGarageTipoVehiculo(Integer idGarageTipoVehiculo) {
+        this.idGarageTipoVehiculo = idGarageTipoVehiculo;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -21,6 +31,10 @@ public class GarageTipoVehiculoDTO {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getIcono() { return icono; }
+
+    public void setIcono(String icono) { this.icono = icono; }
 
     public Boolean getHabilitado() {
         return habilitado;
