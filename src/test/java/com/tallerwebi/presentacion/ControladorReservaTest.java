@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -93,11 +94,19 @@ public class ControladorReservaTest {
     public void iniciarLaPreReservacionCorrectamenteConUsuarioLogueadoYGarageExistente() {
         Integer garageId = 1;
         Long userId = 1L;
+
+        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        TipoVehiculo tipoVehiculoAuto = new TipoVehiculo(1, "Auto", "icono.png");
+        TipoVehiculo tipoVehiculoMoto = new TipoVehiculo(1, "Moto", "icono2.png");
+
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, tipoVehiculoAuto);
+        garage.setGarageTipoVehiculos(Collections.singletonList(garageTipoVehiculo));
+
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(userId);
-        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         when(servicioGarage.buscarPorId(garageId)).thenReturn(garage);
-        when(servicioGarageTipoVehiculo.traerTodos()).thenReturn(Collections.emptyList());
+        when(servicioGarageTipoVehiculo.traerTodos()).thenReturn(Collections.singletonList(garageTipoVehiculo));
+        when(servicioTipoVehiculo.traerTodos()).thenReturn(Arrays.asList(tipoVehiculoAuto, tipoVehiculoMoto));
 
         ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
 
@@ -208,5 +217,19 @@ public class ControladorReservaTest {
         ModelAndView modelAndView = controladorReserva.guardar(reservaDTO);
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:../login"));
+    }
+
+    @Test
+    public void cancelarReservaDebeRedirigirALaListaDeReservas() {
+        // Arrange
+        Long reservaId = 1L;
+        ModelAndView expectedModelAndView = new ModelAndView("redirect:/reservas/listar");
+
+        // Act
+        ModelAndView modelAndView = controladorReserva.cancelar(reservaId);
+
+        // Assert
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase(expectedModelAndView.getViewName()));
+        verify(servicioReserva, times(1)).cancelar(reservaId);
     }
 }

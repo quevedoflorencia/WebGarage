@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -54,6 +55,15 @@ public class ControladorRestReservaTest {
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(responseEntity.getBody());
 		assertEquals(responseEntity.getBody(), hours);
+	}
+
+	@Test
+	public void cuandoElServicioTraeUnErrorInternoYDevuelveUnaExcepcion(){
+		doThrow(new RuntimeException()).when(servicioReservaMock).traerHorasOcupadas(anyString());
+
+		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(dateDtoMock);
+
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
 	}
 
 }

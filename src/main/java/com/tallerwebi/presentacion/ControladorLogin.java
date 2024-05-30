@@ -26,7 +26,6 @@ public class ControladorLogin {
 
     @RequestMapping("/login")
     public ModelAndView irALogin() {
-
         ModelMap modelo = new ModelMap();
         modelo.put("loginData", new DatosLoginDTO());
         return new ModelAndView("login", modelo);
@@ -50,15 +49,13 @@ public class ControladorLogin {
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpServletRequest request) {
 
-
         if (request.getSession().getAttribute("ID") != null) {
             request.getSession().removeAttribute("ID");
             request.getSession().removeAttribute("ROL");
         }
+
         return new ModelAndView("redirect:/home");
     }
-
-
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
@@ -73,13 +70,6 @@ public class ControladorLogin {
             return new ModelAndView("nuevo-usuario", model);
         }
         return new ModelAndView("redirect:/login");
-    }
-
-    @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
-    public ModelAndView nuevoUsuario() {
-        ModelMap model = new ModelMap();
-        model.put("usuario", new Usuario());
-        return new ModelAndView("nuevo-usuario", model);
     }
 }
 
