@@ -25,7 +25,7 @@ public class ServicioPagoImpl implements ServicioPago{
     @Override
     public Boolean validarNumeroTarjeta(String numeroTarjeta) {
 
-        if (numeroTarjeta.length()==16){
+        if (numeroTarjeta.replaceAll("\\s","").length()==16){
             return true;
         }
         return false;

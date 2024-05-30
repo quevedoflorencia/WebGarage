@@ -167,18 +167,20 @@ public class ControladorReserva {
         ModelMap model = new ModelMap();
 
         try {
-            servicioReserva.agregarReserva(reservaDTO);
+            Reserva nuevaReserva = servicioReserva.agregarReserva(reservaDTO);
+            Long reservaId = nuevaReserva.getId();
+            return new ModelAndView("redirect:/pago/formulario-pago/"+reservaId);
+
         } catch (ExcepcionGarageNoEncontrado e) {
             List<Garage> garages = servicioGarage.traerTodos();
             Garage garage = garages.get(0);
             model.put("garage", garage);
             model.put("reserva", reservaDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
-            return new ModelAndView("pago/{idReserva}", model);
+            return new ModelAndView("confirm-reservation", model);
         } catch (ExcepcionUsuarioNoEncontrado e) {
             return new ModelAndView("redirect:../login");
         }
 
-        return new ModelAndView("redirect:/reservas/listar");
     }
 }

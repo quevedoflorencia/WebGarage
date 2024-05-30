@@ -14,7 +14,7 @@ public interface RepositorioReserva {
 
     List<Reserva> obtenerReservasByUserId(Long id);
 
-    void agregarNuevaReserva(Reserva reserva);
+    Reserva agregarNuevaReserva(Reserva reserva);
 
     Reserva obtenerReservasByReservaId(Long reservaId);
 
