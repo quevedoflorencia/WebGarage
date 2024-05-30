@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/default.html :: head">
+  <th:block th:fragment="propiedadesAdicionales"></th:block>
+</head>
+
+<body>
+
+<div th:replace="layouts/default.html :: nav"></div>
+
+
+
+
+    <div class="container" style="margin-top:9rem">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="card-title text-success">¡Pago Exitoso!</h1>
+                <p class="card-text">Gracias por tu pago. Tu transacción ha sido completada con éxito.</p>
+                <!--cambiar ${reserva.getId()} por ${reserva.getPrecio()}-->
+                <h2 class="text-info">Monto pagado: $<span th:text="${reserva.getPrecio()}"></span></h2>
+                <hr>
+                <p class="card-text">Número de transacción: <strong th:text="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')}"></strong></p>
+                <a href="/#estacionamientos" class="btn btn-primary mt-3">Volver a la Página Principal</a>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+<div th:replace="layouts/default.html :: footer"></div>
+</body>
+</html>

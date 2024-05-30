@@ -11,6 +11,10 @@ h2{
 	color:#394A8F;
 }
 
+main{
+    margin-top: 7rem;
+}
+
 .navbar-brand{
     margin:0 2rem;
 }
@@ -31,16 +35,20 @@ form label{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 28%;
+    width: 30%;
     border: 1px solid #3C3B3B;
     border-radius: 50px;
     font-weight: 500;
     padding: .25rem;
 }
 
+.text-precio{
+    font-size: 0.70rem;
+}
+
 .selection_tipo_vehiculo .selection:hover{
-    border: 1px solid #34ADD7;
-    color: #34ADD7
+    border: 1px solid #394A8F;
+    color: #394A8F
 }
 
 .selection_tipo_vehiculo p{
@@ -67,15 +75,22 @@ form label{
 }
 
 #container-go-reserva button{
-    background: #34ADD7;
+    background: #394A8F;
     color: white;
 }
 
 .btn-buscar-estacionamiento{
-    width: 20%;
     border-radius: 20px;
-    background-color: #64CAED;
+    background-color: #394A8F;
     font-size: 18px;
     font-weight: 600;
     color: white;
+}
+.btn-pdf{
+    background-color: #64CAED;
+    margin-right: 5px;
+}
+
+#logo{
+    width:4rem;
 }

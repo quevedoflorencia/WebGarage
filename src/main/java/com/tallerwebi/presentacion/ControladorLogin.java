@@ -26,7 +26,6 @@ public class ControladorLogin {
 
     @RequestMapping("/login")
     public ModelAndView irALogin() {
-
         ModelMap modelo = new ModelMap();
         modelo.put("loginData", new DatosLoginDTO());
         return new ModelAndView("login", modelo);
@@ -45,6 +44,17 @@ public class ControladorLogin {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login", model);
+    }
+
+    @RequestMapping(path = "/cerrar-sesion")
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+
+        if (request.getSession().getAttribute("ID") != null) {
+            request.getSession().removeAttribute("ID");
+            request.getSession().removeAttribute("ROL");
+        }
+
+        return new ModelAndView("redirect:/home");
     }
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)

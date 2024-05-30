@@ -19,8 +19,8 @@ public class ServicioTipoVehiculoImpl implements ServicioTipoVehiculo {
     }
 
     @Override
-    public List<TipoVehiculo> traerTodos () {
-        return repositorioTipoVehiculo.listarTiposVehiculos();
+    public List<TipoVehiculo> traerTodos() {
+        return repositorioTipoVehiculo.listar();
     }
 
 }

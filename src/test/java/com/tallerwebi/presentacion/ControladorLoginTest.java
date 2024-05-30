@@ -6,12 +6,14 @@ import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioExiste;
 import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +36,17 @@ public class ControladorLoginTest {
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(ServicioLogin.class);
 		controladorLogin = new ControladorLogin(servicioLoginMock);
+	}
+
+	@Test
+	public void irALoginDeberiaLlevarmeALaVistaLoginConTipoDeModeloCorrecto() {
+		ModelAndView modelAndView = controladorLogin.irALogin();
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+
+		ModelMap modelMap = modelAndView.getModelMap();
+		DatosLoginDTO datosLoginDTO = (DatosLoginDTO) modelMap.get("loginData");
+		assertThat(datosLoginDTO, notNullValue());
 	}
 
 	@Test
@@ -102,5 +115,36 @@ public class ControladorLoginTest {
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+	}
+
+	@Test
+	public void cerrarSesionDeUnUsuarioLogueadoDeberiaEliminarDatosDeSesionYRedirigirAHome() {
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(sessionMock.getAttribute("ID")).thenReturn(1L);
+
+		ModelAndView modelAndView = controladorLogin.cerrarSesion(requestMock);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+	}
+
+	@Test
+	public void cerrarSesionDeUnUsuarioCuandoNoEstaLogueadoDeberiaRedirigirAHomeIgualmente() {
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(sessionMock.getAttribute("ID")).thenReturn(null);
+
+		ModelAndView modelAndView = controladorLogin.cerrarSesion(requestMock);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+	}
+
+	@Test
+	public void cuandoSeQuiereIniciarElFormularioDeRegistroDeNuevoUsuarioDebeLlevarALaVistaNuevoUsuario() {
+		ModelAndView modelAndView = controladorLogin.nuevoUsuario();
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+
+		ModelMap modelMap = modelAndView.getModelMap();
+		Usuario usuario = (Usuario) modelMap.get("usuario");
+		assertThat(usuario, notNullValue());
 	}
 }

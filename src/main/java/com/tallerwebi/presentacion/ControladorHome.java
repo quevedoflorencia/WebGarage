@@ -35,6 +35,6 @@ public class ControladorHome {
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
-        return new ModelAndView("redirect:/reservas/listar");
+        return new ModelAndView("redirect:/");
     }
 }

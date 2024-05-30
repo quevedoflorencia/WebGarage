@@ -19,7 +19,7 @@ public class RepositorioTipoVehiculoImpl implements RepositorioTipoVehiculo {
     public RepositorioTipoVehiculoImpl(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     @Override
-    public List<TipoVehiculo> listarTiposVehiculos() {
+    public List<TipoVehiculo> listar() {
         return sessionFactory.getCurrentSession()
                 .createCriteria(TipoVehiculo.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)

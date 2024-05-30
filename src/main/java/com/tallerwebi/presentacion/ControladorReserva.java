@@ -1,12 +1,10 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioReserva;
-import com.tallerwebi.dominio.ServicioTipoVehiculo;
-import com.tallerwebi.dominio.ServicioUsuario;
-import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
+import com.tallerwebi.presentacion.dto.GarageTipoVehiculoDTO;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,19 +29,19 @@ public class ControladorReserva {
     private ServicioUsuario servicioUsuario;
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
-
+    private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
 
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
+        this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
     public ModelAndView listarReservas(HttpServletRequest request) {
-
         ModelMap model = new ModelMap();
         HttpSession session = request.getSession();
 
@@ -65,29 +64,33 @@ public class ControladorReserva {
         return new ModelAndView("my-reservation", model);
     }
 
+    @RequestMapping(path = "/cancelar/{id}", method = RequestMethod.GET)
+    public ModelAndView cancelar(@PathVariable("id") Long reservaId) {
+
+        servicioReserva.cancelar(reservaId);
+
+        return new ModelAndView("redirect:/reservas/listar");
+    }
+
     @RequestMapping("/start/{id}")
-    public ModelAndView goToPreReservation(HttpServletRequest request, @PathVariable("id") Integer garageId) {
+    public ModelAndView preReserva(HttpServletRequest request, @PathVariable("id") Integer garageId) {
         ModelMap model = new ModelMap();
 
         List<String> listaTotalDeHoras = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
 
-        List<Garage> garages = servicioGarage.traerTodos();
-        Garage garage = garages.get(garageId);
+        Garage garage = servicioGarage.buscarPorId(garageId);
 
         if (garage == null) {
-            //TODO: redireccionar a la nueva home!
-            return new ModelAndView("redirect:../login");
+            return new ModelAndView("redirect:../home");
         }
 
         Long userId = (Long) request.getSession().getAttribute("ID");
 
         if(userId == null) {
-            return new ModelAndView("redirect:../login");
+            return new ModelAndView("redirect:/login");
         }
 
-        //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
-        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
-        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+        List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
 
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setGarageId(garage.getId());
@@ -98,41 +101,82 @@ public class ControladorReserva {
         model.put("garage", garage);
         model.put("totalHours", listaTotalDeHoras);
         model.put("reserva", reservaDTO);
-        model.put("tiposVehiculos", tiposVehiculos);
-        model.put("garageTipoVehiculos", garageTipoVehiculos);
+        model.put("garageTipoVehiculoDto", garageTipoVehiculoDTOList);
 
         return new ModelAndView("pre-reservation", model);
     }
 
+    private List<GarageTipoVehiculoDTO> generarDTOTipoVehiculo(Garage garage) {
+        List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
+        List<GarageTipoVehiculo> garageTipoVehiculos = garage.getGarageTipoVehiculos();
+
+        return combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(tiposVehiculos, garageTipoVehiculos);
+    }
+
+    private List<GarageTipoVehiculoDTO> combinamosInfoDeTipoVehiculoYGarageTipoVehiculo(List<TipoVehiculo> tiposVehiculos, List<GarageTipoVehiculo> garageTipoVehiculos) {
+        List garageTipoVehiculoDtoList = new ArrayList();
+
+        for (TipoVehiculo tipoVehiculo : tiposVehiculos) {
+            boolean habilitado = false;
+            GarageTipoVehiculoDTO tipoVehiculoDTO = new GarageTipoVehiculoDTO();
+            tipoVehiculoDTO.setIdTipoVehiculo(tipoVehiculo.getId());
+            tipoVehiculoDTO.setDescripcion(tipoVehiculo.getDescripcion());
+            tipoVehiculoDTO.setIcono(tipoVehiculo.getIcono());
+            for (GarageTipoVehiculo garageTipoVehiculo : garageTipoVehiculos) {
+                if(tipoVehiculo.equals(garageTipoVehiculo.getTipoVehiculo())){
+                    habilitado = true;
+                    tipoVehiculoDTO.setPrecio(garageTipoVehiculo.getPrecioHora());
+                    tipoVehiculoDTO.setIdGarageTipoVehiculo(garageTipoVehiculo.getId());
+                }
+            }
+            tipoVehiculoDTO.setHabilitado(habilitado);
+            garageTipoVehiculoDtoList.add(tipoVehiculoDTO);
+        }
+        return garageTipoVehiculoDtoList;
+    }
+
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
-    public ModelAndView confirmReservation(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView confirmar(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
+        TipoVehiculo tipoVehiculo = garageTipoVehiculo.getTipoVehiculo();
+
+
+        double precioCalculado = servicioReserva.calcularPrecio(reservaDTO.horarioInicio, reservaDTO.horarioFin, garageTipoVehiculo);
+        reservaDTO.setPrecio(precioCalculado);
+
         model.put("garage", garage);
         model.put("reserva", reservaDTO);
+        model.put("tipoVehiculo", tipoVehiculo);
 
         return new ModelAndView("confirm-reservation", model);
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView guardar(@ModelAttribute("reserva") ReservaDTO reservaDTO) {
         ModelMap model = new ModelMap();
 
         try {
-            servicioReserva.agregarReserva(reservaDTO);
-        } catch (ExcepcionGarageNoEncontrado e) {
+
+            Reserva nuevaReserva = servicioReserva.agregarReserva(reservaDTO);
+            Long reservaId = nuevaReserva.getId();
+            return new ModelAndView("redirect:/pago/formulario-pago/"+reservaId);
+
+        } catch (ExcepcionGarageNoExiste e) {
+
             List<Garage> garages = servicioGarage.traerTodos();
             Garage garage = garages.get(0);
             model.put("garage", garage);
             model.put("reserva", reservaDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
             return new ModelAndView("confirm-reservation", model);
+
         } catch (ExcepcionUsuarioNoEncontrado e) {
             return new ModelAndView("redirect:../login");
         }
 
-        return new ModelAndView("redirect:/reservas/listar");
     }
 }

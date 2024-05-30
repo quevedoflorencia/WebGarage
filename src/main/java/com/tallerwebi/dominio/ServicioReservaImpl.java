@@ -1,14 +1,15 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
-import com.tallerwebi.dominio.model.Garage;
-import com.tallerwebi.dominio.model.Reserva;
-import com.tallerwebi.dominio.model.Usuario;
+import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service("servicioReserva")
@@ -18,16 +19,20 @@ public class ServicioReservaImpl implements ServicioReserva {
     private RepositorioReserva repositorioReserva;
     private ServicioGarage servicioGarage;
     private ServicioUsuario servicioUsuario;
+    private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
+    private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario) {
+    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
         this.repositorioReserva = repositorioReserva;
         this.servicioGarage = servicioGarage;
         this.servicioUsuario = servicioUsuario;
+        this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
+        this.servicioEstadoReserva = servicioEstadoReserva;
     }
 
     @Override
-    public void agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
+    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoExiste, ExcepcionUsuarioNoEncontrado {
 
         Usuario usuario = servicioUsuario.get(reservaDTO.userId);
 
@@ -37,20 +42,28 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
+
+        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente");
+
         if(garage == null) {
-            throw new ExcepcionGarageNoEncontrado();
+            throw new ExcepcionGarageNoExiste();
         }
 
         Reserva reserva = new Reserva(
-                null,
                 usuario,
                 garage,
+                garageTipoVehiculo,
                 reservaDTO.dia,
                 reservaDTO.horarioInicio,
-                reservaDTO.horarioFin
+                reservaDTO.horarioFin,
+                reservaDTO.precio,
+                estadoInicial
+
         );
 
-        repositorioReserva.agregarNuevaReserva(reserva);
+        repositorioReserva.guardar(reserva);
+        return reserva;
     }
 
     @Override
@@ -61,7 +74,23 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public List<Reserva> obtenerReservasByUserId(Long id) {
-        return repositorioReserva.obtenerReservasByUserId(id);
+        return repositorioReserva.obtenerPorUserId(id);
+    }
+
+    @Override
+    public Reserva buscarPorId(Long reservaId) {
+        return repositorioReserva.obtenerPorId(reservaId);
+    }
+
+    @Override
+    public void cancelar(Long reservaId) {
+        Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
+        reserva.setEstado(setearEstadoCancelado());
+        repositorioReserva.actualizar(reserva);
+    }
+
+    private EstadoReserva setearEstadoCancelado() {
+        return servicioEstadoReserva.obtenerEstadoSegunDescripcion("Cancelado");
     }
 
     private List horasOcupadasEseDia(List reservas) {
@@ -125,6 +154,23 @@ public class ServicioReservaImpl implements ServicioReserva {
     private int traeHoraComoEntero(String time) {
         return Integer.parseInt(Arrays.stream(time.split(":"))
                 .findFirst().orElse("0"));
+    }
+
+    @Override
+    public Double calcularPrecio(String horarioInicio, String horarioFin, GarageTipoVehiculo garageTipoVehiculo){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        // Parsear las cadenas a LocalTime
+        LocalTime desde = LocalTime.parse(horarioInicio, formatter);
+        LocalTime hasta = LocalTime.parse(horarioFin, formatter);
+
+        // Calcular la duración entre las dos horas
+        Duration duracion = Duration.between(desde, hasta);
+        double horas = Math.ceil(duracion.toMinutes() / 60.0);
+
+        double precioPorHora = garageTipoVehiculo.getPrecioHora();
+
+        return horas * precioPorHora;
     }
 
 }

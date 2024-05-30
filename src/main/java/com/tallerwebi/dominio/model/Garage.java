@@ -21,13 +21,14 @@ public class Garage {
     private LocalTime horarioCierre;
     private String latitud;
     private String longitud;
+    private String rutaFoto;
 
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud) {
+    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
         this.id = id;
         this.nombre = nombre;
         this.capacidad = capacidad;
@@ -35,6 +36,7 @@ public class Garage {
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.rutaFoto = rutaFoto;
     }
 
     public Integer getId() { return id; }
@@ -93,6 +95,14 @@ public class Garage {
 
     public void setLongitud(String latitud) {
         this.longitud = longitud;
+    }
+
+    public String getRutaFoto() {
+        return rutaFoto;
+    }
+
+    public void setRutaFoto(String rutaFoto) {
+        this.rutaFoto = rutaFoto;
     }
 
 }
