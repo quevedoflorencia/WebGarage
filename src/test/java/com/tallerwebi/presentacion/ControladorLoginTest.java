@@ -136,4 +136,15 @@ public class ControladorLoginTest {
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
 	}
+
+	@Test
+	public void cuandoSeQuiereIniciarElFormularioDeRegistroDeNuevoUsuarioDebeLlevarALaVistaNuevoUsuario() {
+		ModelAndView modelAndView = controladorLogin.nuevoUsuario();
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+
+		ModelMap modelMap = modelAndView.getModelMap();
+		Usuario usuario = (Usuario) modelMap.get("usuario");
+		assertThat(usuario, notNullValue());
+	}
 }

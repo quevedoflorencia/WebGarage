@@ -59,7 +59,6 @@ public class ServicioGarageTest {
 
         when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
 
-
         List<Garage> garages = this.servicioGarage.getGaragesPorCapacidad(capacidadBuscada);
 
         assertThat(garages, is(notNullValue()));

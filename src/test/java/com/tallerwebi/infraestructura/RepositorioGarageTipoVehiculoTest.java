@@ -42,7 +42,7 @@ public class RepositorioGarageTipoVehiculoTest {
         this.sessionFactory.getCurrentSession().save(tipoVehiculo1);
         this.sessionFactory.getCurrentSession().save(tipoVehiculo2);
 
-        List<GarageTipoVehiculo> result = this.repositorioGarageTipoVehiculo.listarGarageTiposVehiculos();
+        List<GarageTipoVehiculo> result = this.repositorioGarageTipoVehiculo.listar();
 
         assertThat(result, is(not(empty())));
         assertThat(result.size(), is(greaterThanOrEqualTo(2)));
@@ -56,7 +56,7 @@ public class RepositorioGarageTipoVehiculoTest {
 
         this.sessionFactory.getCurrentSession().save(tipoVehiculo);
 
-        GarageTipoVehiculo result = this.repositorioGarageTipoVehiculo.obtenerById(tipoVehiculo.getId());
+        GarageTipoVehiculo result = this.repositorioGarageTipoVehiculo.obtenerPorId(tipoVehiculo.getId());
 
         assertThat(result, is(notNullValue()));
         assertThat(result.getPrecioHora(), equalTo(10.0));

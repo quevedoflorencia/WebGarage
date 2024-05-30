@@ -141,7 +141,7 @@ public class ControladorReserva {
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
-        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.traerPorId(reservaDTO.garageTipoVehiculoId);
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
         TipoVehiculo tipoVehiculo = garageTipoVehiculo.getTipoVehiculo();
 
 

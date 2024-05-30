@@ -42,7 +42,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
 
-        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.traerPorId(reservaDTO.garageTipoVehiculoId);
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
 
         EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente");
 
