@@ -56,10 +56,17 @@
                 <input type="hidden" th:field="*{estado}">
 
 
+                <div class="d-flex justify-content-between w-100 my-3">
+                    <div>
+                        <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
+                    </div>
+                    <div>
+                        <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
 
-                <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
-                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
-                <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
+                        <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+
+                    </div>
+                </div>
 
             </form>
 
