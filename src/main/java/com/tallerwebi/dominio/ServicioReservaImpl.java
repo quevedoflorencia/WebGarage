@@ -32,7 +32,7 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
-    public void agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
+    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
 
         Usuario usuario = servicioUsuario.get(reservaDTO.userId);
 
@@ -63,6 +63,7 @@ public class ServicioReservaImpl implements ServicioReserva {
         );
 
         repositorioReserva.agregarNuevaReserva(reserva);
+        return reserva;
     }
 
     @Override

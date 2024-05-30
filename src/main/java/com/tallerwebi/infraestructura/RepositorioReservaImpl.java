@@ -34,8 +34,9 @@ public class RepositorioReservaImpl implements RepositorioReserva {
     }
 
     @Override
-    public void agregarNuevaReserva(Reserva reserva) {
+    public Reserva agregarNuevaReserva(Reserva reserva) {
         sessionFactory.getCurrentSession().save(reserva);
+        return reserva;
     }
 
     @Override
