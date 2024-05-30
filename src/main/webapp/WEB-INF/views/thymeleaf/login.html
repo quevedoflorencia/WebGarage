@@ -13,17 +13,20 @@
             <div class="container">
                 <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <form action="#" th:action="@{/validar-login}" method="POST" th:object="${loginData}">
-                        <h3 class="form-signin-heading">Bienvenido a Web Garage</h3>
+                        <h1 class="form-signin-heading">Bienvenido a Web Garage</h1>
                         <hr class="colorgraph"><br>
 
-                        <input th:field="*{email}" id="email" type="email" class="form-control" required/>
-                        <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                        <input th:field="*{email}" id="email" type="email" placeholder="Email" class="form-control my-2" required/>
+                        <input th:field="*{password}" type="password"  placeholder="Contrasña" id="password" class="form-control" required/>
 
-                        <button id="btn-login" class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                        <div class="d-flex justify-content-between w-100 my-3">
+                            <p>¿No tienes usuario?  <a id="ir-a-registrarme" href="nuevo-usuario">Registrarme</a></p>
+                            <button id="btn-login" class="btn btn-lg btn-buscar-estacionamiento" type="submit">Login</button>
+                        </div>
 
                         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
                     </form>
-                    <a id="ir-a-registrarme" href="nuevo-usuario">Registrarme</a>
+
                 </div>
             </div>
         </main>
