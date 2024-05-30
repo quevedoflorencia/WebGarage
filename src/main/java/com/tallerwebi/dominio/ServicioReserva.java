@@ -13,6 +13,7 @@ public interface ServicioReserva {
     void agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado;
     List traerHorasOcupadas(String day);
     List<Reserva> obtenerReservasByUserId(Long id);
+    Reserva buscarPorId (Long reservaId);
     Double calcularPrecio(String horarioInicio, String horarioFin, GarageTipoVehiculo garageTipoVehiculo);
 
     void cancelarReserva(Long reservaId);

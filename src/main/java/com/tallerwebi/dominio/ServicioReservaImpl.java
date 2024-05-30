@@ -77,6 +77,11 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
+    public Reserva buscarPorId(Long reservaId) {
+        return repositorioReserva.obtenerReservaPorId(reservaId);
+    }
+
+    @Override
     public void cancelarReserva(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerReservasByReservaId(reservaId);
         reserva.setEstado(setearEstadoCancelado());

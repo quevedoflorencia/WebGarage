@@ -38,7 +38,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
         sessionFactory.getCurrentSession().save(reserva);
     }
 
+    @Override
+    public Reserva obtenerReservaPorId(Long reservaId) {
+        String hql = "FROM Reserva R WHERE R.id = :reservaId";
+        Query  query = this.sessionFactory.getCurrentSession().createQuery(hql, Reserva.class);
+        query.setParameter("reservaId", reservaId );
 
+        return (Reserva) query.getSingleResult();
+    }
 
     @Override
     public Reserva obtenerReservasByReservaId(Long reservaId) {

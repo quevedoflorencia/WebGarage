@@ -23,6 +23,7 @@
                             <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                             <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
                             <div class="d-flex justify-content-end w-100">
+                                <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pdf" ><i class="fas fa-file-pdf"></i></a>
                                 <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
                                     <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar-reserva/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></i></a>
                                     <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
@@ -34,7 +35,7 @@
                 </div>
             </div>
         <div>
-            <a class="btn btnreserva btn-info btn-lg" href="/#estacionamientos">Reserva Nueva</a>
+            <a class="btn btnreserva btn-info btn-lg" href="/#estacionamientos">Nueva Reserva</a>
         </div>
     </div>
 </main>
