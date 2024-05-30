@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <form action="#" th:action="@{save}" method="POST" th:object="${reserva}">
+            <form class="d-flex justify-content-end" action="#" th:action="@{save}" method="POST" th:object="${reserva}">
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
                 <input type="hidden" th:field="*{dia}">
@@ -54,9 +54,10 @@
                 <input type="hidden" th:field="*{garageTipoVehiculoId}">
                 <input type="hidden" th:field="*{precio}">
                 <input type="hidden" th:field="*{estado}">
-                <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
-                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning">Modificar</a>
                 <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
+                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
+                <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+
             </form>
 
 
