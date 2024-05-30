@@ -100,4 +100,11 @@ public class Reserva {
         this.estado = estado;
     }
 
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
 }

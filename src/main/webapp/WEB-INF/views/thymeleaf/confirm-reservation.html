@@ -54,14 +54,16 @@
                 <input type="hidden" th:field="*{garageTipoVehiculoId}">
                 <input type="hidden" th:field="*{precio}">
                 <input type="hidden" th:field="*{estado}">
-                <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
-                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
+
+
+
                 <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+                <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
+                <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
 
             </form>
 
 
-            <a th:href="@{'/pago/formulario-pago'}" class="btn btn-danger">Ir a Pago</a>
         </main>
 
         <!-- Boostrap core js -->
