@@ -87,7 +87,7 @@ public class ControladorReserva {
         Long userId = (Long) request.getSession().getAttribute("ID");
 
         if(userId == null) {
-            return new ModelAndView("redirect:../login");
+            return new ModelAndView("redirect:/login");
         }
 
         List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
