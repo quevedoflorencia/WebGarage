@@ -72,6 +72,9 @@
         #card-wrapper {
             margin-bottom: 20px;
         }
+        .alert-danger{
+            color: red;
+        }
     </style>
 </head>
 
@@ -84,26 +87,26 @@
         <form id="payment-form" action="#" th:action="@{/pago/validar}" method="POST" th:object="${pagoData}">
             <div class="form-group">
                 <label for="card-name">Nombre en la Tarjeta</label>
-                <input th:field="*{titularTarjeta}" type="text" id="card-name" name="titularTarjeta" required>
+                <input th:field="*{titularTarjeta}" type="text" id="card-name"  required>
             </div>
             <div class="form-group">
                 <label for="card-number">Número de la Tarjeta</label>
-                <input th:field="*{numeroTarjeta}" type="text" id="card-number" name="numeroTarjeta" required>
+                <input th:field="*{numeroTarjeta}" type="text" id="card-number"required>
             </div>
             <div class="form-group">
                 <label for="card-expiry">Fecha de Expiración</label>
-                <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" name="fechaVencimiento"
+                <input th:field="*{fechaVencimiento}" type="text" id="card-expiry"
                     placeholder="MM/YY" required>
             </div>
             <div class="form-group">
                 <label for="card-cvc">Código CVV</label>
-                <input th:field="*{cvv}" type="text" id="card-cvc" name="cvv" required>
+                <input th:field="*{cvv}" type="text" id="card-cvc"  required>
             </div>
 
             <!--<input  type="hidden" th:field="${reserva.getId()}">-->
             <input type="hidden" th:field="*{idReserva}" th:value="${pagoData.idReserva}">
             <button type="submit" class="submit-btn">Pagar</button>
-            <p th:if="${error != null}" class="alert alert-warning" th:text="'Error ' + ${error}"></p>
+            <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
 
 
         </form>
@@ -116,10 +119,10 @@
             form: '#payment-form',
             container: '#card-wrapper',
             formSelectors: {
-                numberInput: 'input[name="numeroTarjeta"]',
-                expiryInput: 'input[name="fechaVencimiento"]',
-                cvcInput: 'input[name="cvv"]',
-                nameInput: 'input[name="titularTarjeta"]'
+                numberInput: 'input[id="card-number"]',
+                expiryInput: 'input[id="card-expiry"]',
+                cvcInput: 'input[id="card-cvc"]',
+                nameInput: 'input[id="card-name"]'
             },
             messages: {
                 validDate: 'valid\ndate',
