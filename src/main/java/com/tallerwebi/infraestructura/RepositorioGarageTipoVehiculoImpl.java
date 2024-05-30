@@ -19,7 +19,7 @@ public class RepositorioGarageTipoVehiculoImpl implements RepositorioGarageTipoV
     public RepositorioGarageTipoVehiculoImpl(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     @Override
-    public List<GarageTipoVehiculo> listarGarageTiposVehiculos() {
+    public List<GarageTipoVehiculo> listar() {
         return sessionFactory.getCurrentSession()
                 .createCriteria(GarageTipoVehiculo.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
@@ -27,7 +27,7 @@ public class RepositorioGarageTipoVehiculoImpl implements RepositorioGarageTipoV
     }
 
     @Override
-    public GarageTipoVehiculo obtenerById(Integer id) {
+    public GarageTipoVehiculo obtenerPorId(Integer id) {
         return sessionFactory.getCurrentSession().get(GarageTipoVehiculo.class, id);
     }
 }

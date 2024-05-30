@@ -1,10 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioReserva;
-import com.tallerwebi.dominio.ServicioTipoVehiculo;
-import com.tallerwebi.dominio.ServicioUsuario;
-import com.tallerwebi.dominio.ServicioGarageTipoVehiculo;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
@@ -105,7 +101,7 @@ public class ControladorReservaTest {
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(userId);
         when(servicioGarage.buscarPorId(garageId)).thenReturn(garage);
-        when(servicioGarageTipoVehiculo.traerTodos()).thenReturn(Collections.singletonList(garageTipoVehiculo));
+        when(servicioGarageTipoVehiculo.listar()).thenReturn(Collections.singletonList(garageTipoVehiculo));
         when(servicioTipoVehiculo.traerTodos()).thenReturn(Arrays.asList(tipoVehiculoAuto, tipoVehiculoMoto));
 
         ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
@@ -152,7 +148,7 @@ public class ControladorReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"));
 
         when(servicioGarage.buscarPorId(reservaDTO.getGarageId())).thenReturn(garage);
-        when(servicioGarageTipoVehiculo.traerPorId(reservaDTO.getGarageTipoVehiculoId())).thenReturn(garageTipoVehiculo);
+        when(servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.getGarageTipoVehiculoId())).thenReturn(garageTipoVehiculo);
         when(servicioReserva.calcularPrecio(reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), garageTipoVehiculo)).thenReturn(200.0);
 
         ModelAndView modelAndView = controladorReserva.confirmar(reservaDTO, requestMock);

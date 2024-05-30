@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.EstadoReserva;
-import com.tallerwebi.dominio.model.Garage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +9,14 @@ import java.util.List;
 
 @Service("servicioEstadoReserva")
 @Transactional
-public class ServicioReservaEstadoImpl implements ServicioEstadoReserva {
+public class ServicioEstadoReservaImpl implements ServicioEstadoReserva {
 
     private RepositorioEstadoReserva repositorioEstadoReserva;
 
     @Autowired
-    public ServicioReservaEstadoImpl(RepositorioEstadoReserva repositorioEstadoReserva) { this.repositorioEstadoReserva = repositorioEstadoReserva; }
+    public ServicioEstadoReservaImpl(RepositorioEstadoReserva repositorioEstadoReserva) {
+        this.repositorioEstadoReserva = repositorioEstadoReserva;
+    }
 
     @Override
     public List<EstadoReserva> traerTodos() {
