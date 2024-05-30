@@ -1,10 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.ServicioReserva;
-import com.tallerwebi.dominio.ServicioTipoVehiculo;
-import com.tallerwebi.dominio.ServicioUsuario;
-import com.tallerwebi.dominio.ServicioGarageTipoVehiculo;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
