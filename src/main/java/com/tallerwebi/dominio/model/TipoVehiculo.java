@@ -16,7 +16,6 @@ public class TipoVehiculo {
     private String descripcion;
     private String icono;
 
-
     @OneToMany(mappedBy = "tipoVehiculo")
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 

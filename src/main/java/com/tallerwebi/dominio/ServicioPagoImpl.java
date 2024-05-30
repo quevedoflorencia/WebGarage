@@ -1,5 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
+import com.tallerwebi.dominio.excepcion.ExcepcionNumeroTarjetaInvalida;
+import com.tallerwebi.dominio.excepcion.ExcepcionReservaNoExiste;
 import com.tallerwebi.dominio.model.Pago;
 import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.presentacion.dto.DatosPagoDTO;
@@ -17,39 +20,25 @@ public class ServicioPagoImpl implements ServicioPago{
 
     @Autowired
     public ServicioPagoImpl(RepositorioPago repositorioPago, ServicioReserva servicioReserva){
-
-        this.repositorioPago= repositorioPago;
-        this.servicioReserva=servicioReserva;
+        this.repositorioPago = repositorioPago;
+        this.servicioReserva = servicioReserva;
     }
 
     @Override
-    public Boolean validarNumeroTarjeta(String numeroTarjeta) {
+    public void validarTarjeta(String numero, String cvv) throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida {
 
-        if (numeroTarjeta.replaceAll("\\s","").length()==16){
-            return true;
+        if(numero.isEmpty() || numero.replaceAll("\\s", "").length() != 16) {
+            throw new ExcepcionNumeroTarjetaInvalida();
         }
-        return false;
-    }
-    @Override
-    public Boolean validarCvv(String cvv) {
 
-        if (cvv.length()==3){
-            return true;
+        if(cvv.length() != 3) {
+            throw new ExcepcionCvvTarjetaInvalida();
         }
-        return false;
-
     }
+
     @Override
-    public void registrarPago(DatosPagoDTO datosPagoDTO) {
-
-        Long idReserva= datosPagoDTO.getIdReserva();
-        Reserva reserva = servicioReserva.buscarPorId(idReserva);
-
+    public void registrarPago(Reserva reserva) {
         Pago pago = new Pago(reserva);
-
         repositorioPago.guardarPago(pago);
     }
-
-
-
 }

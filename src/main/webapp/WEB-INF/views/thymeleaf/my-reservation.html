@@ -25,7 +25,7 @@
                             <div class="d-flex justify-content-end w-100">
                                 <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pdf" ><i class="fas fa-file-pdf"></i></a>
                                 <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
-                                    <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar-reserva/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></i></a>
+                                    <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></i></a>
                                     <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
                                 </div>
                             </div>

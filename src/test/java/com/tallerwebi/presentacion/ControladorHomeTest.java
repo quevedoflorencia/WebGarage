@@ -16,30 +16,30 @@ import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ControladorGarageTest {
+public class ControladorHomeTest {
 
-    private ControladorGarage controladorGarage;
+    private ControladorHome controladorHome;
     private ServicioGarage servicioGarage;
 
     @BeforeEach
     public void init(){
         this.servicioGarage= mock(ServicioGarage.class);
-        this.controladorGarage = new ControladorGarage(this.servicioGarage);
+        this.controladorHome = new ControladorHome(this.servicioGarage);
     }
 
     @Test
-    public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesConUnaListaVacia(){
+    public void homeDeberiaTraerLaPaginaHomeConUnaListaDeGaragesVacia() {
         List<Garage> garages = Collections.emptyList();
 
         when(servicioGarage.traerTodos()).thenReturn(garages);
 
-        ModelAndView mav = this.controladorGarage.listarGarages();
+        ModelAndView mav = this.controladorHome.inicio();
 
-        assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
+        assertThat(mav.getViewName(), equalToIgnoringCase("home"));
     }
 
     @Test
-    public void queAlIngresarALaPantallaDeListarGaragesMeMuestreTodosLosGaragesExistentes(){
+    public void homeDeberiaTraerLaPaginaHomeConLaListaDeGaragesExistentes() {
         List<Garage> garagesMock = new ArrayList<>();
 
         garagesMock.add(new Garage());
@@ -47,9 +47,15 @@ public class ControladorGarageTest {
 
         when(this.servicioGarage.traerTodos()).thenReturn(garagesMock);
 
-        ModelAndView mav = this.controladorGarage.listarGarages();
+        ModelAndView mav = this.controladorHome.inicio();
 
-        assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
+        assertThat(mav.getViewName(), equalToIgnoringCase("home"));
         assertThat(mav.getModel().get("garages"), equalToObject(garagesMock));
+    }
+
+    @Test
+    public void laRutaPorDefectoDeberiaSerHomeComoPaginaPrincipal() {
+        ModelAndView mav = this.controladorHome.irAHome();
+        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/"));
     }
 }

@@ -29,7 +29,7 @@ public class ControladorRestReserva {
             if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
                 return ResponseEntity.ok(horasOcupadas);
             } else {
-                return ResponseEntity.ok(Collections.emptyList()); // Devuelve una lista vacía si no hay horas disponibles
+                return ResponseEntity.ok(Collections.emptyList());
             }
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

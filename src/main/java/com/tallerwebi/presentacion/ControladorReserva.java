@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
-import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.GarageTipoVehiculoDTO;
@@ -30,21 +30,18 @@ public class ControladorReserva {
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
-    private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
         this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
-        this.servicioEstadoReserva = servicioEstadoReserva;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
     public ModelAndView listarReservas(HttpServletRequest request) {
-
         ModelMap model = new ModelMap();
         HttpSession session = request.getSession();
 
@@ -67,16 +64,16 @@ public class ControladorReserva {
         return new ModelAndView("my-reservation", model);
     }
 
-    @RequestMapping(path = "/cancelar-reserva/{id}", method = RequestMethod.GET)
-    public ModelAndView cancelarReserva(@PathVariable("id") Long reservaId) {
+    @RequestMapping(path = "/cancelar/{id}", method = RequestMethod.GET)
+    public ModelAndView cancelar(@PathVariable("id") Long reservaId) {
 
-        servicioReserva.cancelarReserva(reservaId);
+        servicioReserva.cancelar(reservaId);
 
         return new ModelAndView("redirect:/reservas/listar");
     }
 
     @RequestMapping("/start/{id}")
-    public ModelAndView goToPreReservation(HttpServletRequest request, @PathVariable("id") Integer garageId) {
+    public ModelAndView preReserva(HttpServletRequest request, @PathVariable("id") Integer garageId) {
         ModelMap model = new ModelMap();
 
         List<String> listaTotalDeHoras = Arrays.asList("09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00");
@@ -84,8 +81,7 @@ public class ControladorReserva {
         Garage garage = servicioGarage.buscarPorId(garageId);
 
         if (garage == null) {
-            //TODO: redireccionar a la nueva home!
-            return new ModelAndView("redirect:../login");
+            return new ModelAndView("redirect:../home");
         }
 
         Long userId = (Long) request.getSession().getAttribute("ID");
@@ -95,9 +91,6 @@ public class ControladorReserva {
         }
 
         List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
-
-        //traer todos los tipos de vehiculos para matchear en el listado segun el garage..
-
 
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setGarageId(garage.getId());
@@ -143,7 +136,7 @@ public class ControladorReserva {
     }
 
     @RequestMapping(path = "/confirm", method = RequestMethod.POST)
-    public ModelAndView confirmReservation(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView confirmar(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Garage garage = servicioGarage.buscarPorId(reservaDTO.garageId);
@@ -163,21 +156,24 @@ public class ControladorReserva {
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("reserva") ReservaDTO reservaDTO, HttpServletRequest request) {
+    public ModelAndView guardar(@ModelAttribute("reserva") ReservaDTO reservaDTO) {
         ModelMap model = new ModelMap();
 
         try {
+
             Reserva nuevaReserva = servicioReserva.agregarReserva(reservaDTO);
             Long reservaId = nuevaReserva.getId();
             return new ModelAndView("redirect:/pago/formulario-pago/"+reservaId);
 
-        } catch (ExcepcionGarageNoEncontrado e) {
+        } catch (ExcepcionGarageNoExiste e) {
+
             List<Garage> garages = servicioGarage.traerTodos();
             Garage garage = garages.get(0);
             model.put("garage", garage);
             model.put("reserva", reservaDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
             return new ModelAndView("confirm-reservation", model);
+
         } catch (ExcepcionUsuarioNoEncontrado e) {
             return new ModelAndView("redirect:../login");
         }

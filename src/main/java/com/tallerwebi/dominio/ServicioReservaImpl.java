@@ -1,5 +1,5 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoEncontrado;
+import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
@@ -32,7 +32,7 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
-    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoEncontrado, ExcepcionUsuarioNoEncontrado {
+    public Reserva agregarReserva(ReservaDTO reservaDTO) throws ExcepcionGarageNoExiste, ExcepcionUsuarioNoEncontrado {
 
         Usuario usuario = servicioUsuario.get(reservaDTO.userId);
 
@@ -47,7 +47,7 @@ public class ServicioReservaImpl implements ServicioReserva {
         EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente");
 
         if(garage == null) {
-            throw new ExcepcionGarageNoEncontrado();
+            throw new ExcepcionGarageNoExiste();
         }
 
         Reserva reserva = new Reserva(
@@ -62,7 +62,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         );
 
-        repositorioReserva.agregarNuevaReserva(reserva);
+        repositorioReserva.guardar(reserva);
         return reserva;
     }
 
@@ -74,19 +74,19 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public List<Reserva> obtenerReservasByUserId(Long id) {
-        return repositorioReserva.obtenerReservasByUserId(id);
+        return repositorioReserva.obtenerPorUserId(id);
     }
 
     @Override
     public Reserva buscarPorId(Long reservaId) {
-        return repositorioReserva.obtenerReservaPorId(reservaId);
+        return repositorioReserva.obtenerPorId(reservaId);
     }
 
     @Override
-    public void cancelarReserva(Long reservaId) {
-        Reserva reserva = repositorioReserva.obtenerReservasByReservaId(reservaId);
+    public void cancelar(Long reservaId) {
+        Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
         reserva.setEstado(setearEstadoCancelado());
-        repositorioReserva.modificarReserva(reserva);
+        repositorioReserva.actualizar(reserva);
     }
 
     private EstadoReserva setearEstadoCancelado() {
