@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ControladorRestReserva {
@@ -22,9 +23,12 @@ public class ControladorRestReserva {
     }
 
     @PostMapping(path = "/getAvailableHours")
-    public ResponseEntity<List<String>> traerDisponibilidad(@RequestBody String date) {
+    public ResponseEntity<List<String>> traerDisponibilidad(@RequestBody Map<String, Object> requestBody) {
         try {
-            List<String> horasOcupadas = servicioDisponibilidad.traerHorasOcupadas(date); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
+            String selectedDate = (String) requestBody.get("selectedDate");
+            String garageTipoVehiculoId = (String) requestBody.get("garageTipoVehiculoId");
+            Integer garageId = (Integer) requestBody.get("garageId");
+            List<String> horasOcupadas = servicioDisponibilidad.traerHorasOcupadas(selectedDate); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
 
             if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
                 return ResponseEntity.ok(horasOcupadas);
