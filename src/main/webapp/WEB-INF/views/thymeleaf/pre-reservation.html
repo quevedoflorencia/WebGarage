@@ -161,7 +161,7 @@
         }
 
         function getFiledHours(selectedDate) {
-            let data = JSON.stringify({selectedDate: selectedDate.toString(), garageTipoVehiculoId: tipo_vehiculo.value, garageId: idGarage})
+            let data = JSON.stringify({selectedDate: selectedDate.toString(), garageTipoVehiculoId: parseInt(tipo_vehiculo.value), garageId: idGarage})
             fetch('http://localhost:8080/getAvailableHours', {
                 method: 'POST',
                 headers: {

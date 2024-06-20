@@ -11,6 +11,8 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service("servicioReserva")
 @Transactional
@@ -87,6 +89,26 @@ public class ServicioReservaImpl implements ServicioReserva {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
         reserva.setEstado(setearEstadoCancelado());
         repositorioReserva.actualizar(reserva);
+    }
+
+    @Override
+    public Collection<String> traerHorasCierre(Integer garageId) {
+        Garage garage = servicioGarage.buscarPorId(garageId);
+        return horariosAListaDeHoras(garage.getHorarioApertura(), garage.getHorarioCierre());
+    }
+
+    private List horariosAListaDeHoras(LocalTime horarioApertura, LocalTime horarioCierre) {
+        List activeHours = IntStream.rangeClosed(horarioApertura.getHour(),horarioCierre.getHour()).mapToObj(Integer::toString).collect(Collectors.toList());
+        List hours = IntStream.rangeClosed(0,23).mapToObj(Integer::toString).collect(Collectors.toList());
+
+        return (List) hours.stream().filter(hora->!activeHours.contains(hora)).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public Collection<String> traerHorasOcupadasPorDiaYTipoVehiculo(String selectedDate, Integer garageTipoVehiculoId) {
+        List reservas = repositorioReserva.reservasPorFechaYTipoDeAuto(selectedDate,garageTipoVehiculoId);
+        return horasOcupadasEseDia(reservas);
     }
 
     private EstadoReserva setearEstadoCancelado() {
