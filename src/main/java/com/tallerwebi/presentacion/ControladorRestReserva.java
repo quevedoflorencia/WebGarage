@@ -26,6 +26,8 @@ public class ControladorRestReserva {
         try {
             List<String> horasOcupadas = servicioDisponibilidad.traerHorasOcupadas(date); //todo se debe validar por si el date es nulo o vacio y no ejecutar la funcionalidad
 
+
+
             if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
                 return ResponseEntity.ok(horasOcupadas);
             } else {
