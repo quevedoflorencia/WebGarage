@@ -28,8 +28,10 @@
                     <div th:if="${session.ID == null}">
                         <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
                     </div>
+
                     <div th:if="${session.ID != null}">
-                        <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
+                        <a th:if="${#request.requestURI != '/reservas/listar'}" th:href="@{'/reservas/listar'}" type="button" class="btn">Ver Reservas</a>
+                        <!-- <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a> -->
                         <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
                     </div>
 
@@ -39,10 +41,8 @@
 
 
         <div th:fragment="footer">
-
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
             <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-
         </div>
     </body>
 </html>
