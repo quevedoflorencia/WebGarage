@@ -9,10 +9,7 @@ import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,13 +28,16 @@ public class ControladorReserva {
     private ServicioReserva servicioReserva;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
 
+    private EmailService emailService;
+
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, EmailService emailService) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
         this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
+        this.emailService = emailService;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -178,5 +178,17 @@ public class ControladorReserva {
             return new ModelAndView("redirect:../login");
         }
 
+    }
+
+    /*Probando si funciona*/
+    @PostMapping("/confirmarPorEmail")
+    /*public String confirmarReserva(@RequestParam("email") String email) {*/
+    public String confirmarReserva(@RequestParam("v.prats@hotmail.com.ar") String email) {
+        // Lógica para guardar la reserva en la base de datos
+
+        // Enviar correo de confirmación
+        emailService.sendSimpleMessage(email, "Confirmación de Reserva", "Su reserva ha sido confirmada.");
+
+        return "confirmacion";
     }
 }
