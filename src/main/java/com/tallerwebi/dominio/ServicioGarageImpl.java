@@ -30,4 +30,10 @@ public class ServicioGarageImpl implements ServicioGarage {
     public List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada) {
         return repositorioGarage.getGarageSegunCapacidad(capacidadBuscada);
     }
+
+    @Override
+    public List<Garage> getPaginacion(Integer page, Integer size) {
+        return repositorioGarage.obtenerPaginacion(page, size);
+    }
+
 }

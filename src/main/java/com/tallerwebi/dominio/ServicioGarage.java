@@ -11,4 +11,7 @@ public interface ServicioGarage {
 
 
     List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada);
+
+    List<Garage> getPaginacion(Integer page, Integer size);
+
 }

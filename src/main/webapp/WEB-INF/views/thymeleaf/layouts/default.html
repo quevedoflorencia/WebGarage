@@ -25,6 +25,9 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
+                    <a th:href="@{'/garages/listado/'}" type="button" class="btn ">Garages</a>
+
                     <div th:if="${session.ID == null}">
                         <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
                     </div>

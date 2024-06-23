@@ -3,11 +3,15 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.model.Garage;
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
 
 @Repository("garageRepository")
@@ -24,6 +28,33 @@ public class RepositorioGarageImpl implements RepositorioGarage {
                 .createCriteria(Garage.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();
+    }
+
+    @Override
+    public List<Garage> obtenerPaginacion(Integer page, Integer size) {
+        Session session = sessionFactory.getCurrentSession();
+
+        // Asegurar que page sea al menos 1
+        int pageNumber = Math.max(page, 1);
+
+        // Calcular el offset basado en la página y el tamaño de la página
+        int offset = (pageNumber - 1) * size;
+
+        // Consulta SQL nativa ajustada para MariaDB
+        String sqlQuery = "SELECT * FROM Garage " +
+                "ORDER BY id " +
+                "LIMIT :size OFFSET :offset";
+
+        // Crear la consulta utilizando Query de Hibernate
+        Query query = session.createNativeQuery(sqlQuery, Garage.class);
+        query.setParameter("size", size);
+        query.setParameter("offset", offset);
+
+        // Ejecutar la consulta y obtener los garages paginados
+        List<Garage> garagesPaginados = query.getResultList();
+
+        return garagesPaginados;
+
     }
 
     @Override

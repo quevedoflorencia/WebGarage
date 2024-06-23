@@ -1,43 +1,49 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="layouts/default.html :: head">
-        <th:block th:fragment="propiedadesAdicionales"></th:block>
+        <th:block th:fragment="propiedadesAdicionales">
+            <link rel="stylesheet" th:href="@{/css/home.css}"/>
+        </th:block>
     </head>
-
     <body>
         <div th:replace="layouts/default.html :: nav"></div>
 
         <main role="main" class="container">
             <h1>Estacionamientos </h1>
             <p> Contamos con estacionamientos en toda la Ciudad para que solo te preocupes de #disfrutar!</p>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 mb-4" th:each="garages : ${garages}">
-                        <div class="card h-100">
-                            <div class="card-body">
-                               <img class="card-img-top" src="https://bouldercolorado.gov/sites/default/files/styles/inline_977x545/public/2023-09/11th-and-spruce-garage-entrance-photo-gates-and-ticket-kioskssept-2023.png?itok=YBFZShML" alt="garage-foto">
-                               <h5 class="card-title" th:text="${garages.nombre}"></h5>
-                               <h6 class="card-subtitle mb-2 text-muted"> Horario de apertura: <span th:text="${garages.horarioApertura}"></span>Hs.</h6>
-                               <h6 class="card-subtitle mb-2 text-muted"> Horario de cierre: <span th:text="${garages.horarioCierre}"></span>Hs.</h6>
-                               <p class="card-text">Capacidad: <span th:text="${garages.capacidad}"></span> coches.</p>
-                               <a href="#" class="btn btn-primary">Reservar</a>
-                            </div>
+            <div class="row justify-content-around">
+                <div class="col-3 my-3" th:each="garage : ${garages}">
+                    <div class="card grid-item round">
+                        <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${garage.nombre}"></h5>
+                            <p class="card-text">Podés reservar de <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
+                            <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <p th:text="${pageSize}"></p>
+                <nav class="w-100 d-flex justify-content-center">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '#estacionamientos'}">Anterior</a>
+                        </li>
 
-            <!-- Agrega los scripts de Bootstrap -->
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js">
+                        <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                            th:classappend="${pageNumber == currentPage} ? 'active' : ''">
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${pageNumber} + '&size=' + ${pageSize} + '#estacionamientos'}" th:text="${pageNumber}"></a>
+                        </li>
 
-            </script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+                        <li class="page-item" th:classappend="${currentPage == pageNumbers.size()} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '#estacionamientos'}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </main>
 
-         <!-- Boostrap core js -->
-        <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+        <div th:replace="layouts/default.html :: footer"></div>
     </body>
 </html>
