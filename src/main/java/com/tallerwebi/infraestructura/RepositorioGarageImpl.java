@@ -40,7 +40,7 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         // Calcular el offset basado en la página y el tamaño de la página
         int offset = (pageNumber - 1) * size;
 
-        // Consulta SQL nativa ajustada para MariaDB
+        // NOTA: si lo hacia con criteria daba error con el distinct por eso busqué otra forma.
         String sqlQuery = "SELECT * FROM Garage " +
                 "ORDER BY id " +
                 "LIMIT :size OFFSET :offset";
@@ -50,7 +50,6 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         query.setParameter("size", size);
         query.setParameter("offset", offset);
 
-        // Ejecutar la consulta y obtener los garages paginados
         List<Garage> garagesPaginados = query.getResultList();
 
         return garagesPaginados;
