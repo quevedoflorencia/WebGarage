@@ -21,7 +21,7 @@ public class HibernateConfig {
         dataSource.setUrl("jdbc:mysql://localhost:3306/web_garage");
         dataSource.setSchema("web_garage");
         dataSource.setUsername("root");
-        dataSource.setPassword("Prats1986!");
+        dataSource.setPassword("root");
         return dataSource;
     }
 

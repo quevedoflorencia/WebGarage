@@ -1,4 +1,3 @@
-/*
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
@@ -230,4 +229,3 @@ public class ControladorReservaTest {
         verify(servicioReserva, times(1)).cancelar(reservaId);
     }
 }
-*/
