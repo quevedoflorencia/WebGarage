@@ -35,25 +35,10 @@ public class ControladorGarageTest {
         when(servicioGarage.getPaginacion(1, 3)).thenReturn(garages);
         when(servicioGarage.traerTodos()).thenReturn(garages);
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3);
+        ModelAndView mav = controladorGarage.inicio(1, 3);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
-        assertThat(mav.getModel().get("garages"), equalToObject(garages));
-    }
-
-    @Test
-    public void queAlIngresarALaPantallaDeListarGaragesMeMuestreTodosLosGaragesExistentes() {
-        List<Garage> garagesMock = new ArrayList<>();
-        garagesMock.add(new Garage());
-        garagesMock.add(new Garage());
-
-        when(this.servicioGarage.getPaginacion(1, 3)).thenReturn(garagesMock);
-        when(this.servicioGarage.traerTodos()).thenReturn(garagesMock);
-
-        ModelAndView mav = this.controladorGarage.inicio(1, 3);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
-        assertThat(mav.getModel().get("garages"), equalToObject(garagesMock));
+        assertThat((List<Garage>) mav.getModel().get("garages"), equalTo(garages));
     }
 
     @Test
@@ -63,14 +48,22 @@ public class ControladorGarageTest {
             garagesMock.add(new Garage());
         }
 
-        when(this.servicioGarage.getPaginacion(1, 3)).thenReturn(garagesMock.subList(0, 3));
-        when(this.servicioGarage.traerTodos()).thenReturn(garagesMock);
+        when(servicioGarage.getPaginacion(1, 3)).thenReturn(garagesMock.subList(0, 3));
+        when(servicioGarage.traerTodos()).thenReturn(garagesMock);
+        when(servicioGarage.validarPagina(null)).thenReturn(1);
+        when(servicioGarage.validarTamanioPagina(null)).thenReturn(3);
+        when(servicioGarage.calcularTotalPaginas(10, 3)).thenReturn(4);
+        when(servicioGarage.generarNumerosPagina(4)).thenReturn(List.of(1, 2, 3, 4));
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3);
+        ModelAndView mav = this.controladorGarage.inicio(null, null);
+        System.out.println("currentPage: " + mav.getModel().get("currentPage"));
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat(mav.getModel().get("currentPage"), equalTo(1));
         assertThat(mav.getModel().get("pageSize"), equalTo(3));
-        assertThat((List<Integer>) mav.getModel().get("pageNumbers"), equalTo(List.of(1, 2, 3, 4)));
+
+        List<Integer> expectedPageNumbers = List.of(1, 2, 3, 4);
+        assertThat((List<Integer>) mav.getModel().get("pageNumbers"), equalTo(expectedPageNumbers));
     }
+
 }

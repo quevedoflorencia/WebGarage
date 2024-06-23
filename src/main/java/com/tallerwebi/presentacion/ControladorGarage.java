@@ -29,18 +29,13 @@ public class ControladorGarage {
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "3") Integer size) {
         ModelMap model = new ModelMap();
-        // validacion
-        page = (page == null || page <= 0) ? 1 : page;
-        size = (size == null || size <= 0) ? 3 : size;
+        page = servicioGarage.validarPagina(page);
+        size = servicioGarage.validarTamanioPagina(size);
 
-        // Obtener la lista paginada de garages y calcular total de elementos y páginas
         List<Garage> garagesPaginados = servicioGarage.getPaginacion(page, size);
-        Integer todosGarages = servicioGarage.traerTodos().size();
-        Integer totalPages = (int) Math.ceil((double) todosGarages / size);
-
-        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
+        Integer totalGarages = servicioGarage.traerTodos().size();
+        Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
+        List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
 
         model.put("garages", garagesPaginados);
         model.put("pageNumbers", pageNumbers);
