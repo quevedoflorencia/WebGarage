@@ -30,14 +30,16 @@ public class ControladorReserva {
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
+    private EmailService emailService;
 
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo) {
+    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, EmailService emailService) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
         this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
+        this.emailService = emailService;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -68,7 +70,7 @@ public class ControladorReserva {
     public ModelAndView cancelar(@PathVariable("id") Long reservaId) {
 
         servicioReserva.cancelar(reservaId);
-
+        emailService.sendSimpleMessage(servicioReserva.buscarPorId(reservaId));
         return new ModelAndView("redirect:/reservas/listar");
     }
 

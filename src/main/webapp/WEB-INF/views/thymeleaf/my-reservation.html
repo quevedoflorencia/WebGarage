@@ -25,8 +25,9 @@
                             <div class="d-flex justify-content-end w-100">
                                 <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
                                     <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
+                                   <!-- <span class="infoBotonPagarReserva">Haz click para pagar la reserva</span>-->
                                     <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></a>
-                                    <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
+                                    <span class="infoBotonCancelarReserva">Haz click acá para cancelar la reserva</span>
                                 </div>
                             </div>
 

@@ -22,28 +22,45 @@ public class EmailService {
         this.emailSender = emailSender;
     }
     public void sendSimpleMessage(Reserva reserva) {
+
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setTo(reserva.getUsuario().getEmail());
+            if (reserva.getEstado().getId() !=5) {
             helper.setSubject("Reserva N°: " + reserva.getId());
 
-            String text = "<html><body>"
-                    + "<img src='cid:logoImage' style=' width: 5%;'><br><br>"
-                    + "Hola " + reserva.getUsuario().getNombre() + ",<br><br>"
-                    + "Aquí están los detalles de tu reserva N° " + reserva.getId() + "<br><br>"
-                    + "Fecha: " + reserva.getDia() + "<br>"
-                    + "Horario de inicio: " + reserva.getHorarioInicio() + "<br>"
-                    + "Horario de finalización: " + reserva.getHorarioFin() + "<br>"
-                    + "Garege: " + reserva.getGarage().getNombre() + "<br>"
-                    + "Mail del Usuario: " + reserva.getUsuario().getEmail() + "<br>"
-                    + "Monto abonado: $" + reserva.getPrecio() + "<br>"
-                    + "Gracias por reservar con WebGarage."
-                    + "</body></html>";
+                String text = "<html><body>"
+                        + "<img src='cid:logoImage' style=' width: 5%;'><br><br>"
+                        + "Hola " + reserva.getUsuario().getNombre() + ",<br><br>"
+                        + "Aquí están los detalles de tu reserva N° " + reserva.getId() + "<br><br>"
+                        + "Fecha: " + reserva.getDia() + "<br>"
+                        + "Horario de inicio: " + reserva.getHorarioInicio() + "<br>"
+                        + "Horario de finalización: " + reserva.getHorarioFin() + "<br>"
+                        + "Garege: " + reserva.getGarage().getNombre() + "<br>"
+                        + "Mail del Usuario: " + reserva.getUsuario().getEmail() + "<br>"
+                        + "Monto abonado: $" + reserva.getPrecio() + "<br>"
+                        + "Gracias por reservar con WebGarage."
+                        + "</body></html>";
 
-            helper.setText(text, true);
-
+                helper.setText(text, true);
+            }else{
+                helper.setSubject("Cancelaste tu Reserva N°: " + reserva.getId());
+                String cancelacion = "<html><body>"
+                        + "<img src='cid:logoImage' style=' width: 5%;'><br><br>"
+                        + "Hola " + reserva.getUsuario().getNombre() + ", cancelaste tu reserva N° " + reserva.getId() + ".<br><br>"
+                        + "Detalles de tu reserva cancelada: " +"<br>"
+                        + "Fecha: " + reserva.getDia() + "<br>"
+                        + "Horario de inicio: " + reserva.getHorarioInicio() + "<br>"
+                        + "Horario de finalización: " + reserva.getHorarioFin() + "<br>"
+                        + "Garege: " + reserva.getGarage().getNombre() + "<br>"
+                        + "Mail del Usuario: " + reserva.getUsuario().getEmail() + "<br>"
+                        + "Monto abonado: $" + reserva.getPrecio() + "<br>"
+                        + "Te esperamos para una nueva reserva."
+                        + "</body></html>";
+                helper.setText(cancelacion, true);
+            }
             File archivo = new File("src/main/webapp/resources/core/img/navbar/logo.png");
             helper.addInline("logoImage", archivo);
 
