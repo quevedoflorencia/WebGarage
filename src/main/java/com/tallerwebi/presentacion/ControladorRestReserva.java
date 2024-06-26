@@ -36,6 +36,8 @@ public class ControladorRestReserva {
                 traerHorasOcupadas(horasOcupadas, selectedDate, garageTipoVehiculoId, garageId);
             }
 
+
+
             if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
                 return ResponseEntity.ok(horasOcupadas);
             } else {

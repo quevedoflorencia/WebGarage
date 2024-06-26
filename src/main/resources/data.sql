@@ -1,8 +1,9 @@
 INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Pendiente');
 INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Confirmado');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'En curso');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Rechazado');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Pagado');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Activo');
 INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Cancelado');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Vencido');
 
 INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Auto', 'fa-car-side');
 INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Camioneta', 'fa-truck');
@@ -46,4 +47,5 @@ INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, e
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-05-06', '02:00', '16:00', 2,3);
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-03-07', '03:00', '23:00', 2,3);
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-01-20', '04:00', '13:00', 2,1);
+
 

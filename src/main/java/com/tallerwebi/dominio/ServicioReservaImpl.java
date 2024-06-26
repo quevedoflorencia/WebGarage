@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,7 +47,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
 
-        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente");
+        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Confirmado");
 
         if(garage == null) {
             throw new ExcepcionGarageNoExiste();
@@ -87,8 +88,37 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
-        reserva.setEstado(setearEstadoCancelado());
+        reserva.setEstado(obtenerEstado("Cancelado"));
         repositorioReserva.actualizar(reserva);
+    }
+
+    @Override
+    public void validarVencimientoReservas(List<Reserva> reservas) {
+        for (Reserva reserva : reservas) {
+            if(estaVencida(reserva)){
+                reserva.setEstado(obtenerEstado("Vencido"));
+                repositorioReserva.actualizar(reserva);
+            }
+        }
+    }
+
+    @Override
+    public void pagar(Reserva reserva) {
+        reserva.setEstado(obtenerEstado("Pagado"));
+        repositorioReserva.actualizar(reserva);
+    }
+
+    @Override
+    public boolean estaVencida(Reserva reserva) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaReserva = LocalDate.parse(reserva.getDia(),formatter);
+        LocalDate fechaActual = LocalDate.now();
+
+        if(fechaReserva.isBefore(fechaActual)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -111,8 +141,9 @@ public class ServicioReservaImpl implements ServicioReserva {
         return horasOcupadasEseDia(reservas);
     }
 
-    private EstadoReserva setearEstadoCancelado() {
-        return servicioEstadoReserva.obtenerEstadoSegunDescripcion("Cancelado");
+
+    private EstadoReserva obtenerEstado(String estado) {
+        return servicioEstadoReserva.obtenerEstadoSegunDescripcion(estado);
     }
 
     private List horasOcupadasEseDia(List reservas) {

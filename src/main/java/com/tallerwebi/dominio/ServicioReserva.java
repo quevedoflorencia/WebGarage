@@ -23,6 +23,12 @@ public interface ServicioReserva {
 
     void cancelar(Long reservaId);
 
+    void validarVencimientoReservas(List<Reserva> reservas);
+
+    boolean estaVencida(Reserva reserva);
+
+    void pagar(Reserva reserva);
+
     Collection<String> traerHorasCierre(Integer garageId);
 
     Collection<String> traerHorasOcupadasPorDiaYTipoVehiculo(String selectedDate, Integer garageTipoVehiculoId);
