@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ServicioReserva {
@@ -27,6 +28,10 @@ public interface ServicioReserva {
     boolean estaVencida(Reserva reserva);
 
     void pagar(Reserva reserva);
+
+    Collection<String> traerHorasCierre(Integer garageId);
+
+    Collection<String> traerHorasOcupadasPorDiaYTipoVehiculo(String selectedDate, Integer garageTipoVehiculoId);
 }
 
 
