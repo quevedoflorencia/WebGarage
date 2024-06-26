@@ -16,12 +16,10 @@ import javax.transaction.Transactional;
 public class ServicioPagoImpl implements ServicioPago{
 
     private RepositorioPago repositorioPago;
-    private ServicioReserva servicioReserva;
 
     @Autowired
-    public ServicioPagoImpl(RepositorioPago repositorioPago, ServicioReserva servicioReserva){
+    public ServicioPagoImpl(RepositorioPago repositorioPago){
         this.repositorioPago = repositorioPago;
-        this.servicioReserva = servicioReserva;
     }
 
     @Override
