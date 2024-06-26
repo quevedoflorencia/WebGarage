@@ -229,3 +229,11 @@ ul li{
     background-color: red;
     transform: translate(-50%, -50%);
 }
+
+.page-link, .page-item:last-child .page-link{
+    color: #394A8F!important;
+}
+.active>.page-link, .page-link.active{
+    color: white!important;
+    background-color: #394A8F;
+}

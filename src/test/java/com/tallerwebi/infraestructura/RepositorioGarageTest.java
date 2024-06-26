@@ -95,4 +95,63 @@ public class RepositorioGarageTest {
         assertThat(result, hasSize(1));
         assertThat(result.get(0).getCapacidad(), equalTo(10));
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedanObtenerGaragesConPaginacion() {
+        // Insertar garages de prueba
+        for (int i = 1; i <= 10; i++) {
+            Garage garage = new Garage();
+            garage.setCapacidad(i * 5);
+            this.sessionFactory.getCurrentSession().save(garage);
+        }
+
+        // Primera página con tamaño 3
+        List<Garage> resultPage1 = this.repositorioGarage.obtenerPaginacion(1, 3);
+
+        assertThat(resultPage1, hasSize(3));
+        assertThat(resultPage1.get(0).getCapacidad(), equalTo(5));
+        assertThat(resultPage1.get(1).getCapacidad(), equalTo(10));
+        assertThat(resultPage1.get(2).getCapacidad(), equalTo(15));
+
+        // Segunda página con tamaño 3
+        List<Garage> resultPage2 = this.repositorioGarage.obtenerPaginacion(2, 3);
+
+        assertThat(resultPage2, hasSize(3));
+        assertThat(resultPage2.get(0).getCapacidad(), equalTo(20));
+        assertThat(resultPage2.get(1).getCapacidad(), equalTo(25));
+        assertThat(resultPage2.get(2).getCapacidad(), equalTo(30));
+
+        // Tercera página con tamaño 3
+        List<Garage> resultPage3 = this.repositorioGarage.obtenerPaginacion(3, 3);
+
+        assertThat(resultPage3, hasSize(3));
+        assertThat(resultPage3.get(0).getCapacidad(), equalTo(35));
+        assertThat(resultPage3.get(1).getCapacidad(), equalTo(40));
+        assertThat(resultPage3.get(2).getCapacidad(), equalTo(45));
+
+        // Cuarta página con tamaño 3, debería tener solo 1 garage
+        List<Garage> resultPage4 = this.repositorioGarage.obtenerPaginacion(4, 3);
+
+        assertThat(resultPage4, hasSize(1));
+        assertThat(resultPage4.get(0).getCapacidad(), equalTo(50));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeDevuelvaListaVaciaCuandoPaginaExcedeElTotal() {
+        // Insertar garages de prueba
+        for (int i = 1; i <= 5; i++) {
+            Garage garage = new Garage();
+            garage.setCapacidad(i * 5);
+            this.sessionFactory.getCurrentSession().save(garage);
+        }
+
+        // Página que excede el total
+        List<Garage> result = this.repositorioGarage.obtenerPaginacion(3, 3);
+
+        assertThat(result, is(empty()));
+    }
 }
