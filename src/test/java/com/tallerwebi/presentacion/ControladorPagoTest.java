@@ -42,7 +42,7 @@ public class ControladorPagoTest {
 
         this.servicioPago = mock(ServicioPago.class);
         this.servicioReserva = mock(ServicioReserva.class);
-        this.controladorPago = new ControladorPago(servicioPago, servicioReserva);
+        /*this.controladorPago = new ControladorPago(servicioPago, servicioReserva);*/
     }
 
 

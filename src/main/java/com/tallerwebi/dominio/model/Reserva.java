@@ -56,6 +56,14 @@ public class Reserva {
         this.pago = pago;
     }
 
+    public GarageTipoVehiculo getGarageTipoVehiculo() {
+        return garageTipoVehiculo;
+    }
+
+    public void setGarageTipoVehiculo(GarageTipoVehiculo garageTipoVehiculo) {
+        this.garageTipoVehiculo = garageTipoVehiculo;
+    }
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }

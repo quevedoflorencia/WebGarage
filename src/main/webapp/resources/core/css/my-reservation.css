@@ -9,7 +9,7 @@
     cursor: pointer;
 }
 
-.botonCancelarReserva .infoBotonCancelarReserva{
+.botonCancelarReserva .infoBotonCancelarReserva .infoBotonPagarReserva{
     visibility: hidden;
     width: 160px;
     background-color: black;
@@ -26,7 +26,7 @@
     transition: opacity 0.5s;
 }
 
-.botonCancelarReserva:hover .infoBotonCancelarReserva {
+.botonCancelarReserva:hover .infoBotonCancelarReserva .infoBotonPagarReserva {
     visibility: visible;
     opacity: 1;
 }
