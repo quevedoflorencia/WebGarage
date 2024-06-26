@@ -25,11 +25,12 @@
                             <div class="d-flex justify-content-end w-100">
                                 <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
                                     <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
-                                    <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></a>
+                                    <button type="button" class="btn btn-danger align-content-end" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"  th:attr="data-id=${reserva.getId()}">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
                                     <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -40,9 +41,39 @@
     </div>
 </main>
 
-<!-- Boostrap core js -->
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmDeleteModalLabel">Confirmar cancelación</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar la reversa Id: <span id="idReserva"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger align-content-end" id="confirmDeleteButton">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<div th:replace="layouts/default.html :: footer"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let modal = document.getElementById('confirmDeleteModal');
+            modal.addEventListener('show.bs.modal', function (event) {
+                let button = event.relatedTarget;
+                let reservaId = button.getAttribute('data-id');
+                let confirmButton = document.querySelector('#confirmDeleteButton');
+                let idReserva = document.querySelector('#idReserva');
+                idReserva.innerText = reservaId;
+                confirmButton.href = '/reservas/cancelar/' + reservaId;
+            });
+        });
+    </script>
 </body>
+
 </html>

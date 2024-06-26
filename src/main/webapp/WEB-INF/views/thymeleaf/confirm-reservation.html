@@ -58,22 +58,58 @@
 
                 <div class="d-flex justify-content-between w-100 my-3">
                     <div>
-                        <a th:href="@{'/reservas/listar'}" class="btn btn-danger">Cancelar</a>
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-danger">Cancelar</a>
                     </div>
                     <div>
-                        <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-warning mx-3">Modificar</a>
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#confirmEditModal" class="btn btn-warning mx-3">Modificar</a>
 
                         <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
-
                     </div>
                 </div>
 
             </form>
 
-
         </main>
 
+        <!-- Modal de confirmación de cancelación -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteModalLabel">Confirmar cancelación</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas cancelar la reversa?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-danger align-content-end" th:href="@{'/reservas/listar'}">Confirmar cancelación</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación de cancelación -->
+        <div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmEditModalLabel">Modificar Reserva</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas modificar la reversa?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-warning align-content-end" th:href="@{'/reservas/start/' + ${garage.id}}">Modificar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Boostrap core js -->
-        <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+        <div th:replace="layouts/default.html :: footer"></div>
     </body>
 </html>
