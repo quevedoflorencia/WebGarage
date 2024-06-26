@@ -2,7 +2,6 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioReserva;
 import com.tallerwebi.dominio.model.Reserva;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 
     @Override
     public List reservasPorFecha(String date) {
-        final Session session = sessionFactory.getCurrentSession();
         return sessionFactory.getCurrentSession().createCriteria(Reserva.class).add(Restrictions.eq("dia",date)).list();
     }
 
@@ -62,5 +60,16 @@ public class RepositorioReservaImpl implements RepositorioReserva {
 
         return query.getResultList();
 
+    }
+
+    @Override
+    public List reservasPorFechaYTipoDeAuto(String selectedDate, int garageTipoVehiculoId) {
+        String hql = "FROM Reserva R WHERE R.garageTipoVehiculo.id = :garageTipoVehiculo and " +
+                "R.dia = :dia";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("garageTipoVehiculo", garageTipoVehiculoId);
+        query.setParameter("dia", selectedDate);
+
+        return query.getResultList();
     }
 }

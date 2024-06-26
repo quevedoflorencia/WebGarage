@@ -55,16 +55,37 @@ public class ControladorReserva {
 
         Usuario usuario = servicioUsuario.get(userId);
         List<Reserva> reservas = servicioReserva.obtenerReservasByUserId(userId);
+        servicioReserva.validarVencimientoReservas(reservas);
+        List<Reserva> reservasVencidas = new ArrayList<>();
+        List<Reserva> reservasActivas = new ArrayList<>();
 
-        List<Garage> garages = servicioGarage.traerTodos();
-        Garage garage = garages.get(0);
+        ordenarReservasEntreActivasYVencidas(reservas, reservasVencidas, reservasActivas);
 
         model.put("username", usuario.getNombre());
-        model.put("garage", garage);
-        model.put("reservas", reservas);
+        model.put("reservasActivas", reservasActivas);
+        model.put("reservasVencidas", reservasVencidas);
 
         return new ModelAndView("my-reservation", model);
     }
+
+    private void ordenarReservasEntreActivasYVencidas(List<Reserva> reservas, List<Reserva> reservasVencidas, List<Reserva> reservasActivas) {
+        for(Reserva reserva:reservas){
+            if(estaVencida(reserva)){
+                reservasVencidas.add(reserva);
+            }else if(estaActiva(reserva)){
+                reservasActivas.add(reserva);
+            }
+        }
+    }
+
+    private boolean estaActiva(Reserva reserva) {
+        return !reserva.getEstado().getDescripcion().equals("Vencido") || !reserva.getEstado().getDescripcion().equals("Cancelado");
+    }
+
+    private boolean estaVencida(Reserva reserva) {
+        return reserva.getEstado().getDescripcion().equals("Vencido");
+    }
+
 
     @RequestMapping(path = "/cancelar/{id}", method = RequestMethod.GET)
     public ModelAndView cancelar(@PathVariable("id") Long reservaId) {

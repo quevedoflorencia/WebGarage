@@ -59,6 +59,7 @@ public class ControladorPago {
             servicioPago.validarTarjeta(datosPagoDTO.getNumeroTarjeta(), datosPagoDTO.getCvv());
 
             servicioPago.registrarPago(reserva);
+            servicioReserva.pagar(reserva);
 
             model.put("exito", "¡Su pago ha sido exitoso, te esperamos!");
             model.put("reserva", reserva);

@@ -31,12 +31,24 @@
         <div class="container row mt-5">
 
             <form class="col-6" action="#" th:action="@{../confirm}" method="POST" th:object="${reserva}">
+                <div class="selection_tipo_vehiculo d-flex w-100">
+                    <div class="unselected selection"
+                         th:classappend="${garageTipoVehiculoDtoItem.habilitado != true ? ' disabled' : ''}"
+                         th:id="${garageTipoVehiculoDtoItem.idGarageTipoVehiculo}"
+                         th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}">
+                        <i class="fas" th:classappend="${garageTipoVehiculoDtoItem.icono}"></i>
+                        <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
+                        <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
+                            Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
+                        </p>
+                    </div>
+                </div>
 
                 <input type="hidden" th:field="*{garageId}">
                 <input type="hidden" th:field="*{userId}">
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 d-none" id="container_date_picker_from">
                         <label for="datepicker_from">Seleccione los horarios</label>
                         <input type="text" id="datepicker_from" th:field="*{dia}">
                     </div>
@@ -87,18 +99,6 @@
             </form>
             <div class="col-6">
                 <div id="map"></div>
-                <div class="selection_tipo_vehiculo d-flex w-100">
-                    <div class="unselected selection"
-                        th:classappend="${garageTipoVehiculoDtoItem.habilitado != true ? ' disabled' : ''}"
-                        th:id="${garageTipoVehiculoDtoItem.idGarageTipoVehiculo}"
-                        th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}">
-                        <i class="fas" th:classappend="${garageTipoVehiculoDtoItem.icono}"></i>
-                        <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
-                        <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
-                            Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -111,6 +111,7 @@
         var totalHours = [[${ totalHours }]];
         var latitudGarage = [[${ garage.latitud }]];
         var longitudGarage = [[${ garage.longitud }]];
+        var idGarage = [[${ garage.id }]];
 
     </script>
     <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
@@ -121,6 +122,7 @@
         const containerHourPicker = document.getElementById("container_hour_picker");
         const timepicker_until_container = document.getElementById("timepicker_until_container");
         const containerGoReserva = document.getElementById("container-go-reserva");
+        const containerDatePickerFrom = document.getElementById("container_date_picker_from")
         let tipo_vehiculo = document.getElementById("tipo_vehiculo");
         let datePickerFrom = '';
         let timePickerFrom = null;
@@ -159,9 +161,13 @@
         }
 
         function getFiledHours(selectedDate) {
-            fetch('http://localhost:8080/spring/getAvailableHours', {
+            let data = JSON.stringify({selectedDate: selectedDate.toString(), garageTipoVehiculoId: parseInt(tipo_vehiculo.value), garageId: idGarage})
+            fetch('http://localhost:8080/getAvailableHours', {
                 method: 'POST',
-                body: selectedDate.toString()
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
             })
                 .then(response => response.json())
                 .then(data => {
@@ -266,8 +272,12 @@
                     element.classList.add("active");
                     tipo_vehiculo.value = element.id
 
-                    // verificar si se seleccionó todos los campos y en caso de que sí mostrar el btn para continuar:
+                    // TODO: resetear el input fecha -
+                    resetForm();
+                    containerDatePickerFrom.classList.remove("d-none")
 
+                    //TODO: revisar donde ejecutar esta logica.
+                    // verificar si se seleccionó todos los campos y en caso de que sí mostrar el btn para continuar:
                     if (datePickerFrom != null && timePickerFrom != null && timePickerUntil != null) {
                         containerGoReserva.classList.remove("d-none");
                     }

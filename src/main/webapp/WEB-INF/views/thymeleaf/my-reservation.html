@@ -13,37 +13,89 @@
 
 <main role="main" class="container">
     <div class="container">
-        <h1>Bienvenido <span th:text="${username}"></span>! estas son tus reservas: </h1>
+        <div>
+            <h1>Bienvenido <span th:text="${username}"></span>! </h1>
+            <div class="d-flex justify-content-between align-items-start">
+                <h2><span th:text="${ !reservasActivas.isEmpty() ? 'estas son tus reservas:' : 'Aun no tenés reservas. Agrega nuevas:'}"></span> </h2> <a class="btn btnreserva btn-info btn-lg" href="/#estacionamientos">Nueva Reserva</a>
+            </div>
+        </div>
+        <!--tarjetas de reservas activas-->
         <div class="row">
-            <div th:each="reserva : ${reservas}" class="col-3 my-3">
-                <div th:class="${reserva.getEstado().getDescripcion() == 'Cancelado' ? 'card grid-item round cancelada' : 'card grid-item round'}">
+            <div th:each="reserva : ${reservasActivas}"  class="col-3 my-3" th:if="${reserva.getEstado().getDescripcion()!='Cancelado'}">
+                <div class="card grid-item round">
                     <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
                     <div class="card-body mx-2">
-                            <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
-                            <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
-                            <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
-                            <div class="d-flex justify-content-end w-100">
-                                <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
+                        <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
+                        <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                        <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
+                        <div class="d-flex justify-content-end w-100">
+                            <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
+                                <div th:if="${reserva.getEstado().getDescripcion() == 'Confirmado'}">
                                     <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
-                                   <!-- <span class="infoBotonPagarReserva">Haz click para pagar la reserva</span>-->
-                                    <a class="btn btn-danger align-content-end" th:href="@{'/reservas/cancelar/' + ${reserva.getId()}}" ><i class="far fa-trash-alt"></i></a>
-                                    <span class="infoBotonCancelarReserva">Haz click acá para cancelar la reserva</span>
                                 </div>
+                                <button type="button" class="btn btn-danger align-content-end" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"  th:attr="data-id=${reserva.getId()}">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                                <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
-        <div>
-            <a class="btn btnreserva btn-info btn-lg" href="/#estacionamientos">Nueva Reserva</a>
+        </div>
+    <!--tarjetas de reservas Vencidas-->
+        <div class="row">
+            <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}"> Reservas Expiradas</h3>
+            <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
+                <div th:class="${reserva.getEstado().getDescripcion() == 'Vencido' ? 'card grid-item round vencida' : 'card grid-item round'}">
+                    <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
+                    <div class="card-body mx-2">
+                        <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
+                        <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                        <p class="card-text"> Reserva Expirada</p>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
-<!-- Boostrap core js -->
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmDeleteModalLabel">Confirmar cancelación</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar la reversa Id: <span id="idReserva"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger align-content-end" id="confirmDeleteButton">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<div th:replace="layouts/default.html :: footer"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let modal = document.getElementById('confirmDeleteModal');
+            modal.addEventListener('show.bs.modal', function (event) {
+                let button = event.relatedTarget;
+                let reservaId = button.getAttribute('data-id');
+                let confirmButton = document.querySelector('#confirmDeleteButton');
+                let idReserva = document.querySelector('#idReserva');
+                idReserva.innerText = reservaId;
+                confirmButton.href = '/reservas/cancelar/' + reservaId;
+            });
+        });
+    </script>
 </body>
+
 </html>

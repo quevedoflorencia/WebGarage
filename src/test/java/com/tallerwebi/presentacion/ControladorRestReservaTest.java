@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +16,9 @@ public class ControladorRestReservaTest {
 
 	private ControladorRestReserva controladorRestReserva;
 	private String dateDtoMock;
+	private String garageTipoVehiculoId;
+	private Integer garageId;
+
 	private ServicioReserva servicioReservaMock;
 
 
@@ -33,8 +34,14 @@ public class ControladorRestReservaTest {
 		// preparacion
 		when(servicioReservaMock.traerHorasOcupadas(anyString())).thenReturn(new ArrayList());
 
+		// Crear el requestBody
+		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("selectedDate", dateDtoMock);
+		requestBody.put("garageTipoVehiculoId", garageTipoVehiculoId);
+		requestBody.put("garageId", garageId);
+
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(requestBody);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -48,8 +55,14 @@ public class ControladorRestReservaTest {
 		// preparacion
 		when(servicioReservaMock.traerHorasOcupadas(anyString())).thenReturn(hours);
 
+		// Crear el requestBody
+		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("selectedDate", dateDtoMock);
+		requestBody.put("garageTipoVehiculoId", garageTipoVehiculoId);
+		requestBody.put("garageId", garageId);
+
 		// ejecucion
-		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(dateDtoMock);
+		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(requestBody);
 
 		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -61,7 +74,14 @@ public class ControladorRestReservaTest {
 	public void cuandoElServicioTraeUnErrorInternoYDevuelveUnaExcepcion(){
 		doThrow(new RuntimeException()).when(servicioReservaMock).traerHorasOcupadas(anyString());
 
-		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(dateDtoMock);
+		// Crear el requestBody
+		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("selectedDate", dateDtoMock);
+		requestBody.put("garageTipoVehiculoId", garageTipoVehiculoId);
+		requestBody.put("garageId", garageId);
+
+
+		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(requestBody);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
 	}
