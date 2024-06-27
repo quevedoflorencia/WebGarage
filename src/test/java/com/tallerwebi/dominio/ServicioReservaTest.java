@@ -76,15 +76,17 @@ public class ServicioReservaTest {
         reservaDTO.horarioFin = "12:00";
         reservaDTO.precio = 200.0;
 
+        String estadoConfirmado = "Confirmado";
+
         Usuario usuario = new Usuario();
         Garage garage = new Garage();
         GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo();
-        EstadoReserva estadoReserva = new EstadoReserva("Pendiente");
+        EstadoReserva estadoReserva = new EstadoReserva(estadoConfirmado);
 
         when(servicioUsuario.get(reservaDTO.userId)).thenReturn(usuario);
         when(servicioGarage.buscarPorId(reservaDTO.garageId)).thenReturn(garage);
         when(servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId)).thenReturn(garageTipoVehiculo);
-        when(servicioEstadoReserva.obtenerEstadoSegunDescripcion("Pendiente")).thenReturn(estadoReserva);
+        when(servicioEstadoReserva.obtenerEstadoSegunDescripcion(estadoConfirmado)).thenReturn(estadoReserva);
 
         Reserva reserva = servicioReserva.agregarReserva(reservaDTO);
 

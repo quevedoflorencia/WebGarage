@@ -26,16 +26,12 @@ public class ControladorRestPdf {
     @GetMapping("/generate-pdf")
     public void generatePdf(@RequestParam Long reservaID, HttpServletResponse response) throws IOException {
 
-
-        // Crear un nuevo documento PDF
-         PDDocument documento = new PDDocument();
+        PDDocument documento = new PDDocument();
         PDPage pagina = new PDPage();
         documento.addPage(pagina);
 
-        // Crear un flujo de contenido para la página
         PDPageContentStream flujoContenidoPagina = new PDPageContentStream(documento, pagina);
 
-        // Escribir contenido en el flujo de contenido
         flujoContenidoPagina.beginText();
         flujoContenidoPagina.setFont(PDType1Font.HELVETICA, 12);
         flujoContenidoPagina.setLeading(18f);
@@ -44,17 +40,14 @@ public class ControladorRestPdf {
         flujoContenidoPagina.endText();
         flujoContenidoPagina.close();
 
-        // Guardar el documento en memoria
         ByteArrayOutputStream flujoDeSalidaMemoria = new ByteArrayOutputStream();
         documento.save(flujoDeSalidaMemoria);
         documento.close();
 
-        // Configurar la respuesta HTTP para descargar el PDF
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=ReservaWebGarage.pdf");
         response.setContentLength(flujoDeSalidaMemoria.size());
 
-        // Escribir el PDF en la respuesta
         flujoDeSalidaMemoria.writeTo(response.getOutputStream());
         response.getOutputStream().flush();
     }
@@ -82,7 +75,7 @@ public class ControladorRestPdf {
             flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("                                 Gracias por reservar con nosotros");
 
-        }else {
+        } else {
             flujoContenidoPagina.showText("Hubo un error al imprimir la reserva, comuniquese con asistencia tecnica");
         }
     }

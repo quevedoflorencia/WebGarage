@@ -190,11 +190,9 @@ public class ControladorReserva {
 
         } catch (ExcepcionGarageNoExiste e) {
 
-            List<Garage> garages = servicioGarage.traerTodos();
-            Garage garage = garages.get(0);
-            model.put("garage", garage);
             model.put("reserva", reservaDTO);
             model.put("error", "Error al intentar guardar la reserva. Por favor, intente nuevamente");
+
             return new ModelAndView("confirm-reservation", model);
 
         } catch (ExcepcionUsuarioNoEncontrado e) {

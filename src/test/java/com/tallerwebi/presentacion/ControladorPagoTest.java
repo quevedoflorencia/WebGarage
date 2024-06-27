@@ -1,9 +1,11 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.EmailService;
 import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
 import com.tallerwebi.dominio.excepcion.ExcepcionNumeroTarjetaInvalida;
+import com.tallerwebi.dominio.excepcion.ExcepcionReservaNoExiste;
 import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.presentacion.dto.DatosPagoDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +28,14 @@ public class ControladorPagoTest {
 
     private ServicioPago servicioPago;
     private ServicioReserva servicioReserva;
+    private EmailService emailService;
     private ControladorPago controladorPago;
 
     private DatosPagoDTO datosPagoDTO;
     private Reserva reserva;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         reserva = new Reserva();
 
         datosPagoDTO = new DatosPagoDTO();
@@ -42,9 +45,9 @@ public class ControladorPagoTest {
 
         this.servicioPago = mock(ServicioPago.class);
         this.servicioReserva = mock(ServicioReserva.class);
-        /*this.controladorPago = new ControladorPago(servicioPago, servicioReserva);*/
+        this.emailService = mock(EmailService.class);
+        this.controladorPago = new ControladorPago(servicioPago, servicioReserva, emailService);
     }
-
 
     @Test
     void irPagoDeberiaMostrarFormularioPago() {
@@ -58,7 +61,7 @@ public class ControladorPagoTest {
     }
 
     @Test
-    void validarPagoDeberiaMostrarPagoExitosoSiElPagoEsCorrecto() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida {
+    void validarPagoDeberiaMostrarPagoExitosoSiElPagoEsCorrecto() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida, ExcepcionReservaNoExiste {
 
         when(servicioReserva.buscarPorId(datosPagoDTO.getIdReserva())).thenReturn(reserva);
 
@@ -73,7 +76,7 @@ public class ControladorPagoTest {
     }
 
     @Test
-    void validarPagoDeberiaMostrarErrorSiLaReservaNoExiste() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida {
+    void validarPagoDeberiaMostrarErrorSiLaReservaNoExiste() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida, ExcepcionReservaNoExiste {
         when(servicioReserva.buscarPorId(datosPagoDTO.getIdReserva())).thenReturn(null);
 
         ModelAndView mav = controladorPago.validarPago(datosPagoDTO);
@@ -86,7 +89,7 @@ public class ControladorPagoTest {
     }
 
     @Test
-    void validarPagoDeberiaMostrarErrorSiElNumeroDeTarjetaEsInvalido() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida {
+    void validarPagoDeberiaMostrarErrorSiElNumeroDeTarjetaEsInvalido() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida, ExcepcionReservaNoExiste {
 
         datosPagoDTO.setNumeroTarjeta(NUMERO_TARJETA_INVALIDO);
 
@@ -103,7 +106,7 @@ public class ControladorPagoTest {
     }
 
     @Test
-    void validarPagoDeberiaMostrarErrorSiElCvvEsInvalido() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida {
+    void validarPagoDeberiaMostrarErrorSiElCvvEsInvalido() throws ExcepcionNumeroTarjetaInvalida, ExcepcionCvvTarjetaInvalida, ExcepcionReservaNoExiste {
 
         datosPagoDTO.setCvv(CVV_INVALIDO);
 

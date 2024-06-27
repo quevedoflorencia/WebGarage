@@ -30,15 +30,13 @@ public class ControladorRestReserva {
             Integer garageTipoVehiculoId = (Integer) requestBody.get("garageTipoVehiculoId");
             Integer garageId = (Integer) requestBody.get("garageId");
 
-
             List<String> horasOcupadas = new ArrayList<>();
-            if(selectedDate!=null){
+
+            if(selectedDate != null) {
                 traerHorasOcupadas(horasOcupadas, selectedDate, garageTipoVehiculoId, garageId);
             }
 
-
-
-            if (horasOcupadas != null && !horasOcupadas.isEmpty()) {
+            if (!horasOcupadas.isEmpty()) {
                 return ResponseEntity.ok(horasOcupadas);
             } else {
                 return ResponseEntity.ok(Collections.emptyList());
