@@ -18,7 +18,7 @@
             </div>
             <!-- Mostrar garajes si existen -->
             <div th:if="${!#lists.isEmpty(garages)}">
-                <div class="row justify-content-around">
+                <div class="row justify-content-between">
                     <div class="col-3 my-3" th:each="garage : ${garages}">
                         <div class="card grid-item round">
                             <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
@@ -31,19 +31,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <nav class="w-100 d-flex justify-content-center">
+                    <nav class="w-100 d-flex justify-content-center mt-5">
                         <ul class="pagination justify-content-end">
                             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
-                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '#estacionamientos'}">Anterior</a>
+                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize}}">Anterior</a>
                             </li>
 
                             <li class="page-item" th:each="pageNumber : ${pageNumbers}"
                                 th:classappend="${pageNumber == currentPage} ? 'active' : ''">
-                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${pageNumber} + '&size=' + ${pageSize} + '#estacionamientos'}" th:text="${pageNumber}"></a>
+                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
                             </li>
 
                             <li class="page-item" th:classappend="${currentPage == pageNumbers.size()} ? 'disabled' : ''">
-                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '#estacionamientos'}">Siguiente</a>
+                                <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage + 1} + '&size=' + ${pageSize}}">Siguiente</a>
                             </li>
                         </ul>
                     </nav>

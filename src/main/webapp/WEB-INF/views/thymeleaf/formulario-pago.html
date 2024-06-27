@@ -118,13 +118,12 @@
 
             <!--<input  type="hidden" th:field="${reserva.getId()}">-->
             <input type="hidden" th:field="*{idReserva}" th:value="${pagoData.idReserva}">
-            <div class="d-flex justify-content-between w-100 my-3">
+            <div class="d-flex justify-content-between w-100 my-3 align-items-center">
                 <div>
-                    <a th:href="@{'/reservas/listar'}" class="btn btnreserva">Omitir Pago</a>
+                    <a th:href="@{'/reservas/listar'}" class="btn btn-outline-dark btn-light">Pagar luego</a>
                 </div>
                 <div>
-                    <button type="submit" class="submit-btn">Pagar</button>
-
+                    <button type="submit" class="submit-btn mt-0">Pagar</button>
                 </div>
             </div>
             <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
