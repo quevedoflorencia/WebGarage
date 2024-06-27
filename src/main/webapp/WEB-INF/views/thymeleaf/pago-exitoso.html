@@ -21,9 +21,10 @@
                 <hr>
                 <p class="card-text">Número de transacción: <strong th:text="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')}"></strong></p>
                 <p class="card-text">Recibiste el detalle de tu reserva por mail.</p>
-                <a class="button-on-image" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa-solid fa-print"></i></a>
-                <a href="/#estacionamientos" class="btn btn-primary mt-3">Volver a la Página Principal</a>
-
+                <div class="d-flex align-items-center justify-content-center mt-3">
+                    <a href="/#estacionamientos" class="btn btn-primary mx-2">Volver a la Página Principal</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+                </div>
             </div>
         </div>
     </div>

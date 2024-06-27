@@ -16,7 +16,7 @@
         <div>
             <h1>Bienvenido <span th:text="${username}"></span>! </h1>
             <div class="d-flex justify-content-between align-items-start">
-                <h2><span th:text="${ !reservasActivas.isEmpty() ? 'estas son tus reservas:' : 'Aun no tenés reservas. Agrega nuevas:'}"></span> </h2> <a class="btn btnreserva btn-info btn-lg" href="/#estacionamientos">Nueva Reserva</a>
+                <h2><span th:text="${ !reservasActivas.isEmpty() ? 'estas son tus reservas:' : 'Aun no tenés reservas. ¡Reserva ya!'}"></span> </h2> <a class="btn btnreserva btn-info btn-lg" href="/garages/listado/">Nueva Reserva</a>
             </div>
         </div>
         <!--tarjetas de reservas activas-->
@@ -28,18 +28,18 @@
                         <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
                         <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                         <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
-                        <div class="d-flex justify-content-end w-100">
-                            <div class="botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}">
+                        <div class="w-100">
+                            <div class="d-flex justify-content-end botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}" >
                                 <div th:if="${reserva.getEstado().getDescripcion() == 'Confirmado'}">
-                                    <a th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
+                                    <a type="button"  data-bs-toggle="tooltip" title="Realizar Pago" th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
                                 </div>
                                 <button type="button" class="btn btn-danger align-content-end" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"  th:attr="data-id=${reserva.getId()}">
-                                    <i class="far fa-trash-alt"></i>
+                                    <span type="button" data-bs-toggle="tooltip" title="Haz click aca para cancelar la reserva">
+                                        <i class="far fa-trash-alt"></i>
+                                    </span>
                                 </button>
-                                <span class="infoBotonCancelarReserva">Haz click aca para cancelar la reserva</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -56,7 +56,6 @@
                         <p class="card-text"> Reserva Expirada</p>
 
                     </div>
-
                 </div>
             </div>
         </div>
@@ -95,6 +94,9 @@
                 confirmButton.href = '/reservas/cancelar/' + reservaId;
             });
         });
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 </body>
 

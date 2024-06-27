@@ -26,7 +26,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a th:href="@{'/garages/listado/'}" type="button" class="btn ">Garages</a>
+                    <a th:href="@{'/garages/listado/'}" type="button" class="btn">Estacionamientos</a>
 
                     <div th:if="${#request.requestURI != '/login'}">
                         <div th:if="${session.ID == null}">
@@ -34,8 +34,8 @@
                         </div>
 
                         <div th:if="${session.ID != null}">
-                            <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
-                            <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
+                            <a th:href="@{'/reservas/listar'}" type="button" class="btn">Ver Reservas</a>
+                            <a th:href="@{'/cerrar-sesion'}" type="button" class="btn"><i class="fas fa-sign-out-alt"></i></a>
                         </div>
                     </div>
                 </div>
