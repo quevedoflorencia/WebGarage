@@ -25,24 +25,27 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div th:if="${session.ID == null}">
-                        <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
-                    </div>
-                    <div th:if="${session.ID != null}">
-                        <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
-                        <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
-                    </div>
 
+                    <a th:href="@{'/garages/listado/'}" type="button" class="btn">Estacionamientos</a>
+
+                    <div th:if="${#request.requestURI != '/login'}">
+                        <div th:if="${session.ID == null}">
+                            <a th:href="@{'/login'}" type="button" class="btn btn-buscar-estacionamiento">Ingresar</a>
+                        </div>
+
+                        <div th:if="${session.ID != null}">
+                            <a th:if="${#request.requestURI != '/reservas/listar'}" th:href="@{'/reservas/listar'}" type="button" class="btn">Ver Reservas</a>
+                            <a th:href="@{'/cerrar-sesion'}" type="button" class="btn"><i class="fas fa-sign-out-alt"></i></a>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </div>
 
 
         <div th:fragment="footer">
-
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-            <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-
+            <script th:src="@{/webjars/popper.js/2.9.2/umd/popper.min.js}"></script>
+            <script th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
         </div>
     </body>
 </html>

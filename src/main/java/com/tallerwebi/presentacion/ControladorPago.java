@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.EmailService;
 import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
@@ -22,11 +23,13 @@ public class ControladorPago {
 
     private ServicioPago servicioPago;
     private ServicioReserva servicioReserva;
+    private EmailService emailService;
 
     @Autowired
-    public ControladorPago(ServicioPago servicioPago, ServicioReserva servicioReserva) {
+    public ControladorPago(ServicioPago servicioPago, ServicioReserva servicioReserva, EmailService emailService) {
         this.servicioPago = servicioPago;
         this.servicioReserva = servicioReserva;
+        this.emailService = emailService;
     }
 
     @RequestMapping("/formulario-pago/{id}")
@@ -56,9 +59,11 @@ public class ControladorPago {
             servicioPago.validarTarjeta(datosPagoDTO.getNumeroTarjeta(), datosPagoDTO.getCvv());
 
             servicioPago.registrarPago(reserva);
+            servicioReserva.pagar(reserva);
 
             model.put("exito", "¡Su pago ha sido exitoso, te esperamos!");
             model.put("reserva", reserva);
+            emailService.sendSimpleMessage(reserva);
 
             return new ModelAndView("pago-exitoso", model);
 

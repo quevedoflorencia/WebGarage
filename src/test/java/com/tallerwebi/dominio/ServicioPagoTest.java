@@ -19,7 +19,7 @@ public class ServicioPagoTest {
     public void init(){
         this.repositorioPago = mock(RepositorioPago.class);
         this.servicioReserva = mock(ServicioReserva.class);
-        this.servicioPago = new ServicioPagoImpl(repositorioPago, servicioReserva);
+        this.servicioPago = new ServicioPagoImpl(repositorioPago);
     }
 
     @Test

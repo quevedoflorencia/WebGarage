@@ -68,7 +68,6 @@ form label{
     cursor: not-allowed;
 }
 #container-go-reserva{
-    height: 200px;
     display: flex;
     align-items: end;
     justify-content: flex-end;
@@ -79,13 +78,6 @@ form label{
     color: white;
 }
 
-.btn-buscar-estacionamiento{
-    border-radius: 20px;
-    background-color: #394A8F;
-    font-size: 18px;
-    font-weight: 600;
-    color: white;
-}
 .btn-pdf{
     background-color: #64CAED;
     margin-right: 5px;
@@ -93,4 +85,20 @@ form label{
 
 #logo{
     width:4rem;
+}
+.navbar  a{
+    color: #394A8F!important;
+    font-weight: 500;
+}
+.navbar .btn-buscar-estacionamiento, .btn-login{
+    border-radius: 20px;
+    background-color: #394A8F;
+    color: #fff!important;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+.btn-login:hover{
+    background-color: #fff!important;
+    color: #394A8F!important;
 }

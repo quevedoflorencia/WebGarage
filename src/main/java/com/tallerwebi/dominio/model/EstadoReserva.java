@@ -17,6 +17,11 @@ public class EstadoReserva {
         this.descripcion = descripcion;
     }
 
+    public EstadoReserva(Integer id, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+    }
+
     public Integer getId() {
         return id;
     }
