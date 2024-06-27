@@ -1,12 +1,15 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioReserva;
+import com.tallerwebi.dominio.model.Garage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +19,7 @@ public class ControladorRestReservaTest {
 
 	private ControladorRestReserva controladorRestReserva;
 	private String dateDtoMock;
-	private String garageTipoVehiculoId;
+	private Integer garageTipoVehiculoId;
 	private Integer garageId;
 
 	private ServicioReserva servicioReservaMock;
@@ -25,6 +28,7 @@ public class ControladorRestReservaTest {
 	@BeforeEach
 	public void init(){
 		dateDtoMock = "2024-07-05";
+		garageTipoVehiculoId = 1;
 		servicioReservaMock = mock(ServicioReserva.class);
 		controladorRestReserva = new ControladorRestReserva(servicioReservaMock);
 	}
@@ -51,35 +55,32 @@ public class ControladorRestReservaTest {
 
 	@Test
 	public void cuandoSeEligeUnaFechaQueTieneElCupoOcupadoDeberiaDevolverUnArrayDeLasHorasOcupadas(){
-		List<Integer> hours = Arrays.asList(10, 11, 20, 21);
-		// preparacion
-		when(servicioReservaMock.traerHorasOcupadas(anyString())).thenReturn(hours);
+		List<String> horas = Collections.emptyList();
+		List<String> horasOcupadas = IntStream.rangeClosed(9,22).mapToObj(Integer::toString).collect(Collectors.toList());
 
-		// Crear el requestBody
 		Map<String, Object> requestBody = new HashMap<>();
 		requestBody.put("selectedDate", dateDtoMock);
 		requestBody.put("garageTipoVehiculoId", garageTipoVehiculoId);
 		requestBody.put("garageId", garageId);
 
-		// ejecucion
+		when(servicioReservaMock.traerHorasOcupadasPorDiaYTipoVehiculo(dateDtoMock, garageTipoVehiculoId)).thenReturn(horas);
+		when(servicioReservaMock.traerHorasCierre(garageId)).thenReturn(horasOcupadas);
+
 		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(requestBody);
 
-		// validacion
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertNotNull(responseEntity.getBody());
-		assertEquals(responseEntity.getBody(), hours);
+		assertEquals(responseEntity.getBody(), horasOcupadas);
 	}
 
 	@Test
 	public void cuandoElServicioTraeUnErrorInternoYDevuelveUnaExcepcion(){
-		doThrow(new RuntimeException()).when(servicioReservaMock).traerHorasOcupadas(anyString());
-
-		// Crear el requestBody
 		Map<String, Object> requestBody = new HashMap<>();
 		requestBody.put("selectedDate", dateDtoMock);
 		requestBody.put("garageTipoVehiculoId", garageTipoVehiculoId);
 		requestBody.put("garageId", garageId);
 
+		doThrow(new RuntimeException()).when(servicioReservaMock).traerHorasOcupadasPorDiaYTipoVehiculo(dateDtoMock, garageTipoVehiculoId);
 
 		ResponseEntity<List<String>> responseEntity = controladorRestReserva.traerDisponibilidad(requestBody);
 
