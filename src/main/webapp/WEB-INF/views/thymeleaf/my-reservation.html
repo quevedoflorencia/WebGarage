@@ -49,21 +49,21 @@
             <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}"> Reservas Expiradas</h3>
             <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
                 <div th:class="${reserva.getEstado().getDescripcion() == 'Vencido' ? 'card grid-item round vencida' : 'card grid-item round'}">
-                    <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
-                    <div class="card-body mx-2">
-                        <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
-                        <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
-                        <p class="card-text"> Reserva Expirada</p>
+                     <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
+                       <div class="card-body mx-2">
+                           <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
+                           <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                           <p class="card-text"> Reserva Expirada</p>
 
-                    </div>
+                       </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </main>
 
-<!-- Modal de confirmación de eliminación -->
+   <!-- Modal de confirmación de eliminación -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

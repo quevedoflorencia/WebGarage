@@ -34,7 +34,8 @@
                         </div>
 
                         <div th:if="${session.ID != null}">
-                            <a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>
+                            <a th:if="${#request.requestURI != '/reservas/listar'}" th:href="@{'/reservas/listar'}" type="button" class="btn">Ver Reservas</a>
+                            <!--<a th:href="@{'/reservas/listar'}" type="button" class="btn ">Ver Reservas</a>-->
                             <a th:href="@{'/cerrar-sesion'}" type="button" class="btn ">Cerrar Sesion</a>
                         </div>
                     </div>
