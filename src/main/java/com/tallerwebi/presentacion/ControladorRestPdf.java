@@ -51,7 +51,7 @@ public class ControladorRestPdf {
 
         // Configurar la respuesta HTTP para descargar el PDF
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=document.pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=ReservaWebGarage.pdf");
         response.setContentLength(flujoDeSalidaMemoria.size());
 
         // Escribir el PDF en la respuesta
