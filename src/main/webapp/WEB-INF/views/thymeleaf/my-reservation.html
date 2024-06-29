@@ -38,6 +38,8 @@
                                         <i class="far fa-trash-alt"></i>
                                     </span>
                                 </button>
+
+                                <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
                             </div>
                         </div>
                     </div>
@@ -54,6 +56,8 @@
                            <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
                            <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                            <p class="card-text"> Reserva Expirada</p>
+
+                           <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
 
                     </div>
                 </div>
