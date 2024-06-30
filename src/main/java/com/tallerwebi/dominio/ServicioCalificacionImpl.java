@@ -11,19 +11,15 @@ import javax.transaction.Transactional;
 @Service ("servicioCalificacion")
 @Transactional
 public class ServicioCalificacionImpl implements ServicioCalificacion{
-
-
     private RepositorioCalificacion repositorioCalificacion;
-
     @Autowired
-    public ServicioCalificacionImpl (RepositorioCalificacion repositorioCalificacion){this.repositorioCalificacion=repositorioCalificacion; }
-
-
+    public ServicioCalificacionImpl (RepositorioCalificacion repositorioCalificacion){
+        this.repositorioCalificacion=repositorioCalificacion; }
 
     @Override
-    public void guardarCalificacion(Garage garage, Integer puntaje, String comentarioCalificacion) {
-        garage.getId();
-        Calificacion calificacion = new Calificacion(garage, puntaje, comentarioCalificacion);
+    public void guardarCalificacion(Integer puntaje, String comentarioCalificacion, Integer idGarage) {
+        /*garage.getId();*/
+        Calificacion calificacion = new Calificacion(puntaje, comentarioCalificacion, idGarage);
         repositorioCalificacion.guardarCalificacion(calificacion);
     }
 

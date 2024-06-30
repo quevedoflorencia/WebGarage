@@ -12,15 +12,17 @@
     <h2>Calificar el Garage</h2>
     <form id="calificacionForm"  action="#" th:action="@{/garages/validar}" method="POST" th:object="${calificacionData}">
         <div class="star-calificacion" >
-            <input th:field="*{calificacion}" type="radio" name="calificacion" value="5" id="5" required><label for="5" class="fas fa-star"></label>
-            <input th:field="*{calificacion}" type="radio" name="calificacion" value="4" id="4" required><label for="4" class="fas fa-star"></label>
-            <input th:field="*{calificacion}" type="radio" name="calificacion" value="3" id="3" required><label for="3" class="fas fa-star"></label>
-            <input th:field="*{calificacion}" type="radio" name="calificacion" value="2" id="2" required><label for="2" class="fas fa-star"></label>
-            <input th:field="*{calificacion}" type="radio" name="calificacion" value="1" id="1" required><label for="1" class="fas fa-star"></label>
+            <input th:field="*{puntaje}" type="radio" value="5" id="5" required><label for="5" class="fas fa-star"></label>
+            <input th:field="*{puntaje}" type="radio" value="4" id="4" required><label for="4" class="fas fa-star"></label>
+            <input th:field="*{puntaje}" type="radio" value="3" id="3" required><label for="3" class="fas fa-star"></label>
+            <input th:field="*{puntaje}" type="radio" value="2" id="2" required><label for="2" class="fas fa-star"></label>
+            <input th:field="*{puntaje}" type="radio" value="1" id="1" required><label for="1" class="fas fa-star"></label>
         </div>
         <div>
-            <textarea th:field="*{comentario}" name="comentario" id="comentario" rows="4" placeholder="Deja un comentario..."></textarea>
+            <textarea th:field="*{comentarioCalificacion}" id="comentario" rows="4" placeholder="Deja un comentario..."></textarea>
         </div>
+
+        <input type="hidden" th:field="*{idGarage}" th:value="${calificacionData.idGarage}">
         <button type="submit" class="submit-btn mt-0">Enviar Calificación</button>
     </form>
 </div>

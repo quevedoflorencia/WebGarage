@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("repositorioCalificacion")
+@Repository("calificacionRepositorio")
 public class RepositorioCalificacionImpl implements RepositorioCalificacion {
 
     private SessionFactory sessionFactory;
@@ -16,7 +16,6 @@ public class RepositorioCalificacionImpl implements RepositorioCalificacion {
 
     @Override
     public  void guardarCalificacion (Calificacion calificacion){sessionFactory.getCurrentSession().save(calificacion);}
-
 
 
 }

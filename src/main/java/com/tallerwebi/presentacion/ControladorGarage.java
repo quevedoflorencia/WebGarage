@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioCalificacion;
 import com.tallerwebi.dominio.ServicioGarage;
+import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.dominio.model.Garage;
 
@@ -26,7 +27,6 @@ public class ControladorGarage {
     public ControladorGarage(ServicioGarage servicioGarage, ServicioCalificacion servicioCalificacion) {
         this.servicioGarage = servicioGarage;
         this.servicioCalificacion = servicioCalificacion;
-
     }
 
     @RequestMapping(path = "/listado/", method = RequestMethod.GET)
@@ -61,19 +61,20 @@ public class ControladorGarage {
         return new ModelAndView("formulario-calificar", modelo);
     }
 
+
     @RequestMapping(path = "/validar", method = RequestMethod.POST)
     public ModelAndView validarCalificacion(@ModelAttribute("calificacionData") CalificacionDTO calificacionDTO) {
 
        /* ModelMap model = new ModelMap();*/
 
-
-        Garage garage = servicioGarage.buscarPorId(calificacionDTO.getIdGarage());
-
-
+        /*Garage garage = servicioGarage.buscarPorId(calificacionDTO.getIdGarage());/
         /*servicioCalificacion.validarPuntaje(calificacionDTO.getPuntaje());*/
-        servicioCalificacion.guardarCalificacion(garage, calificacionDTO.getPuntaje(), calificacionDTO.getComentarioCalificacion());
 
+        Integer puntaje = calificacionDTO.getPuntaje();
+        String comentario = calificacionDTO.getComentarioCalificacion();
+        Integer idGarage = calificacionDTO.getIdGarage();
 
+        servicioCalificacion.guardarCalificacion(puntaje, comentario, idGarage);
 
         return new ModelAndView("home");
     }

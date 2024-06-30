@@ -3,7 +3,7 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.model.Garage;
 
 public interface ServicioCalificacion {
-    void guardarCalificacion (Garage garage, Integer puntaje, String comentarioCalificacion);
+    void guardarCalificacion (Integer puntaje, String comentarioCalificacion, Integer idGarage);
 
     void validarPuntaje(Integer puntaje);
 

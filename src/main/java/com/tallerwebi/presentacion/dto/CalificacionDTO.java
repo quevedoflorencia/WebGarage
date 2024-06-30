@@ -5,7 +5,6 @@ public class CalificacionDTO {
     private String comentarioCalificacion;
     private Integer idGarage;
 
-
     public Integer getPuntaje() {
         return puntaje;
     }
