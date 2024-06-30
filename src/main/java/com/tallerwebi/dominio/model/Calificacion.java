@@ -8,14 +8,14 @@ public class Calificacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer puntaje;
-    private String comentarioCalificacion;
+    private String comentario;
     private Integer idGarage;
 
 
-    public Calificacion(Integer id, Integer puntaje, String comentarioCalificacion, Integer idGarage) {
+    public Calificacion(Integer id, Integer puntaje, String comentario, Integer idGarage) {
         this.id = id;
         this.puntaje = puntaje;
-        this.comentarioCalificacion = comentarioCalificacion;
+        this.comentario = comentario;
         this.idGarage = idGarage;
     }
 
@@ -23,13 +23,13 @@ public class Calificacion {
 
     }
 
-    public Calificacion(Integer puntaje, String comentarioCalificacion, Integer idGarage) {
+    public Calificacion(Integer puntaje, String comentario, Integer idGarage) {
         this.puntaje = puntaje;
-        this.comentarioCalificacion = comentarioCalificacion;
+        this.comentario = comentario;
         this.idGarage = idGarage;
     }
 
-    public Calificacion(Integer idGarage, Integer puntaje, String comentarioCalificacion) {
+    public Calificacion(Integer idGarage, Integer puntaje, String comentario) {
     }
 
     public Integer getId() {
@@ -48,12 +48,12 @@ public class Calificacion {
         this.puntaje = puntaje;
     }
 
-    public String getComentarioCalificacion() {
-        return comentarioCalificacion;
+    public String getComentario() {
+        return comentario;
     }
 
-    public void setComentarioCalificacion(String comentarioCalificacion) {
-        this.comentarioCalificacion = comentarioCalificacion;
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     public Integer getIdGarage() {

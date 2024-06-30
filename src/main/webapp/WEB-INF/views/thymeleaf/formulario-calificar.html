@@ -19,7 +19,7 @@
             <input th:field="*{puntaje}" type="radio" value="1" id="1" required><label for="1" class="fas fa-star"></label>
         </div>
         <div>
-            <textarea th:field="*{comentarioCalificacion}" id="comentario" rows="4" placeholder="Deja un comentario..."></textarea>
+            <textarea th:field="*{comentario}" id="comentario" rows="4" placeholder="Deja un comentario..."></textarea>
         </div>
 
         <input type="hidden" th:field="*{idGarage}" th:value="${calificacionData.idGarage}">

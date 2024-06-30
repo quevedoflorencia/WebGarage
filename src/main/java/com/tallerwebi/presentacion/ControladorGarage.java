@@ -71,7 +71,7 @@ public class ControladorGarage {
         /*servicioCalificacion.validarPuntaje(calificacionDTO.getPuntaje());*/
 
         Integer puntaje = calificacionDTO.getPuntaje();
-        String comentario = calificacionDTO.getComentarioCalificacion();
+        String comentario = calificacionDTO.getComentario();
         Integer idGarage = calificacionDTO.getIdGarage();
 
         servicioCalificacion.guardarCalificacion(puntaje, comentario, idGarage);

@@ -2,7 +2,7 @@ package com.tallerwebi.presentacion.dto;
 
 public class CalificacionDTO {
     private Integer puntaje;
-    private String comentarioCalificacion;
+    private String comentario;
     private Integer idGarage;
 
     public Integer getPuntaje() {
@@ -13,12 +13,12 @@ public class CalificacionDTO {
         this.puntaje = puntaje;
     }
 
-    public String getComentarioCalificacion() {
-        return comentarioCalificacion;
+    public String getComentario() {
+        return comentario;
     }
 
-    public void setComentarioCalificacion(String comentarioCalificacion) {
-        this.comentarioCalificacion = comentarioCalificacion;
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     public Integer getIdGarage() {
