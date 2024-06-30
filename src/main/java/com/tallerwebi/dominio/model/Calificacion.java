@@ -1,17 +1,20 @@
 package com.tallerwebi.dominio.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Calificacion {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer puntaje;
     private String comentarioCalificacion;
-    private Reserva reserva;
+
+    @ManyToOne
+    @JoinColumn (name = "id")
+    private Garage garage;
+
+
 
     public Calificacion(Integer id, Integer puntaje, String comentarioCalificacion) {
         this.id = id;
@@ -19,10 +22,20 @@ public class Calificacion {
         this.comentarioCalificacion = comentarioCalificacion;
     }
 
-    public Calificacion(Integer id, Integer puntaje, Reserva reserva) {
+    public Calificacion(Garage garage, Integer puntaje, String comentarioCalificacion) {
+        this.garage = garage;
+        this.puntaje = puntaje;
+        this.comentarioCalificacion = comentarioCalificacion;
+    }
+
+    public Calificacion(Integer id, Integer puntaje) {
         this.id = id;
         this.puntaje = puntaje;
-        this.reserva = reserva;
+    }
+
+    public Calificacion(Integer puntaje, String comentarioCalificacion) {
+        this.puntaje = puntaje;
+        this.comentarioCalificacion = comentarioCalificacion;
     }
 
     public Integer getId() {
@@ -49,11 +62,5 @@ public class Calificacion {
         this.comentarioCalificacion = comentarioCalificacion;
     }
 
-    public Reserva getReserva() {
-        return reserva;
-    }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
-    }
 }

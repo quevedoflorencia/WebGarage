@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 
 import com.tallerwebi.dominio.model.Calificacion;
+import com.tallerwebi.dominio.model.Garage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,19 @@ public class ServicioCalificacionImpl implements ServicioCalificacion{
     @Autowired
     public ServicioCalificacionImpl (RepositorioCalificacion repositorioCalificacion){this.repositorioCalificacion=repositorioCalificacion; }
 
+
+
     @Override
-    public void guardarCalificacion(Integer calificacion, String comentario) {
-        Calificacion calificacion =new Calificacion(calificacion, comentario);
+    public void guardarCalificacion(Garage garage, Integer puntaje, String comentarioCalificacion) {
+        garage.getId();
+        Calificacion calificacion = new Calificacion(garage, puntaje, comentarioCalificacion);
+        repositorioCalificacion.guardarCalificacion(calificacion);
+    }
+
+    @Override
+    public void validarPuntaje(Integer puntaje) {
 
     }
+
+
 }

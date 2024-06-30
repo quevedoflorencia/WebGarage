@@ -22,6 +22,10 @@ public class Garage {
     private String latitud;
     private String longitud;
     private String rutaFoto;
+    private Float promedio;
+
+    @OneToMany(mappedBy = "garage", fetch = FetchType.EAGER)
+    private List<Calificacion> calificaciones;
 
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
@@ -105,4 +109,19 @@ public class Garage {
         this.rutaFoto = rutaFoto;
     }
 
+    public Float getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Float promedio) {
+        this.promedio = promedio;
+    }
+
+    public List<Calificacion> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void setCalificaciones(List<Calificacion> calificaciones) {
+        this.calificaciones = calificaciones;
+    }
 }

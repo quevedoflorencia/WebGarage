@@ -2,14 +2,10 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioCalificacion;
 import com.tallerwebi.dominio.ServicioGarage;
-import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
-import com.tallerwebi.dominio.excepcion.ExcepcionNumeroTarjetaInvalida;
-import com.tallerwebi.dominio.excepcion.ExcepcionReservaNoExiste;
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.dominio.model.Garage;
 
-import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.presentacion.dto.CalificacionDTO;
-import com.tallerwebi.presentacion.dto.DatosPagoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -58,21 +54,27 @@ public class ControladorGarage {
 
         ModelMap modelo = new ModelMap();
 
-
+        CalificacionDTO calificacionData = new CalificacionDTO();
+        calificacionData.setIdGarage(garageId);
+        modelo.put("calificacionData", calificacionData);
 
         return new ModelAndView("formulario-calificar", modelo);
     }
+
     @RequestMapping(path = "/validar", method = RequestMethod.POST)
     public ModelAndView validarCalificacion(@ModelAttribute("calificacionData") CalificacionDTO calificacionDTO) {
-        ModelMap model = new ModelMap();
 
-        servicioCalificacion.guardarCalificacion(calificacionDTO.getPuntaje(), calificacionDTO.getComentarioCalificacion());
+       /* ModelMap model = new ModelMap();*/
+
+
+        Garage garage = servicioGarage.buscarPorId(calificacionDTO.getIdGarage());
+
+
+        /*servicioCalificacion.validarPuntaje(calificacionDTO.getPuntaje());*/
+        servicioCalificacion.guardarCalificacion(garage, calificacionDTO.getPuntaje(), calificacionDTO.getComentarioCalificacion());
 
 
 
         return new ModelAndView("home");
-
     }
-
-
 }
