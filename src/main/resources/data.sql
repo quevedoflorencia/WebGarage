@@ -49,3 +49,6 @@ INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, e
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-01-20', '04:00', '13:00', 2,1);
 
 
+INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-20', '04:00', '13:00', 2,1);
+
+
