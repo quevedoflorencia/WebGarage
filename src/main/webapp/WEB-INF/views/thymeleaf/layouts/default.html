@@ -26,7 +26,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <a th:if="${#request.requestURI != '/garages/listado/'}" th:href="@{'/garages/listado/'}" type="button" class="btn">Estacionamientos</a>
+                    <a th:href="@{'/garages/listado/'}" type="button" class="btn">Estacionamientos</a>
 
                     <div th:if="${#request.requestURI != '/login'}">
                         <div th:if="${session.ID == null}">
