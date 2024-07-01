@@ -18,6 +18,7 @@
 
                         <input th:field="*{email}" id="email" type="email" placeholder="Email" class="form-control my-2" required/>
                         <input th:field="*{password}" type="password"  placeholder="Contraseña" id="password" class="form-control" required/>
+                        <input type="hidden" th:name="from" th:value="${from}" />
 
                         <div class="d-flex justify-content-between w-100 my-3">
                             <p>¿No tienes usuario?  <a id="ir-a-registrarme" href="nuevo-usuario">Registrarme</a></p>
