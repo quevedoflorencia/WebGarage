@@ -26,6 +26,20 @@
                     <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
                     <div class="card-body mx-2">
                         <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
+
+                        <!--
+                                <p>
+                                    Estado:
+                                    <span th:class="${reserva.getEstado().getDescripcion().toLowerCase()}" th:text="${reserva.getEstado().getDescripcion()}"></span>
+                                </p>
+                        -->
+
+
+                        <p th:switch="${reserva.getEstado().getId()}">
+                            <span th:case="2" style="color: orange;"> CONFIRMADA</span>
+                            <span th:case="3" style="color: green;">PAGADA</span>
+                        </p>
+
                         <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                         <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
                         <div class="w-100">

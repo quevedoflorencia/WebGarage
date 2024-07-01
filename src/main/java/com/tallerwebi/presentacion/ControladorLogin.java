@@ -1,8 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
-import com.tallerwebi.dominio.model.Usuario;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioExiste;
+import com.tallerwebi.dominio.model.Usuario;
 import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,21 +26,34 @@ public class ControladorLogin {
     }
 
     @RequestMapping("/login")
-    public ModelAndView irALogin() {
+    public ModelAndView irALogin(@RequestParam(required = false) String from) {
         ModelMap modelo = new ModelMap();
         modelo.put("loginData", new DatosLoginDTO());
+        System.out.println("From recibido: " + from);
+        modelo.put("from", from);
         return new ModelAndView("login", modelo);
     }
 
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
-    public ModelAndView validarLogin(@ModelAttribute("loginData") DatosLoginDTO datosLoginDTO, HttpServletRequest request) {
+    public ModelAndView validarLogin(@ModelAttribute("loginData") DatosLoginDTO datosLoginDTO, @RequestParam(required = false) String from, HttpServletRequest request) {
         ModelMap model = new ModelMap();
+        System.out.println("From recibido: " + from);
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
         if (usuarioBuscado != null) {
             request.getSession().setAttribute("ID", usuarioBuscado.getId());
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            return new ModelAndView("redirect:/home");
+
+            if (from != null && from.contains("garage/")) {
+                // Si 'from' contiene 'garage/', extraer el ID del garage
+                String[] parts = from.split("/");
+                if (parts.length > 1) {
+                    String garageId = parts[1];
+                    return new ModelAndView("redirect:/reservas/start/" + garageId);
+                }
+            }else{
+                return new ModelAndView("redirect:/garages/listado/");
+            }
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }

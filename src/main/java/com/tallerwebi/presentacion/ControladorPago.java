@@ -1,7 +1,6 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioEmail;
-import com.tallerwebi.dominio.ServicioEmailImpl;
 import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.mail.MessagingException;
 
 @Controller
 @RequestMapping("/pago")

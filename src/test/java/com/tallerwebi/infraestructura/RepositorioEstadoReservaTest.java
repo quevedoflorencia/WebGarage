@@ -1,8 +1,8 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.RepositorioEstadoReserva;
 import com.tallerwebi.dominio.model.EstadoReserva;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
-import com.tallerwebi.dominio.RepositorioEstadoReserva;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.tallerwebi.dominio;
+
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
-import com.tallerwebi.infraestructura.RepositorioEstadoReservaImpl;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

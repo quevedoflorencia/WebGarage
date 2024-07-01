@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
+
 import com.tallerwebi.dominio.RepositorioEstadoReserva;
 import com.tallerwebi.dominio.model.EstadoReserva;
-import com.tallerwebi.dominio.model.Garage;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;

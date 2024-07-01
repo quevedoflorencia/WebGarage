@@ -1,12 +1,14 @@
 package com.tallerwebi.punta_a_punta;
+
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.tallerwebi.punta_a_punta.vistas.ViewPreReservation;
-import org.junit.jupiter.api.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 public class ViewPreReservaE2E {
 

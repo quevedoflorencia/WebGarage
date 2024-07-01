@@ -32,6 +32,8 @@ public class ControladorReservaTest {
     private ServicioTipoVehiculo servicioTipoVehiculo;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
     private ServicioEmail servicioEmail;
+    private ServicioLogin servicioLoginMock;
+    private ControladorLogin controladorLogin;
 
     @BeforeEach
     public void init() {
@@ -44,6 +46,8 @@ public class ControladorReservaTest {
         servicioGarageTipoVehiculo = mock(ServicioGarageTipoVehiculo.class);
         servicioEmail = mock(ServicioEmailImpl.class);
         controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, servicioEmail);
+        servicioLoginMock = mock(ServicioLogin.class);
+        controladorLogin = new ControladorLogin(servicioLoginMock);
     }
 
     @Test
@@ -149,7 +153,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login?from=garage/"+garageId));
     }
 
     @Test
