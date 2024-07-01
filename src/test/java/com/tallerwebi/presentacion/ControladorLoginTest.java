@@ -40,7 +40,7 @@ public class ControladorLoginTest {
 
 	@Test
 	public void irALoginDeberiaLlevarmeALaVistaLoginConTipoDeModeloCorrecto() {
-		ModelAndView modelAndView = controladorLogin.irALogin();
+		ModelAndView modelAndView = controladorLogin.irALogin(null);
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 
@@ -55,7 +55,7 @@ public class ControladorLoginTest {
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, requestMock);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock,null, requestMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
@@ -73,10 +73,10 @@ public class ControladorLoginTest {
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
 		
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, requestMock);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock,null,requestMock);
 		
 		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/garages/listado/"));
 		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
 
@@ -146,5 +146,24 @@ public class ControladorLoginTest {
 		ModelMap modelMap = modelAndView.getModelMap();
 		Usuario usuario = (Usuario) modelMap.get("usuario");
 		assertThat(usuario, notNullValue());
+	}
+
+
+	@Test
+	public void loginExitosoDesdeGarageDeberiaRedirigirAStartGarageCuandoVieneDeReservarGarage() {
+		// Preparación
+		Usuario usuarioEncontradoMock = mock(Usuario.class);
+		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
+		String garageId = "2";
+		String from = "garage/" + garageId;
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, from, requestMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/reservas/start/" + garageId));
+		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
 }
