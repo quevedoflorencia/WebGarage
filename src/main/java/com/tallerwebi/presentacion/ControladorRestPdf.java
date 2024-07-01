@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 public class ControladorRestPdf {
@@ -28,6 +30,7 @@ public class ControladorRestPdf {
 
         PDDocument documento = new PDDocument();
         PDPage pagina = new PDPage();
+        String nombrePdf = traerFechaComoNombre();
         documento.addPage(pagina);
 
         PDPageContentStream flujoContenidoPagina = new PDPageContentStream(documento, pagina);
@@ -45,14 +48,23 @@ public class ControladorRestPdf {
         documento.close();
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=ReservaWebGarage.pdf");
+        response.setHeader("Content-Disposition", "attachment; filename="+nombrePdf+".pdf");
         response.setContentLength(flujoDeSalidaMemoria.size());
 
         flujoDeSalidaMemoria.writeTo(response.getOutputStream());
         response.getOutputStream().flush();
     }
 
+    private String traerFechaComoNombre() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        return now.format(formatter);
+    }
+
     private void crearContenidoPdf(PDPageContentStream flujoContenidoPagina, Long reservaID) throws IOException {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         Reserva reserva = servicioReserva.buscarPorId(reservaID);
         if(reserva!=null){
             flujoContenidoPagina.showText("    Detalles de la reserva:     ");
@@ -60,7 +72,9 @@ public class ControladorRestPdf {
             flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("Numero de reserva:..........." +reserva.getId());
             flujoContenidoPagina.newLine();
-            flujoContenidoPagina.showText("Fecha:......................." + reserva.getDia());
+            flujoContenidoPagina.showText("Fecha de transaccion:..........." + now.format(formatter));
+            flujoContenidoPagina.newLine();
+            flujoContenidoPagina.showText("Fecha a reservar:......................." + reserva.getDia());
             flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("Horario de inicio:..........."+ reserva.getHorarioInicio());
             flujoContenidoPagina.newLine();
