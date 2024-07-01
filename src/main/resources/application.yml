@@ -1,0 +1,13 @@
+database:
+    url: jdbc:mysql://localhost:3306/web_garage
+    schema: web_garage
+    username: root
+    password: root
+    config:
+        show_sql: false
+        creation_strategy: create
+mail:
+    host: smtp.gmail.com
+    port: 587
+    username: webgarage2024@gmail.com
+    password: kiehqtgqfltbtpvg
