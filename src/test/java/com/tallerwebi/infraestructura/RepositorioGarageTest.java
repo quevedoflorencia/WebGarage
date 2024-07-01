@@ -2,6 +2,8 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.model.Garage;
+import com.tallerwebi.dominio.model.GarageTipoVehiculo;
+import com.tallerwebi.dominio.model.TipoVehiculo;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -154,4 +156,55 @@ public class RepositorioGarageTest {
 
         assertThat(result, is(empty()));
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedanObtenerGaragesPorTipoVehiculo() {
+        TipoVehiculo tipoVehiculo = new TipoVehiculo();
+        tipoVehiculo.setDescripcion("Auto");
+
+        this.sessionFactory.getCurrentSession().save(tipoVehiculo);
+
+        Garage garage1 = new Garage();
+        garage1.setCapacidad(5);
+        GarageTipoVehiculo garageTipoVehiculo1 = new GarageTipoVehiculo();
+        garageTipoVehiculo1.setGarage(garage1);
+        garageTipoVehiculo1.setTipoVehiculo(tipoVehiculo);
+        garage1.setGarageTipoVehiculos(List.of(garageTipoVehiculo1));
+
+        Garage garage2 = new Garage();
+        garage2.setCapacidad(10);
+        GarageTipoVehiculo garageTipoVehiculo2 = new GarageTipoVehiculo();
+        garageTipoVehiculo2.setGarage(garage2);
+        garageTipoVehiculo2.setTipoVehiculo(tipoVehiculo);
+        garage2.setGarageTipoVehiculos(List.of(garageTipoVehiculo2));
+
+        this.sessionFactory.getCurrentSession().save(garage1);
+        this.sessionFactory.getCurrentSession().save(garage2);
+        this.sessionFactory.getCurrentSession().save(garageTipoVehiculo1);
+        this.sessionFactory.getCurrentSession().save(garageTipoVehiculo2);
+
+        List<Garage> result = this.repositorioGarage.getGaragesPorTipoVehiculo(tipoVehiculo.getId());
+
+        assertThat(result, hasSize(2));
+        assertThat(result.get(0).getCapacidad(), equalTo(5));
+        assertThat(result.get(1).getCapacidad(), equalTo(10));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeDevuelvaListaVaciaCuandoNoHayGaragesDelTipoVehiculo() {
+        TipoVehiculo tipoVehiculo = new TipoVehiculo();
+        tipoVehiculo.setDescripcion("Moto");
+
+        this.sessionFactory.getCurrentSession().save(tipoVehiculo);
+
+        List<Garage> result = this.repositorioGarage.getGaragesPorTipoVehiculo(tipoVehiculo.getId());
+
+        assertThat(result, is(empty()));
+    }
+
+
 }
