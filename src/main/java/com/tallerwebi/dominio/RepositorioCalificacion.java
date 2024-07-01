@@ -9,5 +9,7 @@ public interface RepositorioCalificacion {
     void guardarCalificacion (Calificacion calificacion);
 
 
-    List <Calificacion> getCalificacionesSegunGarage (Integer idGarage);
+   // List <Calificacion> getCalificacionesSegunGarage (Integer idGarage);
+
+    List<Calificacion> buscarCalificacionPorId(Integer idGarage);
 }

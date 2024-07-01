@@ -65,14 +65,18 @@ public class ControladorGarage {
     @RequestMapping(path = "/validar", method = RequestMethod.POST)
     public ModelAndView validarCalificacion(@ModelAttribute("calificacionData") CalificacionDTO calificacionDTO) {
 
-        ModelMap model = new ModelMap();
+        /*ModelMap model = new ModelMap();*/
 
         Garage garage = servicioGarage.buscarPorId(calificacionDTO.getIdGarage());
         servicioCalificacion.guardarCalificacion(calificacionDTO.getPuntaje(), calificacionDTO.getComentario(), garage);
 
+        Double promedioActualizado = servicioGarage.actualizarPromedio(calificacionDTO.getIdGarage());
+        garage.setPromedio(promedioActualizado);
+        servicioGarage.guardarPromedio(garage);
 
+        /*
         Double promedio =servicioCalificacion.calcularPromedio(garage.getId());
-        model.put("promedio", promedio);
-        return new ModelAndView("home", model);
+        model.put("promedio", promedio); */
+        return new ModelAndView("home"/*, model*/);
     }
 }

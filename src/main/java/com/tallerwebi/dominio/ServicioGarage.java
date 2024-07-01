@@ -18,4 +18,7 @@ public interface ServicioGarage {
     Integer validarTamanioPagina(Integer tamano);
 
 
+    Double actualizarPromedio(Integer idGarage);
+
+    void guardarPromedio(Garage garage);
 }

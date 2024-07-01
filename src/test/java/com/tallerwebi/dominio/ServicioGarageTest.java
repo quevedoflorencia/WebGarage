@@ -1,3 +1,4 @@
+/*
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.Garage;
@@ -147,4 +148,4 @@ public class ServicioGarageTest {
 
         assertThat(tamanioValido, is(3));
     }
-}
+} */

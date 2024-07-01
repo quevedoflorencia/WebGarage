@@ -25,7 +25,7 @@ public class ServicioCalificacionImpl implements ServicioCalificacion{
         repositorioCalificacion.guardarCalificacion(calificacion);
     }
 
-
+/*
     @Override
     public List getCalificacionesSegunGarage(Integer idGarage) {
         return repositorioCalificacion.getCalificacionesSegunGarage(idGarage);
@@ -46,6 +46,6 @@ public class ServicioCalificacionImpl implements ServicioCalificacion{
 
         return promedio;
     }
-
+*/
 
 }
