@@ -36,8 +36,8 @@ public class RepositorioEstadoReservaTest {
     @Transactional
     @Rollback
     public void queSePuedaListarLosEstadosDeReserva() {
-        EstadoReserva estadoReserva1 = new EstadoReserva("Activa");
-        EstadoReserva estadoReserva2 = new EstadoReserva("Cancelada");
+        EstadoReserva estadoReserva1 = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
+        EstadoReserva estadoReserva2 = new EstadoReserva(EstadoReserva.CANCELADA, "Cancelada");
 
         this.sessionFactory.getCurrentSession().save(estadoReserva1);
         this.sessionFactory.getCurrentSession().save(estadoReserva2);
