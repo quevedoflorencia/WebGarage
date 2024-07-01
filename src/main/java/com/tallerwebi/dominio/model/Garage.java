@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public class Garage {
     private String latitud;
     private String longitud;
     private String rutaFoto;
+    private Double promedio;
 
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
@@ -85,7 +87,7 @@ public class Garage {
         return latitud;
     }
 
-    public void setLatutud(String latitud) {
+    public void setLatitud(String latitud) {
         this.latitud = latitud;
     }
 
@@ -104,5 +106,14 @@ public class Garage {
     public void setRutaFoto(String rutaFoto) {
         this.rutaFoto = rutaFoto;
     }
+
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
+    }
+
 
 }

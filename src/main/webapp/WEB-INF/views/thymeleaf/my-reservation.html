@@ -32,13 +32,13 @@
                             <div class="d-flex justify-content-end botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}" >
                                 <div th:if="${reserva.getEstado().getDescripcion() == 'Confirmado'}">
                                     <a type="button"  data-bs-toggle="tooltip" title="Realizar Pago" th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
+                                    <a type="button"  data-bs-toggle="tooltip" title="Detener Reserva" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fas fa-stop-circle"></i></a>
                                 </div>
                                 <button type="button" class="btn btn-danger align-content-end" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"  th:attr="data-id=${reserva.getId()}">
                                     <span type="button" data-bs-toggle="tooltip" title="Haz click aca para cancelar la reserva">
                                         <i class="far fa-trash-alt"></i>
                                     </span>
                                 </button>
-
                                 <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
                             </div>
                         </div>
