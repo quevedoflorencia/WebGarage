@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ServicioEstadoReserva {
     List<EstadoReserva> traerTodos();
-    EstadoReserva obtenerEstadoSegunDescripcion(String descripcion);
+    EstadoReserva obtenerPorId(Integer id);
+    EstadoReserva obtenerPorDescripcion(String descripcion);
 
 
 }

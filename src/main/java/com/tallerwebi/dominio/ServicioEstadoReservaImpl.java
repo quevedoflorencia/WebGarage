@@ -20,12 +20,17 @@ public class ServicioEstadoReservaImpl implements ServicioEstadoReserva {
 
     @Override
     public List<EstadoReserva> traerTodos() {
-        return repositorioEstadoReserva.listarEstadoReservas();
+        return repositorioEstadoReserva.listar();
     }
 
     @Override
-    public EstadoReserva obtenerEstadoSegunDescripcion(String descripcion) {
-        return repositorioEstadoReserva.getEstadoReservaByDescripcion(descripcion);
+    public EstadoReserva obtenerPorId(Integer id) {
+        return repositorioEstadoReserva.obtenerPorId(id);
+    }
+
+    @Override
+    public EstadoReserva obtenerPorDescripcion(String descripcion) {
+        return repositorioEstadoReserva.obtenerPorDescripcion(descripcion);
     }
 
 }

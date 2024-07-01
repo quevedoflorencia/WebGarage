@@ -2,10 +2,17 @@ package com.tallerwebi.dominio.model;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "estado_reserva")
 public class EstadoReserva {
+
+    public static final Integer PENDIENTE = 1;
+	public static final Integer CONFIRMADA = 2;
+	public static final Integer PAGADA = 3;
+	public static final Integer ACTIVA = 4;
+	public static final Integer CANCELADA = 5;
+	public static final Integer VENCIDA = 6;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

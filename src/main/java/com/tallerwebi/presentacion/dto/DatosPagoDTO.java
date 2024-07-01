@@ -1,7 +1,5 @@
 package com.tallerwebi.presentacion.dto;
 
-import java.time.LocalDate;
-
 public class DatosPagoDTO {
 
     private String titularTarjeta;

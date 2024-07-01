@@ -9,7 +9,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ServicioEstadoReservaTest {
 
@@ -24,7 +25,7 @@ public class ServicioEstadoReservaTest {
 
     @Test
     public void cuandoSeLlamaATraerTodosDebeDevolverUnaListaVaciaSiNoHayEstados() {
-        when(repositorioEstadoReserva.listarEstadoReservas()).thenReturn(Arrays.asList());
+        when(repositorioEstadoReserva.listar()).thenReturn(Arrays.asList());
 
         List<EstadoReserva> estados = servicioEstadoReserva.traerTodos();
 
@@ -35,11 +36,11 @@ public class ServicioEstadoReservaTest {
     @Test
     public void cuandoSeLlamaATraerTodosDebeDevolverUnaListaDeEstadosExistentes() {
         List<EstadoReserva> estadosSimulados = Arrays.asList(
-                new EstadoReserva("Reservado"),
-                new EstadoReserva("Cancelado")
+                new EstadoReserva(EstadoReserva.ACTIVA, "Activa"),
+                new EstadoReserva(EstadoReserva.CANCELADA, "Cancelada")
         );
 
-        when(repositorioEstadoReserva.listarEstadoReservas()).thenReturn(estadosSimulados);
+        when(repositorioEstadoReserva.listar()).thenReturn(estadosSimulados);
 
         List<EstadoReserva> estados = servicioEstadoReserva.traerTodos();
 
@@ -49,25 +50,48 @@ public class ServicioEstadoReservaTest {
     }
 
     @Test
-    public void cuandoSeLlamaAObtenerEstadoSegunDescripcionDebeDevolverElEstadoCorrectoSegunLaDescripcionDada() {
-        String descripcion = "Reservado";
+    public void cuandoSeLlamaAObtenerPorIdDebeDevolverElEstadoCorrectoSegunElIdDado() {
+        EstadoReserva estadoActiva = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
+
+        when(repositorioEstadoReserva.obtenerPorId(EstadoReserva.ACTIVA)).thenReturn(estadoActiva);
+
+        EstadoReserva estado = servicioEstadoReserva.obtenerPorId(EstadoReserva.ACTIVA);
+
+        assertThat(estado, is(notNullValue()));
+        assertThat(estado.getId(), equalTo(EstadoReserva.ACTIVA));
+    }
+
+    @Test
+    public void cuandoSeLlamaAObtenerPorIdDebeDevolverNullSiNoExiste() {
+        Integer idFalso = 999;
+
+        when(repositorioEstadoReserva.obtenerPorId(idFalso)).thenReturn(null);
+
+        EstadoReserva estado = servicioEstadoReserva.obtenerPorId(idFalso);
+
+        assertThat(estado, is(nullValue()));
+    }
+
+    @Test
+    public void cuandoSeLlamaAObtenerPorDescripcionDebeDevolverElEstadoCorrectoSegunLaDescripcionDada() {
+        String descripcion = "Activa";
         EstadoReserva estadoSimulado = new EstadoReserva(descripcion);
 
-        when(repositorioEstadoReserva.getEstadoReservaByDescripcion(descripcion)).thenReturn(estadoSimulado);
+        when(repositorioEstadoReserva.obtenerPorDescripcion(descripcion)).thenReturn(estadoSimulado);
 
-        EstadoReserva estado = servicioEstadoReserva.obtenerEstadoSegunDescripcion(descripcion);
+        EstadoReserva estado = servicioEstadoReserva.obtenerPorDescripcion(descripcion);
 
         assertThat(estado, is(notNullValue()));
         assertThat(estado.getDescripcion(), equalTo(descripcion));
     }
 
     @Test
-    public void cuandoSeLlamaAObtenerEstadoSegunDescripcionDebeDevolverNullSiNoExiste() {
+    public void cuandoSeLlamaAObtenerPorDescripcionDebeDevolverNullSiNoExiste() {
         String descripcion = "NoExiste";
 
-        when(repositorioEstadoReserva.getEstadoReservaByDescripcion(descripcion)).thenReturn(null);
+        when(repositorioEstadoReserva.obtenerPorDescripcion(descripcion)).thenReturn(null);
 
-        EstadoReserva estado = servicioEstadoReserva.obtenerEstadoSegunDescripcion(descripcion);
+        EstadoReserva estado = servicioEstadoReserva.obtenerPorDescripcion(descripcion);
 
         assertThat(estado, is(nullValue()));
     }

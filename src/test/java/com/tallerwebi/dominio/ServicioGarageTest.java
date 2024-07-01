@@ -1,12 +1,10 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.Garage;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
