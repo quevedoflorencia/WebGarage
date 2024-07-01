@@ -2,6 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.model.Garage;
+import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,6 +70,19 @@ public class RepositorioGarageImpl implements RepositorioGarage {
     public List getGarageSegunCapacidad(Integer capacidadBuscada) {
 
         return sessionFactory.getCurrentSession().createCriteria(Garage.class).add(Restrictions.eq("capacidad",capacidadBuscada)).list();
+    }
 
+    @Override
+    public List<Garage> getGaragesPorTipoVehiculo(Integer tipoVehiculoId){
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Garage> criteriaQuery = criteriaBuilder.createQuery(Garage.class);
+        Root<Garage> garageRoot = criteriaQuery.from(Garage.class);
+        Join<Garage, GarageTipoVehiculo> joinGarageTipoVehiculo = garageRoot.join("garageTipoVehiculos");
+
+        criteriaQuery.select(garageRoot)
+                .where(criteriaBuilder.equal(joinGarageTipoVehiculo.get("tipoVehiculo").get("id"), tipoVehiculoId));
+
+        return session.createQuery(criteriaQuery).getResultList();
     }
 }

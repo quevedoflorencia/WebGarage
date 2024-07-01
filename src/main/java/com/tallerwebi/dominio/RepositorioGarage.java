@@ -12,5 +12,6 @@ public interface RepositorioGarage {
     List<Garage> getGarageSegunCapacidad(Integer capacidadBuscada);
 
     List<Garage> obtenerPaginacion(Integer page, Integer size);
+    List<Garage> getGaragesPorTipoVehiculo(Integer tipoVehiculoId);
 
 }
