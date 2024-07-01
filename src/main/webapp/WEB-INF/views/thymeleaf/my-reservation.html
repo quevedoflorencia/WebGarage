@@ -50,7 +50,7 @@
         <div class="row">
             <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}"> Reservas Expiradas</h3>
             <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
-                <div th:class="${reserva.getEstado().getDescripcion() == 'Vencido' ? 'card grid-item round vencida' : 'card grid-item round'}">
+                <div th:class="${reserva.getEstado().getId() == 6 ? 'card grid-item round vencida' : 'card grid-item round'}">
                      <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
                        <div class="card-body mx-2">
                            <h5 class="card-title" th:text="${reserva.getDia()}"></h5>

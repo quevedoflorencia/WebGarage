@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.RepositorioEstadoReserva;
 import com.tallerwebi.dominio.model.EstadoReserva;
+import com.tallerwebi.dominio.model.Garage;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -18,7 +19,7 @@ public class RepositorioEstadoReservaImpl implements RepositorioEstadoReserva {
     public RepositorioEstadoReservaImpl(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     @Override
-    public List<EstadoReserva> listarEstadoReservas() {
+    public List<EstadoReserva> listar() {
         return sessionFactory.getCurrentSession()
                 .createCriteria(EstadoReserva.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
@@ -26,7 +27,12 @@ public class RepositorioEstadoReservaImpl implements RepositorioEstadoReserva {
     }
 
     @Override
-    public EstadoReserva getEstadoReservaByDescripcion(String descripcion) {
+    public EstadoReserva obtenerPorId(Integer id) {
+        return sessionFactory.getCurrentSession().get(EstadoReserva.class, id);
+    }
+
+    @Override
+    public EstadoReserva obtenerPorDescripcion(String descripcion) {
         return (EstadoReserva) sessionFactory.getCurrentSession()
                 .createCriteria(EstadoReserva.class)
                 .add(Restrictions.eq("descripcion", descripcion))

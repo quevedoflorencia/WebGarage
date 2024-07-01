@@ -1,9 +1,9 @@
 INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Pendiente');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Confirmado');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Pagado');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Activo');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Cancelado');
-INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Vencido');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Confirmada');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Pagada');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Activa');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Cancelada');
+INSERT INTO estado_reserva(id,descripcion) VALUES (null, 'Vencida');
 
 INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Auto', 'fa-car-side');
 INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Camioneta', 'fa-truck');

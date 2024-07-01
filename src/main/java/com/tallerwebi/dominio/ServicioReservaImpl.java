@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
+import com.tallerwebi.infraestructura.RepositorioEstadoReservaImpl;
 import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,13 @@ public class ServicioReservaImpl implements ServicioReserva {
     private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
+    public ServicioReservaImpl(
+            RepositorioReserva repositorioReserva,
+            ServicioGarage servicioGarage,
+            ServicioUsuario servicioUsuario,
+            ServicioGarageTipoVehiculo servicioGarageTipoVehiculo,
+            ServicioEstadoReserva servicioEstadoReserva
+    ) {
         this.repositorioReserva = repositorioReserva;
         this.servicioGarage = servicioGarage;
         this.servicioUsuario = servicioUsuario;
@@ -47,7 +54,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
 
-        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Confirmado");
+        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerPorId(EstadoReserva.CONFIRMADA);
 
         if(garage == null) {
             throw new ExcepcionGarageNoExiste();
@@ -88,7 +95,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
-        reserva.setEstado(obtenerEstado("Cancelado"));
+        EstadoReserva estadoCancelada = servicioEstadoReserva.obtenerPorId(EstadoReserva.CANCELADA);
+        reserva.setEstado(estadoCancelada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -96,7 +104,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     public void validarVencimientoReservas(List<Reserva> reservas) {
         for (Reserva reserva : reservas) {
             if(estaVencida(reserva)){
-                reserva.setEstado(obtenerEstado("Vencido"));
+                EstadoReserva estadoVencida = servicioEstadoReserva.obtenerPorId(EstadoReserva.VENCIDA);
+                reserva.setEstado(estadoVencida);
                 repositorioReserva.actualizar(reserva);
             }
         }
@@ -104,7 +113,8 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public void pagar(Reserva reserva) {
-        reserva.setEstado(obtenerEstado("Pagado"));
+        EstadoReserva estadoPagada = servicioEstadoReserva.obtenerPorId(EstadoReserva.PAGADA);
+        reserva.setEstado(estadoPagada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -141,11 +151,6 @@ public class ServicioReservaImpl implements ServicioReserva {
         return horasOcupadasEseDia(reservas);
     }
 
-
-    private EstadoReserva obtenerEstado(String estado) {
-        return servicioEstadoReserva.obtenerEstadoSegunDescripcion(estado);
-    }
-
     private List horasOcupadasEseDia(List reservas) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();
@@ -170,8 +175,6 @@ public class ServicioReservaImpl implements ServicioReserva {
         int ultimaHora= traeHoraComoEntero(reserva.getHorarioFin());
 
         int capacidadDeGarage = 1;
-
-
 
         for(int hora=primerHora;
             hora < ultimaHora;hora++){
@@ -225,5 +228,4 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         return horas * precioPorHora;
     }
-
 }

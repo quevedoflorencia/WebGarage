@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.EmailService;
+import com.tallerwebi.dominio.ServicioEmail;
+import com.tallerwebi.dominio.ServicioEmailImpl;
 import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
@@ -17,19 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
+
 @Controller
 @RequestMapping("/pago")
 public class ControladorPago {
 
     private ServicioPago servicioPago;
     private ServicioReserva servicioReserva;
-    private EmailService emailService;
+    private ServicioEmail servicioEmail;
 
     @Autowired
-    public ControladorPago(ServicioPago servicioPago, ServicioReserva servicioReserva, EmailService emailService) {
+    public ControladorPago(ServicioPago servicioPago, ServicioReserva servicioReserva, ServicioEmail servicioEmail) {
         this.servicioPago = servicioPago;
         this.servicioReserva = servicioReserva;
-        this.emailService = emailService;
+        this.servicioEmail = servicioEmail;
     }
 
     @RequestMapping("/formulario-pago/{id}")
@@ -63,12 +66,13 @@ public class ControladorPago {
 
             model.put("exito", "¡Su pago ha sido exitoso, te esperamos!");
             model.put("reserva", reserva);
-            emailService.sendSimpleMessage(reserva);
+
+            servicioEmail.enviarMailReservaExitosa(reserva);
 
             return new ModelAndView("pago-exitoso", model);
 
         } catch (ExcepcionReservaNoExiste e) {
-            model.put("error", "Hubo un inconveniente, por favor intente nuevamente");
+            model.put("error", "La reserva indicada no existe, por favor intente nuevamente");
         } catch (ExcepcionNumeroTarjetaInvalida e) {
             model.put("error", "Número de Tarjeta inválida");
         } catch (ExcepcionCvvTarjetaInvalida e) {
