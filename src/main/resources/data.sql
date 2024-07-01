@@ -49,15 +49,3 @@ INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, e
 INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-01-20', '04:00', '13:00', 2,1);
 
 
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-20', '04:00', '13:00', 2,1);
-
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-20', '04:00', '08:00', 2,1);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-19', '08:00', '11:00', 2,1);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-18', '11:00', '13:00', 2,1);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 1, 1, '2024-12-17', '13:00', '14:00', 2,1);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 2, 1, '2024-07-09', '09:00', '11:00', 2,3);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 2, 1, '2024-07-10', '12:00', '13:00', 2,3);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 3, 1, '2024-07-11', '12:00', '14:00', 2,3);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 3, 1, '2024-09-09', '15:00', '17:00', 2,3);
-INSERT INTO Reserva(id, garage_id, usuario_id, dia, horarioInicio, horarioFin, estado_id,garageTipoVehiculo_id) VALUES (null, 3, 1, '2024-10-08', '10:00', '12:00', 2,3);
-

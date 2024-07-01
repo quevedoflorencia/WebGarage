@@ -1,4 +1,3 @@
-/*
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioGarage;
@@ -68,4 +67,3 @@ public class ControladorGarageTest {
     }
 
 }
-*/
