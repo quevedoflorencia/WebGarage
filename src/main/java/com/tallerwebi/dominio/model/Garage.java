@@ -23,6 +23,10 @@ public class Garage {
     private String latitud;
     private String longitud;
     private String rutaFoto;
+
+    @OneToMany(mappedBy = "garage")
+    private List<Calificacion> calificaciones;
+
     private Double promedio;
 
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
