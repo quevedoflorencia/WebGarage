@@ -54,6 +54,7 @@
               <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
               <div class="card-body">
                 <h5 class="card-title" th:text="${garage.nombre}"></h5>
+                <p th:text="${garage.promedio}">Promedio: </p>
                 <p class="card-text">Podés reservar de <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
                 <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
               </div>
