@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,5 +120,9 @@ public class Garage {
         this.promedio = promedio;
     }
 
+    public String getPromedioFormateado() {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(this.promedio);
+    }
 
 }

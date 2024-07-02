@@ -106,7 +106,12 @@ public class ServicioGarageImpl implements ServicioGarage {
         for (Calificacion calificacion : calificaciones){
             suma+=calificacion.getPuntaje();
         }
-        promedio=suma/contador;
+
+
+        promedio = (suma/contador);
+
+        promedio = (double) Math.round(promedio * 100.0) / 100.0;
+
 
         return promedio;
 
