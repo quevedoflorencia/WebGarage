@@ -53,11 +53,19 @@
             <div class="card grid-item round">
               <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
               <div class="card-body">
-                <h5 class="card-title"><span th:text="${garage.nombre}"></span> <span th:text="${garage.promedio != null ? garage.promedio : '0'}"> </span></h5>
+                <h5 class="card-title"><span th:text="${garage.nombre}"></span></span></h5>
+
+                <!--
+                <p class="card-title"><span th:text="${garage.promedio != null ? garage.promedio : '0'}"></span> puntos</p>
+                -->
 
 
-                <i class="fas fa-star"></i>
-                <!--<h5 class="card-title" th:text="${garage.promedio != null ? garage.promedio : '0'}"></h5>-->
+                <p class="card-title">
+                  <i class="fas fa-star"></i><span th:text="${garage.promedio > 0 ? garage.promedio + ' puntos' : 'Sin puntaje'}"></span><i class="fas fa-star"></i>
+                </p>
+
+
+                <!-- <h5 class="card-title" th:text="${garage.promedio != null ? garage.promedio : '0'}"></h5>-->
                 <!--<p>Promedio: <span th:text="${garage.promedio}"></span></p>-->
 
                 <p class="card-text">Podés reservar de <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
