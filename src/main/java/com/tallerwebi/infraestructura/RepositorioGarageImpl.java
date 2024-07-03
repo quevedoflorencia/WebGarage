@@ -2,6 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioGarage;
 import com.tallerwebi.dominio.model.Garage;
+import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -60,6 +61,12 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         return garagesPaginados;
 
     }
+
+    @Override
+    public void guardarPromedio(Garage garage) {
+        sessionFactory.getCurrentSession().update(garage);
+    }
+
 
     @Override
     public Garage findById(Integer id) {

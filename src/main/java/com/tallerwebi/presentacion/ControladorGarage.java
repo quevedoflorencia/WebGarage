@@ -1,33 +1,36 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioCalificacion;
 import com.tallerwebi.dominio.ServicioGarage;
+import com.tallerwebi.dominio.ServicioPago;
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.dominio.ServicioTipoVehiculo;
-import com.tallerwebi.dominio.ServicioTipoVehiculoImpl;
 import com.tallerwebi.dominio.model.Garage;
+
 import com.tallerwebi.dominio.model.TipoVehiculo;
+import com.tallerwebi.presentacion.dto.CalificacionDTO;
+import com.tallerwebi.presentacion.dto.CalificacionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/garages")
 public class ControladorGarage {
 
-    private final ServicioTipoVehiculo servicioTipoVehiculo;
     private ServicioGarage servicioGarage;
+    private final ServicioTipoVehiculo servicioTipoVehiculo;
+    private ServicioCalificacion servicioCalificacion;
 
     @Autowired
-    public ControladorGarage(ServicioGarage servicioGarage, ServicioTipoVehiculo servicioTipoVehiculo) {
+    public ControladorGarage(ServicioGarage servicioGarage, ServicioTipoVehiculo servicioTipoVehiculo, ServicioCalificacion servicioCalificacion) {
         this.servicioGarage = servicioGarage;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
+        this.servicioCalificacion = servicioCalificacion;
     }
 
     @RequestMapping(path = "/listado/", method = RequestMethod.GET)
@@ -69,5 +72,37 @@ public class ControladorGarage {
         model.put("tipoVehiculoSeleccionado", tipoVehiculoId);
 
         return new ModelAndView("listar-garages", model);
+    }
+
+    @RequestMapping("/calificar/{id}")
+    public ModelAndView irCalificar(@PathVariable("id") Integer garageId) {
+
+        ModelMap modelo = new ModelMap();
+
+        CalificacionDTO calificacionData = new CalificacionDTO();
+        calificacionData.setIdGarage(garageId);
+        modelo.put("calificacionData", calificacionData);
+
+        return new ModelAndView("formulario-calificar", modelo);
+    }
+
+
+    @RequestMapping(path = "/validar", method = RequestMethod.POST)
+    public ModelAndView validarCalificacion(@ModelAttribute("calificacionData") CalificacionDTO calificacionDTO) {
+
+        ModelMap model = new ModelMap();
+
+        Garage garage = servicioGarage.buscarPorId(calificacionDTO.getIdGarage());
+        servicioCalificacion.guardarCalificacion(calificacionDTO.getPuntaje(), calificacionDTO.getComentario(), garage);
+
+        Double promedioActualizado = servicioGarage.actualizarPromedio(calificacionDTO.getIdGarage());
+        garage.setPromedio(promedioActualizado);
+        servicioGarage.guardarPromedio(garage);
+
+        model.put("promedioActualizado", promedioActualizado);
+        /*
+        Double promedio =servicioCalificacion.calcularPromedio(garage.getId());
+        model.put("promedio", promedio); */
+        return new ModelAndView("home", model);
     }
 }

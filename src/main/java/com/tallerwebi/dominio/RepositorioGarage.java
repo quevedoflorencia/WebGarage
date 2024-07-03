@@ -14,4 +14,5 @@ public interface RepositorioGarage {
     List<Garage> obtenerPaginacion(Integer page, Integer size);
     List<Garage> getGaragesPorTipoVehiculo(Integer tipoVehiculoId);
 
+    void guardarPromedio(Garage garage);
 }

@@ -1,12 +1,10 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.model.Garage;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,12 +16,15 @@ import static org.mockito.Mockito.when;
 public class ServicioGarageTest {
 
     private ServicioGarage servicioGarage;
+
     private RepositorioGarage repositorioGarage;
+    private RepositorioCalificacion repositorioCalificacion;
 
     @BeforeEach
     public void init(){
         this.repositorioGarage = mock(RepositorioGarage.class);
-        this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage);
+        this.repositorioCalificacion = mock(RepositorioCalificacion.class);
+        this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage, this.repositorioCalificacion);
     }
 
     @Test
