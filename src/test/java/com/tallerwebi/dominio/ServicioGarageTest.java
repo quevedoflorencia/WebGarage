@@ -16,12 +16,15 @@ import static org.mockito.Mockito.when;
 public class ServicioGarageTest {
 
     private ServicioGarage servicioGarage;
+
     private RepositorioGarage repositorioGarage;
+    private RepositorioCalificacion repositorioCalificacion;
 
     @BeforeEach
     public void init(){
         this.repositorioGarage = mock(RepositorioGarage.class);
-        this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage);
+        this.repositorioCalificacion = mock(RepositorioCalificacion.class);
+        this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage, this.repositorioCalificacion);
     }
 
     @Test

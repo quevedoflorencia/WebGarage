@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioCalificacion;
 import com.tallerwebi.dominio.ServicioGarage;
 import com.tallerwebi.dominio.ServicioTipoVehiculo;
 import com.tallerwebi.dominio.model.Garage;
@@ -23,13 +24,16 @@ public class ControladorGarageTest {
     private ControladorGarage controladorGarage;
     private ServicioGarage servicioGarage;
     private ServicioTipoVehiculo servicioTipoVehiculo;
+    private ServicioCalificacion servicioCalificacion;
 
     @BeforeEach
     public void init() {
         this.servicioGarage = mock(ServicioGarage.class);
         this.servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
-        this.controladorGarage = new ControladorGarage(this.servicioGarage, this.servicioTipoVehiculo);
+        this.servicioCalificacion = mock(ServicioCalificacion.class);
+        this.controladorGarage = new ControladorGarage(this.servicioGarage, this.servicioTipoVehiculo, this.servicioCalificacion);
     }
+
     @Test
     public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesConUnaListaVacia() {
         List<Garage> garages = Collections.emptyList();

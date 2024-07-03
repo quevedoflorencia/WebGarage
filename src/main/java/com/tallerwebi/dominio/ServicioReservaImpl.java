@@ -79,7 +79,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public List traerHorasOcupadas(String day) {
         List reservas = repositorioReserva.reservasPorFecha(day);
-        return horasOcupadasEseDia(reservas);
+        Integer capacidad = 1;
+        return horasOcupadasEseDia(reservas, capacidad);
     }
 
     @Override
@@ -147,34 +148,33 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public Collection<String> traerHorasOcupadasPorDiaYTipoVehiculo(String selectedDate, Integer garageTipoVehiculoId) {
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(garageTipoVehiculoId);
         List reservas = repositorioReserva.reservasPorFechaYTipoDeAuto(selectedDate,garageTipoVehiculoId);
-        return horasOcupadasEseDia(reservas);
+        return horasOcupadasEseDia(reservas, garageTipoVehiculo.getCapacidad());
     }
 
-    private List horasOcupadasEseDia(List reservas) {
+    private List horasOcupadasEseDia(List reservas, Integer capacidad) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();
 
-         horasSinCupoSegunReservas(reservas,spotsPorCadaHora, horasOcupadas);
+         horasSinCupoSegunReservas(reservas,spotsPorCadaHora, horasOcupadas, capacidad);
 
         return horasOcupadas;
     }
 
-    private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas) {
+    private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas, Integer capacidad) {
         for (Object obj: reservas
         ) {
             Reserva reserva = (Reserva) obj;
 
-            recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas);
+            recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas, capacidad);
 
         }
     }
 
-    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reserva reserva, Map spotsPorCadaHora, List horasOcupadas) {
+    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reserva reserva, Map spotsPorCadaHora, List horasOcupadas, Integer capacidad) {
         int primerHora = traeHoraComoEntero(reserva.getHorarioInicio());
         int ultimaHora= traeHoraComoEntero(reserva.getHorarioFin());
-
-        int capacidadDeGarage = 1;
 
         for(int hora=primerHora;
             hora < ultimaHora;hora++){
@@ -188,7 +188,7 @@ public class ServicioReservaImpl implements ServicioReserva {
                 spotsPorCadaHora.put(hora, auxParaContabilizar++);
             }
 
-            if(validarHoraOcupada(hora, capacidadDeGarage, horasOcupadas, spotsPorCadaHora)){
+            if(validarHoraOcupada(hora, capacidad, horasOcupadas, spotsPorCadaHora)){
                 horasOcupadas.add(String.valueOf(hora));
             }
         }

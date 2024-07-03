@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.model;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -12,22 +13,26 @@ public class Garage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
-    private Integer capacidad;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
     private String latitud;
     private String longitud;
     private String rutaFoto;
 
+    @OneToMany(mappedBy = "garage")
+    private List<Calificacion> calificaciones;
+
+    private Double promedio;
+
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
+    public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
         this.id = id;
         this.nombre = nombre;
-        this.capacidad = capacidad;
+
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;
@@ -47,14 +52,6 @@ public class Garage {
 
     public void setNombre(String name) {
         this.nombre = name;
-    }
-
-    public Integer getCapacidad() {
-        return capacidad;
-    }
-
-    public void setCapacidad(Integer capacity) {
-        this.capacidad = capacity;
     }
 
     public LocalTime getHorarioApertura() {
@@ -81,7 +78,7 @@ public class Garage {
         return latitud;
     }
 
-    public void setLatutud(String latitud) {
+    public void setLatitud(String latitud) {
         this.latitud = latitud;
     }
 
@@ -99,6 +96,19 @@ public class Garage {
 
     public void setRutaFoto(String rutaFoto) {
         this.rutaFoto = rutaFoto;
+    }
+
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
+    }
+
+    public String getPromedioFormateado() {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(this.promedio);
     }
 
 }
