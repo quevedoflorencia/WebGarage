@@ -30,8 +30,8 @@ public class ServicioGarageTest {
     @Test
     public void queAlEjecutarTraerTodosDebeDevolverLaListaCorrectaDeGarages() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(1, "Gurruchaga", 20, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
-                new Garage(2, "Corrientes", 30, LocalTime.of(10, 0), LocalTime.of(22, 0), "5678", "-5678", "foto2.jpg")
+                new Garage(1, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
+                new Garage(2, "Corrientes", LocalTime.of(10, 0), LocalTime.of(22, 0), "5678", "-5678", "foto2.jpg")
         );
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
@@ -45,7 +45,7 @@ public class ServicioGarageTest {
     @Test
     public void queAlBuscarPorIdDebeDevolverElGarageCorrecto() {
         int idBuscado = 1;
-        Garage garageMock = new Garage(idBuscado, "Gurruchaga", 20, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg");
+        Garage garageMock = new Garage(idBuscado, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg");
         when(repositorioGarage.findById(idBuscado)).thenReturn(garageMock);
 
         Garage garage = servicioGarage.buscarPorId(idBuscado);
@@ -57,8 +57,8 @@ public class ServicioGarageTest {
     @Test
     public void queAlBuscarGarageConCapacidadIgualAVeinteVehiculosDevuelvaLosGaragesCorrespondientes() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(null, "Gurruchaga", 20, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
-                new Garage(null, "Gurruchaga", 20, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg")
+                new Garage(null, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
+                new Garage(null, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg")
         );
         Integer capacidadBuscada = 20;
         when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
@@ -74,8 +74,8 @@ public class ServicioGarageTest {
     @Test
     public void queAlBuscarGarageConCapacidadIgualOMayorATreintaVehiculosDevuelvaLosGaragesCorrespondientes() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(null, "Ramos Mejia", 30, LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg"),
-                new Garage(null, "Caminito", 45, LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg")
+                new Garage(null, "Ramos Mejia", LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg"),
+                new Garage(null, "Caminito", LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg")
         );
         Integer capacidadBuscada = 30;
         when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
@@ -89,9 +89,9 @@ public class ServicioGarageTest {
     @Test
     public void queLaPaginacionDevuelvaLosGaragesCorrectos() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(0, "Garage 0", 20, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto0.jpg"),
-                new Garage(1, "Garage 1", 21, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
-                new Garage(2, "Garage 2", 22, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg")
+                new Garage(0, "Garage 0", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto0.jpg"),
+                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
+                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg")
         );
 
         Integer page = 1;
@@ -157,9 +157,9 @@ public class ServicioGarageTest {
     @Test
     public void testGetPaginacion() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(1, "Garage 1", 21, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
-                new Garage(2, "Garage 2", 22, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg"),
-                new Garage(3, "Garage 3", 23, LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto3.jpg")
+                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
+                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg"),
+                new Garage(3, "Garage 3", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto3.jpg")
         );
         int page = 1;
         int size = 3;

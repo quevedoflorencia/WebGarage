@@ -32,7 +32,6 @@ public class Garage {
     public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
         this.id = id;
         this.nombre = nombre;
-
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;

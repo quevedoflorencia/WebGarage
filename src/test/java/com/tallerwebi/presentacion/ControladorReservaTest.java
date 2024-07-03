@@ -125,7 +125,7 @@ public class ControladorReservaTest {
         Integer garageId = 1;
         Long userId = 1L;
 
-        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(garageId, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         TipoVehiculo tipoVehiculoAuto = new TipoVehiculo(1, "Auto", "icono.png");
         TipoVehiculo tipoVehiculoMoto = new TipoVehiculo(2, "Moto", "icono2.png");
 
@@ -146,7 +146,7 @@ public class ControladorReservaTest {
     @Test
     public void intentaIniciarLaPreReservacionConUsuarioNoLogueadoYDeberiaLlevarteAlLogin() {
         Integer garageId = 1;
-        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(garageId, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         when(servicioGarage.buscarPorId(garageId)).thenReturn(garage);
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(null);
@@ -178,7 +178,7 @@ public class ControladorReservaTest {
         reservaDTO.setHorarioFin("12:00");
         reservaDTO.setGarageTipoVehiculoId(1);
 
-        Garage garage = new Garage(1, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"), 1);
         double precio = 200.0;
         when(servicioGarage.buscarPorId(garage.getId())).thenReturn(garage);
@@ -200,7 +200,7 @@ public class ControladorReservaTest {
         reservaDTO.setHorarioFin("12:00");
         reservaDTO.setGarageTipoVehiculoId(1);
 
-        Garage garage = new Garage(1, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
         Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), reservaDTO.getPrecio(), new EstadoReserva("Confirmada"));
 
