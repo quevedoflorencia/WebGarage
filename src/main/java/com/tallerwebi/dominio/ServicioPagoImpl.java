@@ -2,10 +2,8 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
 import com.tallerwebi.dominio.excepcion.ExcepcionNumeroTarjetaInvalida;
-import com.tallerwebi.dominio.excepcion.ExcepcionReservaNoExiste;
 import com.tallerwebi.dominio.model.Pago;
 import com.tallerwebi.dominio.model.Reserva;
-import com.tallerwebi.presentacion.dto.DatosPagoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.RepositorioGarageTipoVehiculo;
 import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
-import com.tallerwebi.dominio.RepositorioGarageTipoVehiculo;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

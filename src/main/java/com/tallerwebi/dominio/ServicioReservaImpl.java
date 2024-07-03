@@ -1,4 +1,5 @@
 package com.tallerwebi.dominio;
+
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
@@ -26,7 +27,13 @@ public class ServicioReservaImpl implements ServicioReserva {
     private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
+    public ServicioReservaImpl(
+            RepositorioReserva repositorioReserva,
+            ServicioGarage servicioGarage,
+            ServicioUsuario servicioUsuario,
+            ServicioGarageTipoVehiculo servicioGarageTipoVehiculo,
+            ServicioEstadoReserva servicioEstadoReserva
+    ) {
         this.repositorioReserva = repositorioReserva;
         this.servicioGarage = servicioGarage;
         this.servicioUsuario = servicioUsuario;
@@ -47,7 +54,7 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
 
-        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Confirmado");
+        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerPorId(EstadoReserva.CONFIRMADA);
 
         if(garage == null) {
             throw new ExcepcionGarageNoExiste();
@@ -89,7 +96,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
-        reserva.setEstado(obtenerEstado("Cancelado"));
+        EstadoReserva estadoCancelada = servicioEstadoReserva.obtenerPorId(EstadoReserva.CANCELADA);
+        reserva.setEstado(estadoCancelada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -97,7 +105,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     public void validarVencimientoReservas(List<Reserva> reservas) {
         for (Reserva reserva : reservas) {
             if(estaVencida(reserva)){
-                reserva.setEstado(obtenerEstado("Vencido"));
+                EstadoReserva estadoVencida = servicioEstadoReserva.obtenerPorId(EstadoReserva.VENCIDA);
+                reserva.setEstado(estadoVencida);
                 repositorioReserva.actualizar(reserva);
             }
         }
@@ -105,7 +114,8 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public void pagar(Reserva reserva) {
-        reserva.setEstado(obtenerEstado("Pagado"));
+        EstadoReserva estadoPagada = servicioEstadoReserva.obtenerPorId(EstadoReserva.PAGADA);
+        reserva.setEstado(estadoPagada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -141,11 +151,6 @@ public class ServicioReservaImpl implements ServicioReserva {
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(garageTipoVehiculoId);
         List reservas = repositorioReserva.reservasPorFechaYTipoDeAuto(selectedDate,garageTipoVehiculoId);
         return horasOcupadasEseDia(reservas, garageTipoVehiculo.getCapacidad());
-    }
-
-
-    private EstadoReserva obtenerEstado(String estado) {
-        return servicioEstadoReserva.obtenerEstadoSegunDescripcion(estado);
     }
 
     private List horasOcupadasEseDia(List reservas, Integer capacidad) {
@@ -223,5 +228,4 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         return horas * precioPorHora;
     }
-
 }

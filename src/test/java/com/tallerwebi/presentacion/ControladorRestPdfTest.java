@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -29,8 +31,10 @@ public class ControladorRestPdfTest {
     public void generatePdf_ReservaFound() throws IOException {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
-        Garage garage = new Garage(1, "Garage 1", 50, null, null, "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
         Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, null);
+
+        String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         when(servicioReserva.buscarPorId(reservaID)).thenReturn(reserva);
 
@@ -38,7 +42,7 @@ public class ControladorRestPdfTest {
         controladorRestPdf.generatePdf(reservaID, response);
 
         assertThat(response.getContentType(), equalTo("application/pdf"));
-        assertThat(response.getHeader("Content-Disposition"), equalTo("attachment; filename=ReservaWebGarage.pdf"));
+        assertThat(response.getHeader("Content-Disposition"), equalTo("attachment; filename="+fechaActual+".pdf"));
         assertThat(response.getContentAsByteArray().length, greaterThan(0));
 
         PDDocument document = PDDocument.load(response.getContentAsByteArray());
@@ -49,6 +53,7 @@ public class ControladorRestPdfTest {
     @Test
     public void generatePdf_ReservaNotFound() throws IOException {
         Long reservaID = 1L;
+        String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         when(servicioReserva.buscarPorId(reservaID)).thenReturn(null);
 
@@ -56,7 +61,7 @@ public class ControladorRestPdfTest {
         controladorRestPdf.generatePdf(reservaID, response);
 
         assertThat(response.getContentType(), equalTo("application/pdf"));
-        assertThat(response.getHeader("Content-Disposition"), equalTo("attachment; filename=ReservaWebGarage.pdf"));
+        assertThat(response.getHeader("Content-Disposition"), equalTo("attachment; filename="+fechaActual+".pdf"));
         assertThat(response.getContentAsByteArray().length, greaterThan(0));
 
         PDDocument document = PDDocument.load(response.getContentAsByteArray());
@@ -68,7 +73,7 @@ public class ControladorRestPdfTest {
     public void generatePdf_ThrowsIOException() throws IOException {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
-        Garage garage = new Garage(1, "Garage 1", 50, null, null, "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
         Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, new EstadoReserva("Confirmada"));
 
         when(servicioReserva.buscarPorId(reservaID)).thenReturn(reserva);

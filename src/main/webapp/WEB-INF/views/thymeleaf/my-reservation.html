@@ -21,30 +21,22 @@
         </div>
         <!--tarjetas de reservas activas-->
         <div class="row">
-            <div th:each="reserva : ${reservasActivas}"  class="col-3 my-3" th:if="${reserva.getEstado().getDescripcion()!='Cancelado'}">
+            <div th:each="reserva : ${reservasActivas}"  class="col-3 my-3" th:if="${reserva.getEstado().getId() != estadosReserva.CANCELADA}">
                 <div class="card grid-item round">
                     <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
                     <div class="card-body mx-2">
                         <h5 class="card-title" th:text="${reserva.getDia()}"></h5>
 
-                        <!--
-                                <p>
-                                    Estado:
-                                    <span th:class="${reserva.getEstado().getDescripcion().toLowerCase()}" th:text="${reserva.getEstado().getDescripcion()}"></span>
-                                </p>
-                        -->
-
-
                         <p th:switch="${reserva.getEstado().getId()}">
-                            <span th:case="2" style="color: orange;"> CONFIRMADA</span>
+                            <span th:case="2" style="color: orange;">CONFIRMADA</span>
                             <span th:case="3" style="color: green;">PAGADA</span>
                         </p>
 
                         <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
                         <p class="card-text">Esta reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
                         <div class="w-100">
-                            <div class="d-flex justify-content-end botonCancelarReserva" th:if="${reserva.getEstado().getDescripcion() != 'Cancelado'}" >
-                                <div th:if="${reserva.getEstado().getDescripcion() == 'Confirmado'}">
+                            <div class="d-flex justify-content-end botonCancelarReserva" th:if="${reserva.getEstado().getId() != estadosReserva.CANCELADA}" >
+                                <div th:if="${reserva.getEstado().getId() == estadosReserva.CONFIRMADA}">
                                     <a type="button"  data-bs-toggle="tooltip" title="Realizar Pago" th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn align-content-end btn-pago btn-success me-1" ><i class="fas fa-credit-card"></i></a>
                                   <!--  <a type="button"  data-bs-toggle="tooltip" title="Detener Reserva" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fas fa-stop-circle"></i></a>-->
                                 </div>
@@ -68,9 +60,9 @@
         </div>
     <!--tarjetas de reservas Vencidas-->
         <div class="row">
-            <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}"> Reservas Expiradas</h3>
+            <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}">Reservas Expiradas</h3>
             <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
-                <div th:class="${reserva.getEstado().getDescripcion() == 'Vencido' ? 'card grid-item round vencida' : 'card grid-item round'}">
+                <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
                      <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt="">
                        <div class="card-body mx-2">
                            <h5 class="card-title" th:text="${reserva.getDia()}"></h5>

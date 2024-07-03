@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.EmailService;
+import com.tallerwebi.dominio.ServicioEmail;
+import com.tallerwebi.dominio.ServicioEmailImpl;
 import com.tallerwebi.dominio.ServicioPago;
 import com.tallerwebi.dominio.ServicioReserva;
 import com.tallerwebi.dominio.excepcion.ExcepcionCvvTarjetaInvalida;
@@ -28,7 +29,7 @@ public class ControladorPagoTest {
 
     private ServicioPago servicioPago;
     private ServicioReserva servicioReserva;
-    private EmailService emailService;
+    private ServicioEmail servicioEmail;
     private ControladorPago controladorPago;
 
     private DatosPagoDTO datosPagoDTO;
@@ -45,8 +46,8 @@ public class ControladorPagoTest {
 
         this.servicioPago = mock(ServicioPago.class);
         this.servicioReserva = mock(ServicioReserva.class);
-        this.emailService = mock(EmailService.class);
-        this.controladorPago = new ControladorPago(servicioPago, servicioReserva, emailService);
+        this.servicioEmail = mock(ServicioEmailImpl.class);
+        this.controladorPago = new ControladorPago(servicioPago, servicioReserva, servicioEmail);
     }
 
     @Test
@@ -69,6 +70,7 @@ public class ControladorPagoTest {
 
         verify(servicioPago).validarTarjeta(datosPagoDTO.getNumeroTarjeta(), datosPagoDTO.getCvv());
         verify(servicioPago).registrarPago(reserva);
+        verify(servicioEmail).enviarMailReservaExitosa(reserva);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("pago-exitoso"));
         assertThat(mav.getModel().get("exito"), is("¡Su pago ha sido exitoso, te esperamos!"));
@@ -83,9 +85,10 @@ public class ControladorPagoTest {
 
         verify(servicioPago, never()).validarTarjeta(anyString(), anyString());
         verify(servicioPago, never()).registrarPago(reserva);
+        verify(servicioEmail, never()).enviarMailReservaExitosa(reserva);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("formulario-pago"));
-        assertThat(mav.getModel().get("error"), is("Hubo un inconveniente, por favor intente nuevamente"));
+        assertThat(mav.getModel().get("error"), is("La reserva indicada no existe, por favor intente nuevamente"));
     }
 
     @Test
@@ -100,6 +103,7 @@ public class ControladorPagoTest {
 
         verify(servicioPago).validarTarjeta(datosPagoDTO.getNumeroTarjeta(), datosPagoDTO.getCvv());
         verify(servicioPago, never()).registrarPago(reserva);
+        verify(servicioEmail, never()).enviarMailReservaExitosa(reserva);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("formulario-pago"));
         assertThat(mav.getModel().get("error"), is("Número de Tarjeta inválida"));
@@ -117,6 +121,7 @@ public class ControladorPagoTest {
 
         verify(servicioPago).validarTarjeta(datosPagoDTO.getNumeroTarjeta(), datosPagoDTO.getCvv());
         verify(servicioPago, never()).registrarPago(reserva);
+        verify(servicioEmail, never()).enviarMailReservaExitosa(reserva);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("formulario-pago"));
         assertThat(mav.getModel().get("error"), is("CVV Inválido"));

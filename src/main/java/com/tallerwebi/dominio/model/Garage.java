@@ -1,14 +1,9 @@
 package com.tallerwebi.dominio.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.text.DecimalFormat;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
 
 
 @Entity
@@ -37,7 +32,6 @@ public class Garage {
     public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
         this.id = id;
         this.nombre = nombre;
-
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;

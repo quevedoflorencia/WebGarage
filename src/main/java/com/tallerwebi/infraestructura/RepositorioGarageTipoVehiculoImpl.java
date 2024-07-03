@@ -1,7 +1,6 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioGarageTipoVehiculo;
-import com.tallerwebi.dominio.model.Garage;
 import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
