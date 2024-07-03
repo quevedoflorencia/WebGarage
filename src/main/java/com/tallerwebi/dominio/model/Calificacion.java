@@ -9,14 +9,23 @@ public class Calificacion {
     private Integer id;
     private Integer puntaje;
     private String comentario;
-    private Integer idGarage;
+   // private Integer idGarage;
 
-
+    @ManyToOne
+    @JoinColumn(name = "garage_id")
+    private Garage garage;
+/*
     public Calificacion(Integer id, Integer puntaje, String comentario, Integer idGarage) {
         this.id = id;
         this.puntaje = puntaje;
         this.comentario = comentario;
         this.idGarage = idGarage;
+    }*/
+
+    public Calificacion(Integer puntaje, String comentario, Garage garage) {
+        this.puntaje = puntaje;
+        this.comentario = comentario;
+        this.garage = garage;
     }
 
     public Calificacion() {
@@ -26,7 +35,7 @@ public class Calificacion {
     public Calificacion(Integer puntaje, String comentario, Integer idGarage) {
         this.puntaje = puntaje;
         this.comentario = comentario;
-        this.idGarage = idGarage;
+      //  this.idGarage = idGarage;
     }
 
     public Calificacion(Integer idGarage, Integer puntaje, String comentario) {
@@ -55,12 +64,20 @@ public class Calificacion {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-
+/*
     public Integer getIdGarage() {
         return idGarage;
     }
 
     public void setIdGarage(Integer idGarage) {
         this.idGarage = idGarage;
+    }*/
+
+    public Garage getGarage() {
+        return garage;
+    }
+
+    public void setGarage(Garage garage) {
+        this.garage = garage;
     }
 }
