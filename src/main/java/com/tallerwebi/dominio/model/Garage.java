@@ -16,7 +16,6 @@ public class Garage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
-    private Integer capacidad;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
     private String latitud;
@@ -28,10 +27,10 @@ public class Garage {
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
+    public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
         this.id = id;
         this.nombre = nombre;
-        this.capacidad = capacidad;
+
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;
@@ -51,14 +50,6 @@ public class Garage {
 
     public void setNombre(String name) {
         this.nombre = name;
-    }
-
-    public Integer getCapacidad() {
-        return capacidad;
-    }
-
-    public void setCapacidad(Integer capacity) {
-        this.capacidad = capacity;
     }
 
     public LocalTime getHorarioApertura() {

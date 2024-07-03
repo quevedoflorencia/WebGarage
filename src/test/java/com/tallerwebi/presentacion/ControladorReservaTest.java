@@ -127,7 +127,7 @@ public class ControladorReservaTest {
         TipoVehiculo tipoVehiculoAuto = new TipoVehiculo(1, "Auto", "icono.png");
         TipoVehiculo tipoVehiculoMoto = new TipoVehiculo(2, "Moto", "icono2.png");
 
-        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, tipoVehiculoAuto);
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, tipoVehiculoAuto, 1);
         garage.setGarageTipoVehiculos(Collections.singletonList(garageTipoVehiculo));
 
         when(requestMock.getSession()).thenReturn(sessionMock);
@@ -177,7 +177,7 @@ public class ControladorReservaTest {
         reservaDTO.setGarageTipoVehiculoId(1);
 
         Garage garage = new Garage(1, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
-        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"));
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"), 1);
         double precio = 200.0;
         when(servicioGarage.buscarPorId(garage.getId())).thenReturn(garage);
         when(servicioGarageTipoVehiculo.obtenerPorId(garageTipoVehiculo.getId())).thenReturn(garageTipoVehiculo);

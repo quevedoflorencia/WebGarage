@@ -37,8 +37,8 @@ public class ServicioGarageTipoVehiculoTest {
     @Test
     public void cuandoSeEjecutaListarLosGaragesTipoVehiculos(){
         List<GarageTipoVehiculo> datosSimulados = Arrays.asList(
-                new GarageTipoVehiculo(1, 1000.0, null, null),
-                new GarageTipoVehiculo(2, 2000.0, null, null)
+                new GarageTipoVehiculo(1, 1000.0, null, null, 1),
+                new GarageTipoVehiculo(2, 2000.0, null, null,1)
         );
 
         when(repositorioGarageTipoVehiculo.listar()).thenReturn(datosSimulados);
@@ -64,7 +64,7 @@ public class ServicioGarageTipoVehiculoTest {
     @Test
     public void cuandoSeEjecutaObtenerPorIdYSeObtieneElGarageTipoVehiculoCorrespondienteAlId(){
         Integer idValido = 1;
-        GarageTipoVehiculo vehiculoSimulado = new GarageTipoVehiculo(1, 2000.0, null, null);
+        GarageTipoVehiculo vehiculoSimulado = new GarageTipoVehiculo(1, 2000.0, null, null, 1);
         when(repositorioGarageTipoVehiculo.obtenerPorId(idValido)).thenReturn(vehiculoSimulado);
 
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(idValido);
