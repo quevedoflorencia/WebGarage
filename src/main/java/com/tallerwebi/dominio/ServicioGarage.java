@@ -17,4 +17,9 @@ public interface ServicioGarage {
     List<Integer> generarNumerosPagina(Integer totalPages);
     Integer validarPagina(Integer pagina);
     Integer validarTamanioPagina(Integer tamano);
+
+
+    Double actualizarPromedio(Integer idGarage);
+
+    void guardarPromedio(Garage garage);
 }
