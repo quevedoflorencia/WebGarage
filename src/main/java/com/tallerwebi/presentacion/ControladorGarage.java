@@ -60,7 +60,6 @@ public class ControladorGarage {
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
         List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
 
-        //Listado de tipo de vehiculos
         List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
 
         model.put("garages", garagesPaginados);
@@ -101,9 +100,7 @@ public class ControladorGarage {
         servicioGarage.guardarPromedio(garage);
 
         model.put("promedioActualizado", promedioActualizado);
-        /*
-        Double promedio =servicioCalificacion.calcularPromedio(garage.getId());
-        model.put("promedio", promedio); */
-        return new ModelAndView("home", model);
+
+        return new ModelAndView("redirect:/home");
     }
 }
