@@ -10,15 +10,7 @@ INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Camioneta', 'fa-
 INSERT INTO tipo_vehiculo(id,descripcion, icono) VALUES (null, 'Moto', 'fa-motorcycle');
 
 INSERT INTO Usuario(id, nombre, email, password, rol, activo) VALUES(null, 'Test', 'test@unlam.edu.ar', 'test', 'ADMIN', true);
-
-INSERT INTO Garage(id, nombre, horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Caminito', '10:00:00', '17:00:00',"-34.63906958631624", "-58.36257341577235","garageCaminito.jpg");
-INSERT INTO Garage(id, nombre, horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Congreso', '08:00:00', '19:00:00', "-34.60974164441148", "-58.392573783180104", "garageCongreso.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Recoleta',  '09:00:00', '23:00:00', "-34.58768745573454", "-58.3972946640706", "garageRecoleta.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Plaza Flores',  '11:00:00', '22:00:00',"-34.62869910007167", "-58.46367564003624", "garageFlores.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'San Telmo',  '05:00:00', '22:00:00', "-34.62595856521416", "-58.37051136645604", "garageSanTelmo.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Retiro',  '00:00:00', '23:00:00', "-34.59514012441202", "-58.37602412735591", "garageRetiro.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Obelisco',  '09:00:00', '23:00:00', "-34.60356592245702", "-58.38159490857141", "garageObelisco.jpg");
-INSERT INTO Garage(id, nombre,  horarioApertura, horarioCierre, latitud, longitud, rutaFoto) VALUES (null, 'Palermo',  '06:00:00', '22:00:00', "-34.5695680558266", "-58.41163489626442", "garagePalermo.jpg");
+INSERT INTO Usuario(id, nombre, email, password, rol, activo) VALUES(null, 'Alan', 'adigio@outlook.com', '1234', 'ADMIN', true);
 
 INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora, capacidad) VALUES (null, 1, 1, 2000.00, 55);
 INSERT INTO garage_tipo_vehiculo(id, id_garage, id_tipo_vehiculo, precioHora, capacidad) VALUES (null, 1, 2, 5500.00, 1);

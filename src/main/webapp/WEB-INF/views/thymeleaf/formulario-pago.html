@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/card/2.5.0/card.min.css">
+
     <style>
         .body {
             font-family: Arial, sans-serif;
@@ -28,7 +29,7 @@
         }
 
         .margen-superior{
-            margin-top: 140px;
+            margin-top: 5rem;
         }
 
         .payment-form h2 {
@@ -86,12 +87,16 @@
 
 
 <head th:replace="layouts/default.html :: head">
-    <th:block th:fragment="propiedadesAdicionales"></th:block>
+    <th:block th:fragment="propiedadesAdicionales">
+
+    </th:block>
 </head>
 
 <body class="body">
 
     <div th:replace="layouts/default.html :: nav"></div>
+
+
 
     <div class="payment-form margen-superior">
         <h2>Pagar con Tarjeta</h2>

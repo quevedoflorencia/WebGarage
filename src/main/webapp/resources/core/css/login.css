@@ -1,6 +1,7 @@
 body {
     height: 100vh;
-    background-color: #394A8F;
+    background: rgb(43,40,93);
+    background: linear-gradient(34deg, rgba(43,40,93,1) 15%, rgba(57,74,143,1) 74%);
 }
 
 hr {

@@ -13,11 +13,13 @@
 
     <main role="main">
 
-      <div class="container-fluid">
-        <div class="row hero-container">
-          <div class="hero-image">
-            <h2>WebGarage, estacionamiento seguro y #SinVueltas</h2>
-            <a class="button-on-image" href="#estacionamientos">¡Reservá ahora!</a>
+      <div class="container-fluid text-center">
+        <div class="hero-image d-flex align-items-center justify-content-center">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-9">
+              <h2>Estacioná seguro y #SinVueltas</h2>
+              <a class="button-on-image" href="#estacionamientos">¡Reservá ahora!</a>
+            </div>
           </div>
         </div>
       </div>
@@ -57,7 +59,7 @@
           <h1 id="estacionamientos">Estacionamientos </h1>
           <p> Contamos con estacionamientos en toda la Ciudad para que solo te preocupes de #disfrutar!</p>
         </div>
-        <div class="row justify-content-around mb-5">
+        <div class="row justify-content-around">
           <div class="col-3 my-3" th:each="garage : ${garages}">
             <div class="card grid-item round">
               <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
@@ -81,6 +83,11 @@
                 <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-5">
+          <div class="col-4">
+            <a th:href="@{'/garages/listado'}" class="btn btn-reserva">Ver más garages disponibles</a>
           </div>
         </div>
       </div>

@@ -29,7 +29,6 @@ public class ControladorLogin {
     public ModelAndView irALogin(@RequestParam(required = false) String from) {
         ModelMap modelo = new ModelMap();
         modelo.put("loginData", new DatosLoginDTO());
-        System.out.println("From recibido: " + from);
         modelo.put("from", from);
         return new ModelAndView("login", modelo);
     }
@@ -37,7 +36,6 @@ public class ControladorLogin {
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("loginData") DatosLoginDTO datosLoginDTO, @RequestParam(required = false) String from, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-        System.out.println("From recibido: " + from);
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
         if (usuarioBuscado != null) {
@@ -52,7 +50,7 @@ public class ControladorLogin {
                     return new ModelAndView("redirect:/reservas/start/" + garageId);
                 }
             }else{
-                return new ModelAndView("redirect:/garages/listado/");
+                return new ModelAndView("redirect:/garages/listado");
             }
         } else {
             model.put("error", "El usuario o clave que ingresaste son incorrectos, intentá nuevamente.");

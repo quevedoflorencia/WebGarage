@@ -13,6 +13,9 @@ public class Garage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
+    private String calle;
+    private String altura;
+    private String codigoPostal;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
     private String latitud;
@@ -52,6 +55,18 @@ public class Garage {
     public void setNombre(String name) {
         this.nombre = name;
     }
+
+    public String getCalle() { return calle; }
+
+    public void setCalle(String calle) { this.calle = calle; }
+
+    public String getAltura() { return altura; }
+
+    public void setAltura(String altura) { this.altura = altura; }
+
+    public String getCodigoPostal() { return codigoPostal; }
+
+    public void setCodigoPostal(String codigoPostal) { this.codigoPostal = codigoPostal; }
 
     public LocalTime getHorarioApertura() {
         return horarioApertura;

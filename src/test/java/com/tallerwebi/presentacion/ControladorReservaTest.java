@@ -35,6 +35,9 @@ public class ControladorReservaTest {
     private ServicioLogin servicioLoginMock;
     private ControladorLogin controladorLogin;
 
+    private static final String VISTA_MIS_RESERVAS = "mis-reservas";
+
+
     @BeforeEach
     public void init() {
         requestMock = mock(HttpServletRequest.class);
@@ -67,7 +70,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase(VISTA_MIS_RESERVAS));
         verify(servicioReserva).validarVencimientoReservas(reservas);
     }
 
@@ -82,7 +85,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase(VISTA_MIS_RESERVAS));
     }
 
     @Test
