@@ -26,6 +26,9 @@
                                 <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${garage.nombre}"></h5>
+                                    <p class="card-title">
+                                        <i class="fas fa-star"></i><span th:text="${garage.promedio > 0 ? garage.promedio + ' ' : 'Sin Calificación'}"></span><i class="fas fa-star"></i>
+                                    </p>
                                     <p class="card-text">Podés reservar de <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
                                     <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
                                 </div>
@@ -39,9 +42,14 @@
                     <form id="tipoVehiculoForm" action="#" th:action="@{/garages/listado/}" method="get">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="fs-6 mb-0">Filtrar por:</h5>
-                            <a th:if="${tipoVehiculoSeleccionado != null}" th:class="reset-filter" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '&tipoVehiculo=null'}">
+                            <a th:if="${tipoVehiculoSeleccionado != null || ordernarPorCalificacion}" th:class="reset-filter" th:href="@{'/garages/listado/?page=' + ${0} + '&size=' + ${pageSize} + '&tipoVehiculo=null' + '&ordernarPorCalificacion=' + 'false'}">
                                 <i class="fas fa-times"></i>
                             </a>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                   th:checked="${ordernarPorCalificacion == true}" onchange="submitForm()">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Ordenar por calificación</label>
                         </div>
 
                         <div class="selection_tipo_vehiculo d-flex flex-column w-100" id="selection-filter">
@@ -62,6 +70,7 @@
                             </div>
                             <input type="hidden" id="currentPage" name="page" th:value="1"/>
                             <input type="hidden" name="size" th:value="${pageSize}"/>
+                            <input type="hidden" name="ordernarPorCalificacion" id="ordernarPorCalificacion" th:value="${ordernarPorCalificacion}"/>
                         </div>
                     </form>
                 </div>
@@ -71,16 +80,16 @@
                 <nav class="w-100 d-flex justify-content-center">
                     <ul class="pagination justify-content-end">
                         <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
-                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '#estacionamientos'}">Anterior</a>
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '&ordernarPorCalificacion=' + ${ordernarPorCalificacion}}">Anterior</a>
                         </li>
 
                         <li class="page-item" th:each="pageNumber : ${pageNumbers}"
                             th:classappend="${pageNumber == currentPage} ? 'active' : ''">
-                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${pageNumber} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '#estacionamientos'}" th:text="${pageNumber}"></a>
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${pageNumber} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '&ordernarPorCalificacion=' + ${ordernarPorCalificacion}}" th:text="${pageNumber}"></a>
                         </li>
 
                         <li class="page-item" th:classappend="${currentPage == pageNumbers.size()} ? 'disabled' : ''">
-                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '#estacionamientos'}">Siguiente</a>
+                            <a class="page-link" th:href="@{'/garages/listado/?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '&tipoVehiculo=' + ${tipoVehiculoSeleccionado} + '&ordernarPorCalificacion=' + ${ordernarPorCalificacion}}">Siguiente</a>
                         </li>
                     </ul>
                 </nav>
@@ -91,6 +100,8 @@
 
         <script>
             function submitForm() {
+                var isChecked = document.getElementById("flexSwitchCheckChecked").checked;
+                document.getElementById("ordernarPorCalificacion").value = isChecked ? 'true' : 'false';
                 document.getElementById("currentPage").value = 1;
                 document.getElementById("tipoVehiculoForm").submit();
             }

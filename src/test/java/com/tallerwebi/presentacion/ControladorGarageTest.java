@@ -9,12 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,10 +39,10 @@ public class ControladorGarageTest {
     public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesConUnaListaVacia() {
         List<Garage> garages = Collections.emptyList();
 
-        when(servicioGarage.getPaginacion(1, 3)).thenReturn(garages);
+        when(servicioGarage.getPaginacion(1, 3,false)).thenReturn(garages);
         when(servicioGarage.traerTodos()).thenReturn(garages);
 
-        ModelAndView mav = controladorGarage.inicio(1, 3, null);
+        ModelAndView mav = controladorGarage.inicio(1, 3, null, false);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat((List<Garage>) mav.getModel().get("garages"), equalTo(garages));
@@ -54,14 +55,14 @@ public class ControladorGarageTest {
             garagesMock.add(new Garage());
         }
 
-        when(servicioGarage.getPaginacion(1, 3)).thenReturn(garagesMock.subList(0, 3));
+        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(garagesMock.subList(0, 3));
         when(servicioGarage.traerTodos()).thenReturn(garagesMock);
         when(servicioGarage.validarPagina(null)).thenReturn(1);
         when(servicioGarage.validarTamanioPagina(null)).thenReturn(3);
         when(servicioGarage.calcularTotalPaginas(10, 3)).thenReturn(4);
         when(servicioGarage.generarNumerosPagina(4)).thenReturn(List.of(1, 2, 3, 4));
 
-        ModelAndView mav = this.controladorGarage.inicio(null, null, null);
+        ModelAndView mav = this.controladorGarage.inicio(null, null, null, false);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat(mav.getModel().get("currentPage"), equalTo(1));
@@ -78,14 +79,14 @@ public class ControladorGarageTest {
             garages.add(new Garage());
         }
 
-        when(servicioGarage.getPaginacion(1, 3)).thenReturn(garages.subList(0, 3));
+        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(garages.subList(0, 3));
         when(servicioGarage.obtenerGaragesPorTipoVehiculo(1)).thenReturn(garages);
         when(servicioGarage.validarPagina(1)).thenReturn(1);
         when(servicioGarage.validarTamanioPagina(3)).thenReturn(3);
         when(servicioGarage.calcularTotalPaginas(5, 3)).thenReturn(2);
         when(servicioGarage.generarNumerosPagina(2)).thenReturn(List.of(1, 2));
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3, "1");
+        ModelAndView mav = this.controladorGarage.inicio(1, 3, "1", false);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat(mav.getModel().get("currentPage"), equalTo(1));
@@ -101,13 +102,38 @@ public class ControladorGarageTest {
         tipoVehiculo.setDescripcion("Bicicleta");
         tiposVehiculos.add(tipoVehiculo);
 
-        when(servicioGarage.getPaginacion(1, 3)).thenReturn(Collections.emptyList());
+        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(Collections.emptyList());
         when(servicioGarage.traerTodos()).thenReturn(Collections.emptyList());
         when(servicioTipoVehiculo.traerTodos()).thenReturn(tiposVehiculos);
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3, null);
+        ModelAndView mav = this.controladorGarage.inicio(1, 3, null, false);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat((List<TipoVehiculo>) mav.getModel().get("tipoVehiculos"), equalTo(tiposVehiculos));
     }
+
+/*
+    @Test
+    public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesOrdenadosPorCalificacion() {
+        // Arrange
+        List<Garage> garages = new ArrayList<>();
+        garages.add(new Garage(3, "Recoleta", LocalTime.parse("07:00:00"), LocalTime.parse("21:00:00"), "-34.588", "-58.397", "garageRecoleta.jpg", 7.0));
+        garages.add(new Garage(4, "Palermo", LocalTime.parse("10:00:00"), LocalTime.parse("20:00:00"), "-34.581", "-58.423", "garagePalermo.jpg", 4.0));
+        garages.add(new Garage(5, "Belgrano", LocalTime.parse("06:00:00"), LocalTime.parse("18:00:00"), "-34.555", "-58.445", "garageBelgrano.jpg", 3.0));
+
+        // Act
+        when(servicioGarage.getPaginacion(1, 3, true)).thenReturn(garages);
+        when(servicioGarage.traerTodos()).thenReturn(garages);
+
+        ModelAndView mav = controladorGarage.inicio(1, 3, null, true);
+
+        // Assert
+        assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
+        List<Garage> garagesOrdenados = (List<Garage>) mav.getModel().get("garages");
+
+        assertThat(garagesOrdenados, is(not(empty())));
+        assertThat(garagesOrdenados.get(0).getPromedio(), equalTo(7.0));
+        assertThat(garagesOrdenados.get(1).getPromedio(), equalTo(4.0));
+        assertThat(garagesOrdenados.get(2).getPromedio(), equalTo(3.0));
+    }*/
 }

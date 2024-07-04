@@ -31,7 +31,7 @@ public class ControladorRestPdfTest {
     public void generatePdf_ReservaFound() throws IOException {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
-        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg",4.5);
         Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, null);
 
         String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -73,7 +73,7 @@ public class ControladorRestPdfTest {
     public void generatePdf_ThrowsIOException() throws IOException {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
-        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg",5.5);
         Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, new EstadoReserva("Confirmada"));
 
         when(servicioReserva.buscarPorId(reservaID)).thenReturn(reserva);

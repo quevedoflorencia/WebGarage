@@ -36,28 +36,27 @@ public class ControladorGarage {
     @RequestMapping(path = "/listado/", method = RequestMethod.GET)
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "3") Integer size,
-                               @RequestParam(required = false) String  tipoVehiculo) {
+                               @RequestParam(required = false) String  tipoVehiculo,
+                               @RequestParam(defaultValue = "false") Boolean ordernarPorCalificacion) {
 
         ModelMap model = new ModelMap();
         page = servicioGarage.validarPagina(page);
         size = servicioGarage.validarTamanioPagina(size);
         Integer tipoVehiculoId = null;
 
+
         List<Garage> garagesPaginados;
+        garagesPaginados = servicioGarage.getPaginacion(page, size, ordernarPorCalificacion);
 
         Integer totalGarages;
 
         if (tipoVehiculo != null && !tipoVehiculo.isEmpty() && !"null".equals(tipoVehiculo)) {
             tipoVehiculoId = Integer.parseInt(tipoVehiculo);
-
-            garagesPaginados = servicioGarage.getPaginacion(page, size);
             totalGarages = servicioGarage.obtenerGaragesPorTipoVehiculo(tipoVehiculoId).size();
-        }
-        else {
-            garagesPaginados = servicioGarage.getPaginacion(page, size);
+        } else {
             totalGarages = servicioGarage.traerTodos().size();
-
         }
+
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
         List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
 
@@ -70,6 +69,8 @@ public class ControladorGarage {
         model.put("pageSize", size);
         model.put("tipoVehiculos", tiposVehiculos);
         model.put("tipoVehiculoSeleccionado", tipoVehiculoId);
+        model.put("ordernarPorCalificacion", ordernarPorCalificacion);
+
 
         return new ModelAndView("listar-garages", model);
     }
