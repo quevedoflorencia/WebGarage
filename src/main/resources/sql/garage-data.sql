@@ -41,7 +41,7 @@ VALUES
     (null, 'MEDICAL CONGRESOS', 'MARCOS PAZ', '820', '1405', '07:30:00', '19:30:00', '-34.6356949974093', '-58.4608534996738', 'parque_lezama.jpg'),
     (null, 'MUSEO DE BELLAS ARTES', 'FIGUEROA ALCORTA AV.', '2280', '1425', '08:30:00', '20:30:00', '-34.5846362635622', '-58.3932377399055', 'plaza_francia.jpg'),
     (null, 'MUSEO DE LOS NIÑOS', 'CORRIENTES AV.', '3247', '1193', '09:00:00', '21:00:00', '-34.6009833442544', '-58.4152134769735', 'mueso_arte_mod.jpg'),
-    (null, 'NUEVO ESTACIONAMIENTO', 'CABILDO AV.', '610', '1428', '07:00:00', '19:00:00', '-34.5713139392262', '-58.4385484025378', 'garageNuñez.jpg'),
+    (null, 'NUEVO ESTACIONAMIENTO', 'CABILDO AV.', '610', '1428', '07:00:00', '19:00:00', '-34.5713139392262', '-58.4385484025378', 'nunez.jpg'),
     (null, 'R.A.P.', 'AVELLANEDA AV.', '1465', '1405', '08:00:00', '20:00:00', '-34.6246196344547', '-58.4470527432434', 'parque_avellaneda.jpg'),
     (null, 'RETIRO', 'CERRITO', '46', 'C1010', '09:00:00', '21:00:00', '-34.6031984933423', '-58.3818873033025', 'garageRetiro.jpg'),
     (null, 'SANTA CATALINA', 'RECONQUISTA', '970', '1003', '07:30:00', '19:30:00', '-34.5994962565303', '-58.3712882601751', 'plaza_mayo.jpg'),
@@ -52,5 +52,5 @@ VALUES
     (null, 'SERVIQUIN', 'MEXICO', '330', '1097', '07:30:00', '19:30:00', '-34.6133811113965', '-58.3751985861617', 'basilica_santa_rosa.jpg'),
     (null, 'TAMBA', 'SAN MARTIN', '900', '1004', '08:30:00', '20:30:00', '-34.600117364351', '-58.3720576760832', 'garageRetiro.jpg'),
     (null, 'THE LABS', 'DIAZ VELEZ AV.', '4844', '1405', '07:00:00', '19:00:00', '-34.6060594095202', '-58.4315987491784', 'museo_ciencias_nat.jpg'),
-    (null, 'UNIVERSIDAD DE BELGRANO', 'VUELTA DE OBLIGADO', '1950', '1428', '08:00:00', '20:00:00', '-34.5621577418355', '-58.448540773464', 'garageNuñez.jpg'),
-    (null, 'ZAPATA', 'ZAPATA', '20', '1426', '09:00:00', '21:00:00', '-34.5710551774266', '-58.4410222136795', 'garageNuñez.jpg');
+    (null, 'UNIVERSIDAD DE BELGRANO', 'VUELTA DE OBLIGADO', '1950', '1428', '08:00:00', '20:00:00', '-34.5621577418355', '-58.448540773464', 'uni_belgrano.jpg'),
+    (null, 'ZAPATA', 'ZAPATA', '20', '1426', '09:00:00', '21:00:00', '-34.5710551774266', '-58.4410222136795', 'nunez.jpg');
