@@ -76,17 +76,15 @@ public class ServicioReservaTest {
         reservaDTO.horarioFin = "12:00";
         reservaDTO.precio = 200.0;
 
-        String estadoConfirmado = "Confirmado";
-
         Usuario usuario = new Usuario();
         Garage garage = new Garage();
         GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo();
-        EstadoReserva estadoReserva = new EstadoReserva(estadoConfirmado);
+        EstadoReserva estadoReserva = new EstadoReserva(EstadoReserva.CONFIRMADA, "Confirmada");
 
         when(servicioUsuario.get(reservaDTO.userId)).thenReturn(usuario);
         when(servicioGarage.buscarPorId(reservaDTO.garageId)).thenReturn(garage);
         when(servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId)).thenReturn(garageTipoVehiculo);
-        when(servicioEstadoReserva.obtenerEstadoSegunDescripcion(estadoConfirmado)).thenReturn(estadoReserva);
+        when(servicioEstadoReserva.obtenerPorId(EstadoReserva.CONFIRMADA)).thenReturn(estadoReserva);
 
         Reserva reserva = servicioReserva.agregarReserva(reservaDTO);
 
@@ -143,13 +141,12 @@ public class ServicioReservaTest {
 
     @Test
     public void cuandoSeEjecutaCancelarReservaDebeActualizarEstadoACancelado() {
-        String descripcionCancelado = "Cancelado";
         Long reservaId = 1L;
         Reserva reserva = new Reserva();
-        EstadoReserva estadoCancelado = new EstadoReserva(descripcionCancelado);
+        EstadoReserva estadoCancelado = new EstadoReserva(EstadoReserva.CANCELADA, "Cancelada");
 
         when(repositorioReserva.obtenerPorId(reservaId)).thenReturn(reserva);
-        when(servicioEstadoReserva.obtenerEstadoSegunDescripcion(descripcionCancelado)).thenReturn(estadoCancelado);
+        when(servicioEstadoReserva.obtenerPorId(EstadoReserva.CANCELADA)).thenReturn(estadoCancelado);
 
         servicioReserva.cancelar(reservaId);
 

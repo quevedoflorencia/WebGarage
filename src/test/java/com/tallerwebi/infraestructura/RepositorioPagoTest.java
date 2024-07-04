@@ -1,9 +1,9 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.RepositorioPago;
 import com.tallerwebi.dominio.model.Pago;
 import com.tallerwebi.dominio.model.Reserva;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
-import com.tallerwebi.dominio.RepositorioPago;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

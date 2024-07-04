@@ -1,12 +1,9 @@
 package com.tallerwebi.dominio.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.List;
-import javax.persistence.*;
 
 
 @Entity
@@ -16,27 +13,34 @@ public class Garage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
-    private Integer capacidad;
+    private String calle;
+    private String altura;
+    private String codigoPostal;
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
     private String latitud;
     private String longitud;
     private String rutaFoto;
 
+    @OneToMany(mappedBy = "garage")
+    private List<Calificacion> calificaciones;
+
+    private Double promedio;
+
     @OneToMany(mappedBy="garage", fetch = FetchType.EAGER)
     private List<GarageTipoVehiculo> garageTipoVehiculos;
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, Integer capacidad, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
+    public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto, Double promedio) {
         this.id = id;
         this.nombre = nombre;
-        this.capacidad = capacidad;
         this.horarioApertura = horarioApertura;
         this.horarioCierre = horarioCierre;
         this.latitud = latitud;
         this.longitud = longitud;
         this.rutaFoto = rutaFoto;
+        this.promedio = promedio;
     }
 
     public Integer getId() { return id; }
@@ -53,13 +57,17 @@ public class Garage {
         this.nombre = name;
     }
 
-    public Integer getCapacidad() {
-        return capacidad;
-    }
+    public String getCalle() { return calle; }
 
-    public void setCapacidad(Integer capacity) {
-        this.capacidad = capacity;
-    }
+    public void setCalle(String calle) { this.calle = calle; }
+
+    public String getAltura() { return altura; }
+
+    public void setAltura(String altura) { this.altura = altura; }
+
+    public String getCodigoPostal() { return codigoPostal; }
+
+    public void setCodigoPostal(String codigoPostal) { this.codigoPostal = codigoPostal; }
 
     public LocalTime getHorarioApertura() {
         return horarioApertura;
@@ -85,7 +93,7 @@ public class Garage {
         return latitud;
     }
 
-    public void setLatutud(String latitud) {
+    public void setLatitud(String latitud) {
         this.latitud = latitud;
     }
 
@@ -103,6 +111,19 @@ public class Garage {
 
     public void setRutaFoto(String rutaFoto) {
         this.rutaFoto = rutaFoto;
+    }
+
+    public Double getPromedio() {
+        return promedio;
+    }
+
+    public void setPromedio(Double promedio) {
+        this.promedio = promedio;
+    }
+
+    public String getPromedioFormateado() {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(this.promedio);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.model.Calificacion;
 import com.tallerwebi.dominio.model.Garage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,13 @@ import java.util.stream.IntStream;
 public class ServicioGarageImpl implements ServicioGarage {
 
     private RepositorioGarage repositorioGarage;
+    private RepositorioCalificacion repositorioCalificacion;
 
     @Autowired
-    public ServicioGarageImpl(RepositorioGarage repositorioGarage) { this.repositorioGarage = repositorioGarage; }
+    public ServicioGarageImpl(RepositorioGarage repositorioGarage, RepositorioCalificacion repositorioCalificacion) {
+        this.repositorioGarage = repositorioGarage;
+        this.repositorioCalificacion = repositorioCalificacion;
+    }
 
     @Override
     public List<Garage> traerTodos() {
@@ -34,7 +39,7 @@ public class ServicioGarageImpl implements ServicioGarage {
     }
 
     @Override
-    public List<Garage> getPaginacion(Integer page, Integer size) {
+    public List<Garage> getPaginacion(Integer page, Integer size, Boolean orderByCalificacion) {
         // Validar la página y el tamaño de la página
         page = validarPagina(page);
         size = validarTamanioPagina(size);
@@ -49,12 +54,12 @@ public class ServicioGarageImpl implements ServicioGarage {
         }
 
         // Obtengo la lista paginada de garages
-        List<Garage> garagesPaginados = repositorioGarage.obtenerPaginacion(page, size);
+        List<Garage> garagesPaginados = repositorioGarage.obtenerPaginacion(page, size, orderByCalificacion);
 
         // Si la pagina solicitada no contiene elementos y no es la primera página, ajustar a una página válida
         if (garagesPaginados.isEmpty() && page > 1) {
             page = totalPages > 0 ? totalPages : 1;
-            garagesPaginados = repositorioGarage.obtenerPaginacion(page, size);
+            garagesPaginados = repositorioGarage.obtenerPaginacion(page, size, orderByCalificacion);
         }
 
         return garagesPaginados;
@@ -81,4 +86,39 @@ public class ServicioGarageImpl implements ServicioGarage {
     public Integer validarTamanioPagina(Integer tamano) {
         return (tamano == null || tamano <= 0) ? 3 : tamano;
     }
+
+    @Override
+    public List<Garage> obtenerGaragesPorTipoVehiculo(Integer tipoVehiculoId){
+        return repositorioGarage.getGaragesPorTipoVehiculo(tipoVehiculoId);
+    }
+    @Override
+    public Double actualizarPromedio(Integer idGarage) {
+        List<Calificacion> calificaciones = repositorioCalificacion.buscarCalificacionPorId(idGarage);
+        return calcularPromedio(calificaciones);
+    }
+
+    @Override
+    public void guardarPromedio(Garage garage) {
+        repositorioGarage.guardarPromedio(garage);
+    }
+
+    private Double calcularPromedio(List<Calificacion> calificaciones) {
+        Integer contador = calificaciones.size();
+        Double suma = 0.0;
+        Double promedio=0.0;
+
+        for (Calificacion calificacion : calificaciones){
+            suma+=calificacion.getPuntaje();
+        }
+
+
+        promedio = (suma/contador);
+
+        promedio = (double) Math.round(promedio * 100.0) / 100.0;
+
+
+        return promedio;
+
+    }
+
 }

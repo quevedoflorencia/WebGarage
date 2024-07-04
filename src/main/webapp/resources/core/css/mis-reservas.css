@@ -1,3 +1,78 @@
+body {
+    max-width: 100vw;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    color:#000000!important;
+}
+
+h1 {
+    color: #f9f9f9;
+}
+
+h2, h3, h4, h5 {
+    color: #394A8F;
+}
+
+a {
+    color: #2b285d;
+}
+
+.reservas-container {
+    -webkit-box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.1);
+    padding: 30px 30px 30px;
+    background-color: #ffffff;
+    margin: 50px 0;
+    border-radius: 5px;
+}
+
+.reservas-activas {
+    margin: 2rem 0 2rem 0;
+}
+
+.reservas-vacias {
+    padding: 5rem;
+    margin-top: 2rem;
+    background-color: #2b285d15;
+    border: 2px dashed #2b285d50;
+    border-radius: 10px;
+}
+
+.status-indicator {
+    color: white;
+    padding: 5px 25px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.status-indicator.confirmada {
+    background-color: #ffa500a3;
+    box-shadow: 0px 0px 5px 0px #ffa500a3;
+}
+
+.status-indicator.pagada {
+    background-color: #1aa11a9e;
+    box-shadow: 0px 0px 5px 0px #1aa11a9e;
+}
+
+
+-- old css properties
+
+.pendiente {
+    color: orange;
+}
+.confirmado {
+    color: blue;
+}
+.pagado {
+    color: green;
+}
+.cancelado {
+    color: red;
+}
+
 .vencida {
     color: lightgray;
     box-shadow: 5px 5px 10px rgba(57, 56, 56, 0.5);
@@ -49,3 +124,6 @@
     --bs-btn-disabled-border-color: #394A8F;
     margin-bottom: 5px;
 }
+
+
+

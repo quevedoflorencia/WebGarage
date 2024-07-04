@@ -1,8 +1,8 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.RepositorioGarageTipoVehiculo;
 import com.tallerwebi.dominio.model.GarageTipoVehiculo;
 import com.tallerwebi.infraestructura.config.HibernateTestInfraestructuraConfig;
-import com.tallerwebi.dominio.RepositorioGarageTipoVehiculo;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +36,8 @@ public class RepositorioGarageTipoVehiculoTest {
     @Transactional
     @Rollback
     public void queSePuedaListarLosTiposDeVehiculosDeLosGarages() {
-        GarageTipoVehiculo tipoVehiculo1 = new GarageTipoVehiculo(1, 10.0, null, null);
-        GarageTipoVehiculo tipoVehiculo2 = new GarageTipoVehiculo(2, 12.0, null, null);
+        GarageTipoVehiculo tipoVehiculo1 = new GarageTipoVehiculo(1, 10.0, null, null,1);
+        GarageTipoVehiculo tipoVehiculo2 = new GarageTipoVehiculo(2, 12.0, null, null, 1);
 
         this.sessionFactory.getCurrentSession().save(tipoVehiculo1);
         this.sessionFactory.getCurrentSession().save(tipoVehiculo2);
@@ -52,7 +52,7 @@ public class RepositorioGarageTipoVehiculoTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnTipoDeVehiculoPorId() {
-        GarageTipoVehiculo tipoVehiculo = new GarageTipoVehiculo(1, 10.0, null, null);
+        GarageTipoVehiculo tipoVehiculo = new GarageTipoVehiculo(1, 10.0, null, null, 1);
 
         this.sessionFactory.getCurrentSession().save(tipoVehiculo);
 

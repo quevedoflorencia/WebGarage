@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,8 +39,9 @@ public class RepositorioReservaTest {
         Garage garage = dadoUnGarage();
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
+        LocalDateTime fechaCreacion = LocalDateTime.now();
 
-        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva, fechaCreacion);
 
         this.repositorioReserva.guardar(reserva);
 
@@ -61,8 +63,8 @@ public class RepositorioReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
-        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva, LocalDateTime.now());
+        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
 
         this.sessionFactory.getCurrentSession().save(reserva1);
         this.sessionFactory.getCurrentSession().save(reserva2);
@@ -91,8 +93,8 @@ public class RepositorioReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
-        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-27", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
+        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-27", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
 
         this.sessionFactory.getCurrentSession().save(reserva1);
         this.sessionFactory.getCurrentSession().save(reserva2);
@@ -124,7 +126,7 @@ public class RepositorioReservaTest {
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
         String nuevoHorarioFin = "13:00";
 
-        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva, LocalDateTime.now());
         this.sessionFactory.getCurrentSession().save(reserva);
 
         reserva.setHorarioFin(nuevoHorarioFin);
@@ -143,7 +145,7 @@ public class RepositorioReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva, LocalDateTime.now());
         this.sessionFactory.getCurrentSession().save(reserva);
 
         Reserva retrievedReserva = this.repositorioReserva.obtenerPorId(reserva.getId());
@@ -164,7 +166,7 @@ public class RepositorioReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
         this.sessionFactory.getCurrentSession().save(reserva);
 
         Reserva retrievedReserva = this.repositorioReserva.obtenerPorId(reserva.getId());
@@ -181,8 +183,8 @@ public class RepositorioReservaTest {
         GarageTipoVehiculo garageTipoVehiculo = dadoUnGarageTipoVehiculo();
         EstadoReserva estadoReserva = dadoUnEstadoReserva();
 
-        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
-        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-27", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva1 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
+        Reserva reserva2 = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-27", "10:00", "12:00", 1000.00, estadoReserva,LocalDateTime.now());
 
         this.sessionFactory.getCurrentSession().save(reserva1);
         this.sessionFactory.getCurrentSession().save(reserva2);

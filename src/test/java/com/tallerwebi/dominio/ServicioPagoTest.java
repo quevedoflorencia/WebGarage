@@ -6,6 +6,8 @@ import com.tallerwebi.dominio.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -54,7 +56,7 @@ public class ServicioPagoTest {
         Garage garage = new Garage();
         EstadoReserva estadoReserva = new EstadoReserva();
 
-        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva);
+        Reserva reserva = new Reserva(usuario, garage, garageTipoVehiculo, "2024-05-26", "10:00", "12:00", 1000.00, estadoReserva, LocalDateTime.now());
         Pago pagoMock = new Pago(reserva);
 
         doNothing().when(repositorioPago).guardarPago(pagoMock);

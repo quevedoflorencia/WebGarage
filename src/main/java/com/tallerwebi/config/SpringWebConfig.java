@@ -1,15 +1,20 @@
 package com.tallerwebi.config;
 
+import com.tallerwebi.config.utils.YamlPropertySourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -19,12 +24,26 @@ import java.util.Properties;
 
 @EnableWebMvc
 @Configuration
+@EnableScheduling
 @ComponentScan({"com.tallerwebi.presentacion", "com.tallerwebi.dominio", "com.tallerwebi.infraestructura"})
+@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class SpringWebConfig implements WebMvcConfigurer {
 
     // Spring + Thymeleaf need this
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Value("${mail.host}")
+    private String mailHost;
+
+    @Value("${mail.port}")
+    private int mailPort;
+
+    @Value("${mail.username}")
+    private String mailUsername;
+
+    @Value("${mail.password}")
+    private String mailPassword;
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -48,7 +67,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         templateResolver.setTemplateMode(TemplateMode.HTML);
         // Template cache is true by default. Set to false if you want
         // templates to be automatically updated when modified.
-        templateResolver.setCacheable(true);
+        templateResolver.setCacheable(false);
         return templateResolver;
     }
 
@@ -58,6 +77,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         // SpringTemplateEngine automatically applies SpringStandardDialect and
         // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.addDialect(new Java8TimeDialect());
         templateEngine.setTemplateResolver(templateResolver());
         // Enabling the SpringEL compiler with Spring 4.2.4 or newer can
         // speed up execution in most scenarios, but might be incompatible
@@ -79,11 +99,11 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(mailHost);
+        mailSender.setPort(mailPort);
 
-        mailSender.setUsername("webgarage2024@gmail.com");
-        mailSender.setPassword("kiehqtgqfltbtpvg");
+        mailSender.setUsername(mailUsername);
+        mailSender.setPassword(mailPassword);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

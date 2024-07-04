@@ -30,16 +30,23 @@ public class ControladorReserva {
     private ServicioGarage servicioGarage;
     private ServicioReserva servicioReserva;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
-    private EmailService emailService;
+    private ServicioEmail servicioEmail;
 
     @Autowired
-    public ControladorReserva(ServicioUsuario servicioUsuario, ServicioGarage servicioGarage, ServicioReserva servicioReserva, ServicioTipoVehiculo servicioTipoVehiculo, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, EmailService emailService) {
+    public ControladorReserva(
+            ServicioUsuario servicioUsuario,
+            ServicioGarage servicioGarage,
+            ServicioReserva servicioReserva,
+            ServicioTipoVehiculo servicioTipoVehiculo,
+            ServicioGarageTipoVehiculo servicioGarageTipoVehiculo,
+            ServicioEmail servicioEmail
+    ) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
         this.servicioReserva = servicioReserva;
         this.servicioTipoVehiculo = servicioTipoVehiculo;
         this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
-        this.emailService = emailService;
+        this.servicioEmail = servicioEmail;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -64,34 +71,36 @@ public class ControladorReserva {
         model.put("username", usuario.getNombre());
         model.put("reservasActivas", reservasActivas);
         model.put("reservasVencidas", reservasVencidas);
+        model.put("estadosReserva", EstadoReserva.class);
 
-        return new ModelAndView("my-reservation", model);
+        return new ModelAndView("mis-reservas", model);
     }
 
     private void ordenarReservasEntreActivasYVencidas(List<Reserva> reservas, List<Reserva> reservasVencidas, List<Reserva> reservasActivas) {
-        for(Reserva reserva:reservas){
-            if(estaVencida(reserva)){
+        for(Reserva reserva : reservas) {
+            if(estaVencida(reserva)) {
                 reservasVencidas.add(reserva);
-            }else if(estaActiva(reserva)){
+            } else if (estaActiva(reserva)) {
                 reservasActivas.add(reserva);
             }
         }
     }
 
     private boolean estaActiva(Reserva reserva) {
-        return !reserva.getEstado().getDescripcion().equals("Vencido") || !reserva.getEstado().getDescripcion().equals("Cancelado");
+        return !reserva.getEstado().getId().equals(EstadoReserva.VENCIDA) || !reserva.getEstado().getId().equals(EstadoReserva.CANCELADA);
     }
 
     private boolean estaVencida(Reserva reserva) {
-        return reserva.getEstado().getDescripcion().equals("Vencido");
+        return reserva.getEstado().getId().equals(EstadoReserva.VENCIDA);
     }
-
 
     @RequestMapping(path = "/cancelar/{id}", method = RequestMethod.GET)
     public ModelAndView cancelar(@PathVariable("id") Long reservaId) {
 
         servicioReserva.cancelar(reservaId);
-        emailService.sendSimpleMessage(servicioReserva.buscarPorId(reservaId));
+
+        servicioEmail.enviarMailReservaCancelada(servicioReserva.buscarPorId(reservaId));
+
         return new ModelAndView("redirect:/reservas/listar");
     }
 
@@ -110,7 +119,7 @@ public class ControladorReserva {
         Long userId = (Long) request.getSession().getAttribute("ID");
 
         if(userId == null) {
-            return new ModelAndView("redirect:/login");
+            return new ModelAndView("redirect:/login?from=garage/"+garageId);
         }
 
         List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
@@ -200,6 +209,4 @@ public class ControladorReserva {
         }
 
     }
-
 }
-

@@ -1,4 +1,5 @@
 package com.tallerwebi.dominio;
+
 import com.tallerwebi.dominio.excepcion.ExcepcionGarageNoExiste;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioNoEncontrado;
 import com.tallerwebi.dominio.model.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,7 +28,13 @@ public class ServicioReservaImpl implements ServicioReserva {
     private ServicioEstadoReserva servicioEstadoReserva;
 
     @Autowired
-    public ServicioReservaImpl(RepositorioReserva repositorioReserva, ServicioGarage servicioGarage, ServicioUsuario servicioUsuario, ServicioGarageTipoVehiculo servicioGarageTipoVehiculo, ServicioEstadoReserva servicioEstadoReserva) {
+    public ServicioReservaImpl(
+            RepositorioReserva repositorioReserva,
+            ServicioGarage servicioGarage,
+            ServicioUsuario servicioUsuario,
+            ServicioGarageTipoVehiculo servicioGarageTipoVehiculo,
+            ServicioEstadoReserva servicioEstadoReserva
+    ) {
         this.repositorioReserva = repositorioReserva;
         this.servicioGarage = servicioGarage;
         this.servicioUsuario = servicioUsuario;
@@ -47,7 +55,9 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(reservaDTO.garageTipoVehiculoId);
 
-        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerEstadoSegunDescripcion("Confirmado");
+        EstadoReserva estadoInicial = servicioEstadoReserva.obtenerPorId(EstadoReserva.CONFIRMADA);
+
+        LocalDateTime ahora = LocalDateTime.now();
 
         if(garage == null) {
             throw new ExcepcionGarageNoExiste();
@@ -61,7 +71,8 @@ public class ServicioReservaImpl implements ServicioReserva {
                 reservaDTO.horarioInicio,
                 reservaDTO.horarioFin,
                 reservaDTO.precio,
-                estadoInicial
+                estadoInicial,
+                ahora
 
         );
 
@@ -72,12 +83,19 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public List traerHorasOcupadas(String day) {
         List reservas = repositorioReserva.reservasPorFecha(day);
-        return horasOcupadasEseDia(reservas);
+        Integer capacidad = 1;
+        return horasOcupadasEseDia(reservas, capacidad);
     }
 
     @Override
     public List<Reserva> obtenerReservasByUserId(Long id) {
         return repositorioReserva.obtenerPorUserId(id);
+    }
+
+    @Override
+    public List<Reserva> traerPorEstado(int estadoId) {
+
+        return repositorioReserva.obtenerImpagas(estadoId);
     }
 
     @Override
@@ -88,7 +106,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
-        reserva.setEstado(obtenerEstado("Cancelado"));
+        EstadoReserva estadoCancelada = servicioEstadoReserva.obtenerPorId(EstadoReserva.CANCELADA);
+        reserva.setEstado(estadoCancelada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -96,7 +115,8 @@ public class ServicioReservaImpl implements ServicioReserva {
     public void validarVencimientoReservas(List<Reserva> reservas) {
         for (Reserva reserva : reservas) {
             if(estaVencida(reserva)){
-                reserva.setEstado(obtenerEstado("Vencido"));
+                EstadoReserva estadoVencida = servicioEstadoReserva.obtenerPorId(EstadoReserva.VENCIDA);
+                reserva.setEstado(estadoVencida);
                 repositorioReserva.actualizar(reserva);
             }
         }
@@ -104,7 +124,8 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public void pagar(Reserva reserva) {
-        reserva.setEstado(obtenerEstado("Pagado"));
+        EstadoReserva estadoPagada = servicioEstadoReserva.obtenerPorId(EstadoReserva.PAGADA);
+        reserva.setEstado(estadoPagada);
         repositorioReserva.actualizar(reserva);
     }
 
@@ -137,41 +158,33 @@ public class ServicioReservaImpl implements ServicioReserva {
 
     @Override
     public Collection<String> traerHorasOcupadasPorDiaYTipoVehiculo(String selectedDate, Integer garageTipoVehiculoId) {
+        GarageTipoVehiculo garageTipoVehiculo = servicioGarageTipoVehiculo.obtenerPorId(garageTipoVehiculoId);
         List reservas = repositorioReserva.reservasPorFechaYTipoDeAuto(selectedDate,garageTipoVehiculoId);
-        return horasOcupadasEseDia(reservas);
+        return horasOcupadasEseDia(reservas, garageTipoVehiculo.getCapacidad());
     }
 
-
-    private EstadoReserva obtenerEstado(String estado) {
-        return servicioEstadoReserva.obtenerEstadoSegunDescripcion(estado);
-    }
-
-    private List horasOcupadasEseDia(List reservas) {
+    private List horasOcupadasEseDia(List reservas, Integer capacidad) {
         List horasOcupadas = new ArrayList();
         Map spotsPorCadaHora = new HashMap();
 
-         horasSinCupoSegunReservas(reservas,spotsPorCadaHora, horasOcupadas);
+         horasSinCupoSegunReservas(reservas,spotsPorCadaHora, horasOcupadas, capacidad);
 
         return horasOcupadas;
     }
 
-    private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas) {
+    private void horasSinCupoSegunReservas(List reservas, Map spotsPorCadaHora, List horasOcupadas, Integer capacidad) {
         for (Object obj: reservas
         ) {
             Reserva reserva = (Reserva) obj;
 
-            recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas);
+            recorreCadaHoraDeLaReservaYLaContabiliza(reserva, spotsPorCadaHora, horasOcupadas, capacidad);
 
         }
     }
 
-    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reserva reserva, Map spotsPorCadaHora, List horasOcupadas) {
+    private void recorreCadaHoraDeLaReservaYLaContabiliza(Reserva reserva, Map spotsPorCadaHora, List horasOcupadas, Integer capacidad) {
         int primerHora = traeHoraComoEntero(reserva.getHorarioInicio());
         int ultimaHora= traeHoraComoEntero(reserva.getHorarioFin());
-
-        int capacidadDeGarage = 1;
-
-
 
         for(int hora=primerHora;
             hora < ultimaHora;hora++){
@@ -185,7 +198,7 @@ public class ServicioReservaImpl implements ServicioReserva {
                 spotsPorCadaHora.put(hora, auxParaContabilizar++);
             }
 
-            if(validarHoraOcupada(hora, capacidadDeGarage, horasOcupadas, spotsPorCadaHora)){
+            if(validarHoraOcupada(hora, capacidad, horasOcupadas, spotsPorCadaHora)){
                 horasOcupadas.add(String.valueOf(hora));
             }
         }
@@ -225,5 +238,4 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         return horas * precioPorHora;
     }
-
 }

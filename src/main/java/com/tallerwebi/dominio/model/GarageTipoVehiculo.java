@@ -1,12 +1,6 @@
 package com.tallerwebi.dominio.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -22,15 +16,17 @@ public class GarageTipoVehiculo {
     @ManyToOne
     @JoinColumn(name = "id_tipo_vehiculo")
     private TipoVehiculo tipoVehiculo;
+    private Integer capacidad;
     private Double precioHora;
 
     public GarageTipoVehiculo() {}
 
-    public GarageTipoVehiculo(Integer id, Double precioHora, Garage garage, TipoVehiculo tipoVehiculo) {
+    public GarageTipoVehiculo(Integer id, Double precioHora, Garage garage, TipoVehiculo tipoVehiculo, Integer capacidad) {
         this.id = id;
         this.precioHora = precioHora;
         this.garage = garage;
         this.tipoVehiculo = tipoVehiculo;
+        this.capacidad=capacidad;
     }
 
     public Integer getId() { return id; }
@@ -39,9 +35,16 @@ public class GarageTipoVehiculo {
     public Double getPrecioHora() { return precioHora; }
     public void setPrecioHora(Double precioHora) { this.precioHora = precioHora; }
 
-    public Garage getIdGarage() { return garage; }
+    public Garage getGarage() { return garage; }
     public void setGarage(Garage garage) { this.garage = garage; }
 
     public TipoVehiculo getTipoVehiculo() { return tipoVehiculo; }
     public void setTipoVehiculo(TipoVehiculo tipoVehiculo) { this.tipoVehiculo = tipoVehiculo; }
+
+    public Integer getCapacidad() {
+        return capacidad;
+    }
+    public void setCapacidad(Integer capacidad) {
+        this.capacidad = capacidad;
+    }
 }

@@ -1,8 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
-import com.tallerwebi.dominio.model.Usuario;
 import com.tallerwebi.dominio.excepcion.ExcepcionUsuarioExiste;
+import com.tallerwebi.dominio.model.Usuario;
 import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public class ControladorLoginTest {
 
 	@Test
 	public void irALoginDeberiaLlevarmeALaVistaLoginConTipoDeModeloCorrecto() {
-		ModelAndView modelAndView = controladorLogin.irALogin();
+		ModelAndView modelAndView = controladorLogin.irALogin(null);
 
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 
@@ -55,11 +55,11 @@ public class ControladorLoginTest {
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, requestMock);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock,null, requestMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario o clave que ingresaste son incorrectos, intentá nuevamente."));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
 	}
 	
@@ -73,10 +73,10 @@ public class ControladorLoginTest {
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
 		
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, requestMock);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock,null,requestMock);
 		
 		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/garages/listado"));
 		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
 
@@ -101,7 +101,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El email que ingresaste ya está registrado"));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Lo sentimos, hubo un error al registrar"));
 	}
 
 	@Test
@@ -146,5 +146,24 @@ public class ControladorLoginTest {
 		ModelMap modelMap = modelAndView.getModelMap();
 		Usuario usuario = (Usuario) modelMap.get("usuario");
 		assertThat(usuario, notNullValue());
+	}
+
+
+	@Test
+	public void loginExitosoDesdeGarageDeberiaRedirigirAStartGarageCuandoVieneDeReservarGarage() {
+		// Preparación
+		Usuario usuarioEncontradoMock = mock(Usuario.class);
+		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
+		String garageId = "2";
+		String from = "garage/" + garageId;
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, from, requestMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/reservas/start/" + garageId));
+		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
 }

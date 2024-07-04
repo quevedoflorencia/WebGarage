@@ -1,0 +1,27 @@
+body {
+    height: 100vh;
+    background: rgb(43,40,93);
+    background: linear-gradient(34deg, rgba(43,40,93,1) 15%, rgba(57,74,143,1) 74%);
+}
+
+hr {
+    border:1px dashed;
+}
+
+.login-container {
+    height: 100vh;
+}
+
+.login-box {
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+    -moz-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+    box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+}
+
+.btn-block {
+    width: 100%;
+}

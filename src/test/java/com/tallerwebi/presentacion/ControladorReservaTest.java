@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,7 +32,12 @@ public class ControladorReservaTest {
     private ControladorReserva controladorReserva;
     private ServicioTipoVehiculo servicioTipoVehiculo;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
-    private EmailService emailService;
+    private ServicioEmail servicioEmail;
+    private ServicioLogin servicioLoginMock;
+    private ControladorLogin controladorLogin;
+
+    private static final String VISTA_MIS_RESERVAS = "mis-reservas";
+
 
     @BeforeEach
     public void init() {
@@ -42,17 +48,22 @@ public class ControladorReservaTest {
         servicioReserva = mock(ServicioReserva.class);
         servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
         servicioGarageTipoVehiculo = mock(ServicioGarageTipoVehiculo.class);
-        emailService = mock(EmailService.class);
-        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, emailService);
+        servicioEmail = mock(ServicioEmailImpl.class);
+        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, servicioEmail);
+        servicioLoginMock = mock(ServicioLogin.class);
+        controladorLogin = new ControladorLogin(servicioLoginMock);
     }
 
     @Test
     public void listaDeReservaDebeMostrarLaVistaConTodasMisReservasRealizadas() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
+        EstadoReserva estadoActiva = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
+
         List<Reserva> reservas = List.of(
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, new EstadoReserva("Activo")),
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, new EstadoReserva("Activo"))
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoActiva, LocalDateTime.now()),
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActiva, LocalDateTime.now())
         );
+
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(usuario.getId());
         when(servicioReserva.obtenerReservasByUserId(usuario.getId())).thenReturn(reservas);
@@ -60,7 +71,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase(VISTA_MIS_RESERVAS));
         verify(servicioReserva).validarVencimientoReservas(reservas);
     }
 
@@ -75,7 +86,7 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.listarReservas(requestMock);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("my-reservation"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase(VISTA_MIS_RESERVAS));
     }
 
     @Test
@@ -91,12 +102,12 @@ public class ControladorReservaTest {
     @Test
     public void listarReservasDebeDividirCorrectamenteEntreActivasYVencidas() {
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
-        EstadoReserva estadoVencido = new EstadoReserva("Vencido");
-        EstadoReserva estadoActivo = new EstadoReserva("Activo");
+        EstadoReserva estadoVencido = new EstadoReserva(EstadoReserva.VENCIDA, "Vencida");
+        EstadoReserva estadoActivo = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
 
         List<Reserva> reservas = List.of(
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoVencido),
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActivo)
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoVencido, LocalDateTime.now()),
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActivo, LocalDateTime.now())
         );
 
         when(requestMock.getSession()).thenReturn(sessionMock);
@@ -118,11 +129,11 @@ public class ControladorReservaTest {
         Integer garageId = 1;
         Long userId = 1L;
 
-        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(garageId, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg",8.5);
         TipoVehiculo tipoVehiculoAuto = new TipoVehiculo(1, "Auto", "icono.png");
         TipoVehiculo tipoVehiculoMoto = new TipoVehiculo(2, "Moto", "icono2.png");
 
-        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, tipoVehiculoAuto);
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, tipoVehiculoAuto, 1);
         garage.setGarageTipoVehiculos(Collections.singletonList(garageTipoVehiculo));
 
         when(requestMock.getSession()).thenReturn(sessionMock);
@@ -139,14 +150,14 @@ public class ControladorReservaTest {
     @Test
     public void intentaIniciarLaPreReservacionConUsuarioNoLogueadoYDeberiaLlevarteAlLogin() {
         Integer garageId = 1;
-        Garage garage = new Garage(garageId, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(garageId, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg",8.0);
         when(servicioGarage.buscarPorId(garageId)).thenReturn(garage);
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(null);
 
         ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
 
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login?from=garage/"+garageId));
     }
 
     @Test
@@ -171,8 +182,8 @@ public class ControladorReservaTest {
         reservaDTO.setHorarioFin("12:00");
         reservaDTO.setGarageTipoVehiculoId(1);
 
-        Garage garage = new Garage(1, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
-        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"));
+        Garage garage = new Garage(1, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg",8.0);
+        GarageTipoVehiculo garageTipoVehiculo = new GarageTipoVehiculo(1, 100.0, garage, new TipoVehiculo(1, "Auto", "icono.png"), 1);
         double precio = 200.0;
         when(servicioGarage.buscarPorId(garage.getId())).thenReturn(garage);
         when(servicioGarageTipoVehiculo.obtenerPorId(garageTipoVehiculo.getId())).thenReturn(garageTipoVehiculo);
@@ -193,9 +204,9 @@ public class ControladorReservaTest {
         reservaDTO.setHorarioFin("12:00");
         reservaDTO.setGarageTipoVehiculoId(1);
 
-        Garage garage = new Garage(1, "Garage 1", 50, LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
+        Garage garage = new Garage(1, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg",8.0);
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
-        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), reservaDTO.getPrecio(), new EstadoReserva("Confirmada"));
+        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), reservaDTO.getPrecio(), new EstadoReserva("Confirmada"), LocalDateTime.now());
 
         when(servicioReserva.agregarReserva(any(ReservaDTO.class))).thenReturn(reserva);
 
@@ -245,7 +256,8 @@ public class ControladorReservaTest {
 
         ModelAndView modelAndView = controladorReserva.cancelar(reservaId);
 
+        verify(servicioEmail).enviarMailReservaCancelada(any());
+
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/reservas/listar"));
-        verify(emailService).sendSimpleMessage(any());
     }
 }
