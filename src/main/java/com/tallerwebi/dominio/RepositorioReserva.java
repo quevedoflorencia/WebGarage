@@ -16,6 +16,8 @@ public interface RepositorioReserva {
 
     List<Reserva> obtenerPorUserId(Long id);
 
+    List<Reserva> obtenerImpagas(int estadoId);
+
     List reservasPorFechaYTipoDeAuto(String selectedDate, int garageTipoVehiculoId);
 }
 

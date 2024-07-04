@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -56,6 +57,8 @@ public class ServicioReservaImpl implements ServicioReserva {
 
         EstadoReserva estadoInicial = servicioEstadoReserva.obtenerPorId(EstadoReserva.CONFIRMADA);
 
+        LocalDateTime ahora = LocalDateTime.now();
+
         if(garage == null) {
             throw new ExcepcionGarageNoExiste();
         }
@@ -68,7 +71,8 @@ public class ServicioReservaImpl implements ServicioReserva {
                 reservaDTO.horarioInicio,
                 reservaDTO.horarioFin,
                 reservaDTO.precio,
-                estadoInicial
+                estadoInicial,
+                ahora
 
         );
 
@@ -86,6 +90,12 @@ public class ServicioReservaImpl implements ServicioReserva {
     @Override
     public List<Reserva> obtenerReservasByUserId(Long id) {
         return repositorioReserva.obtenerPorUserId(id);
+    }
+
+    @Override
+    public List<Reserva> traerPorEstado(int estadoId) {
+
+        return repositorioReserva.obtenerImpagas(estadoId);
     }
 
     @Override

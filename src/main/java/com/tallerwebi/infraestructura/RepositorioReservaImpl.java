@@ -63,6 +63,14 @@ public class RepositorioReservaImpl implements RepositorioReserva {
     }
 
     @Override
+    public List<Reserva> obtenerImpagas(int estadoId) {
+        String hql = "FROM Reserva R WHERE R.estado.id = :estadoId ";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("estadoId", estadoId);
+        return query.getResultList();
+    }
+
+    @Override
     public List reservasPorFechaYTipoDeAuto(String selectedDate, int garageTipoVehiculoId) {
         String hql = "FROM Reserva R WHERE R.garageTipoVehiculo.id = :garageTipoVehiculo and " +
                 "R.dia = :dia";

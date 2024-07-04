@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,8 +60,8 @@ public class ControladorReservaTest {
         EstadoReserva estadoActiva = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
 
         List<Reserva> reservas = List.of(
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoActiva),
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActiva)
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoActiva, LocalDateTime.now()),
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActiva, LocalDateTime.now())
         );
 
         when(requestMock.getSession()).thenReturn(sessionMock);
@@ -105,8 +106,8 @@ public class ControladorReservaTest {
         EstadoReserva estadoActivo = new EstadoReserva(EstadoReserva.ACTIVA, "Activa");
 
         List<Reserva> reservas = List.of(
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoVencido),
-                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActivo)
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "04:00", "06:00", 100.0, estadoVencido, LocalDateTime.now()),
+                new Reserva(usuario, new Garage(), new GarageTipoVehiculo(), "2024-05-05", "20:00", "23:00", 200.0, estadoActivo, LocalDateTime.now())
         );
 
         when(requestMock.getSession()).thenReturn(sessionMock);
@@ -205,7 +206,7 @@ public class ControladorReservaTest {
 
         Garage garage = new Garage(1, "Garage 1", LocalTime.parse("08:00:00"), LocalTime.parse("20:00:00"), "0.0", "0.0", "rutaFoto.jpg");
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "ADMIN", true);
-        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), reservaDTO.getPrecio(), new EstadoReserva("Confirmada"));
+        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", reservaDTO.getHorarioInicio(), reservaDTO.getHorarioFin(), reservaDTO.getPrecio(), new EstadoReserva("Confirmada"), LocalDateTime.now());
 
         when(servicioReserva.agregarReserva(any(ReservaDTO.class))).thenReturn(reserva);
 

@@ -17,6 +17,8 @@ public interface ServicioReserva {
 
     List<Reserva> obtenerReservasByUserId(Long id);
 
+    List<Reserva> traerPorEstado(int estadoId);
+
     Reserva buscarPorId(Long reservaId);
 
     Double calcularPrecio(String horarioInicio, String horarioFin, GarageTipoVehiculo garageTipoVehiculo);
