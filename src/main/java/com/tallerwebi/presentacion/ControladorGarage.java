@@ -35,7 +35,7 @@ public class ControladorGarage {
 
     @RequestMapping(path = "/listado", method = RequestMethod.GET)
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "8") Integer size,
+                               @RequestParam(defaultValue = "12") Integer size,
                                @RequestParam(required = false) String  tipoVehiculo) {
 
         ModelMap model = new ModelMap();
