@@ -31,7 +31,7 @@ public class ControladorHomeTest {
     public void homeDeberiaTraerLaPaginaHomeConUnaListaDeGaragesVacia() {
         List<Garage> garages = Collections.emptyList();
 
-        when(servicioGarage.traerTodos()).thenReturn(garages);
+        when(servicioGarage.getPaginacion(1, 10, false)).thenReturn(garages);
 
         ModelAndView mav = this.controladorHome.inicio();
 
@@ -45,7 +45,7 @@ public class ControladorHomeTest {
         garagesMock.add(new Garage());
         garagesMock.add(new Garage());
 
-        when(this.servicioGarage.traerTodos()).thenReturn(garagesMock);
+        when(this.servicioGarage.getPaginacion(1, 10, false)).thenReturn(garagesMock);
 
         ModelAndView mav = this.controladorHome.inicio();
 

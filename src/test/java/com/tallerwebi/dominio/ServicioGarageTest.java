@@ -26,12 +26,12 @@ public class ServicioGarageTest {
         this.repositorioCalificacion = mock(RepositorioCalificacion.class);
         this.servicioGarage = new ServicioGarageImpl(this.repositorioGarage, this.repositorioCalificacion);
     }
-/*
+
     @Test
     public void queAlEjecutarTraerTodosDebeDevolverLaListaCorrectaDeGarages() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(1, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
-                new Garage(2, "Corrientes", LocalTime.of(10, 0), LocalTime.of(22, 0), "5678", "-5678", "foto2.jpg")
+                new Garage(1, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg", null),
+                new Garage(2, "Corrientes", LocalTime.of(10, 0), LocalTime.of(22, 0), "5678", "-5678", "foto2.jpg", null)
         );
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
@@ -45,7 +45,7 @@ public class ServicioGarageTest {
     @Test
     public void queAlBuscarPorIdDebeDevolverElGarageCorrecto() {
         int idBuscado = 1;
-        Garage garageMock = new Garage(idBuscado, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg");
+        Garage garageMock = new Garage(idBuscado, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg", null);
         when(repositorioGarage.findById(idBuscado)).thenReturn(garageMock);
 
         Garage garage = servicioGarage.buscarPorId(idBuscado);
@@ -55,52 +55,20 @@ public class ServicioGarageTest {
     }
 
     @Test
-    public void queAlBuscarGarageConCapacidadIgualAVeinteVehiculosDevuelvaLosGaragesCorrespondientes() {
-        List<Garage> garagesMock = Arrays.asList(
-                new Garage(null, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg"),
-                new Garage(null, "Gurruchaga", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto.jpg")
-        );
-        Integer capacidadBuscada = 20;
-        when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
-
-        List<Garage> garages = this.servicioGarage.getGaragesPorCapacidad(capacidadBuscada);
-
-        assertThat(garages, is(notNullValue()));
-        assertThat(garages, everyItem(hasProperty("capacidad", is(capacidadBuscada))));
-        assertThat(garages.size(), equalTo(2));
-        assertThat(garages, everyItem(hasProperty("capacidad", greaterThanOrEqualTo(20))));
-    }
-
-    @Test
-    public void queAlBuscarGarageConCapacidadIgualOMayorATreintaVehiculosDevuelvaLosGaragesCorrespondientes() {
-        List<Garage> garagesMock = Arrays.asList(
-                new Garage(null, "Ramos Mejia", LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg"),
-                new Garage(null, "Caminito", LocalTime.of(9, 0), LocalTime.of(23, 0), "1234", "-1234", "foto.jpg")
-        );
-        Integer capacidadBuscada = 30;
-        when(this.repositorioGarage.getGarageSegunCapacidad(capacidadBuscada)).thenReturn(garagesMock);
-
-        List<Garage> garages = this.servicioGarage.getGaragesPorCapacidad(capacidadBuscada);
-
-        assertThat(garages, is(notNullValue()));
-        assertThat(garages, everyItem(hasProperty("capacidad", greaterThanOrEqualTo(30))));
-    }
-
-    @Test
     public void queLaPaginacionDevuelvaLosGaragesCorrectos() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(0, "Garage 0", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto0.jpg"),
-                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
-                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg")
+                new Garage(0, "Garage 0", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto0.jpg", null),
+                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg", null),
+                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg", null)
         );
 
         Integer page = 1;
         Integer size = 3;
 
-        when(repositorioGarage.obtenerPaginacion(page, size)).thenReturn(garagesMock.subList(0, 3));
+        when(repositorioGarage.obtenerPaginacion(page, size, false)).thenReturn(garagesMock.subList(0, 3));
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
-        List<Garage> paginados = servicioGarage.getPaginacion(page, size);
+        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false);
 
         assertThat(paginados, is(notNullValue()));
         assertThat(paginados, hasSize(size));
@@ -114,7 +82,7 @@ public class ServicioGarageTest {
 
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
 
-        assertThat(totalPages, is(4)); // 10 garages, 3 por página -> 4 páginas
+        assertThat(totalPages, is(4));
     }
 
     @Test
@@ -157,16 +125,16 @@ public class ServicioGarageTest {
     @Test
     public void testGetPaginacion() {
         List<Garage> garagesMock = Arrays.asList(
-                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg"),
-                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg"),
-                new Garage(3, "Garage 3", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto3.jpg")
+                new Garage(1, "Garage 1", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto1.jpg", null),
+                new Garage(2, "Garage 2", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto2.jpg", null),
+                new Garage(3, "Garage 3", LocalTime.of(9, 30), LocalTime.of(23, 45), "1234", "-1234", "foto3.jpg", null)
         );
         int page = 1;
         int size = 3;
-        when(repositorioGarage.obtenerPaginacion(page, size)).thenReturn(garagesMock.subList(0, size));
+        when(repositorioGarage.obtenerPaginacion(page, size, false)).thenReturn(garagesMock.subList(0, size));
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
-        List<Garage> paginados = servicioGarage.getPaginacion(page, size);
+        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false);
 
         assertThat(paginados, hasSize(size));
         assertThat(paginados, containsInAnyOrder(garagesMock.subList(0, size).toArray(new Garage[0])));
@@ -227,5 +195,5 @@ public class ServicioGarageTest {
         tamanioValidado = servicioGarage.validarTamanioPagina(tamanioInvalido);
 
         assertThat(tamanioValidado, is(5));
-    }*/
+    }
 }
