@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reserva {
@@ -22,11 +23,12 @@ public class Reserva {
     private Double precio;
     @OneToOne
     private EstadoReserva estado;
+    private LocalDateTime fechaReserva;
 
 
     public Reserva() {}
 
-    public Reserva(Usuario usuario, Garage garage, GarageTipoVehiculo garageTipoVehiculo, String dia, String horarioInicio, String horarioFin, Double precio, EstadoReserva estado) {
+    public Reserva(Usuario usuario, Garage garage, GarageTipoVehiculo garageTipoVehiculo, String dia, String horarioInicio, String horarioFin, Double precio, EstadoReserva estado, LocalDateTime fechaReserva) {
         this.usuario = usuario;
         this.garage = garage;
         this.garageTipoVehiculo = garageTipoVehiculo;
@@ -35,6 +37,7 @@ public class Reserva {
         this.horarioFin = horarioFin;
         this.precio = precio;
         this.estado = estado;
+        this.fechaReserva = fechaReserva;
 
     }
 
@@ -114,5 +117,13 @@ public class Reserva {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public LocalDateTime getFechaReserva() {
+        return fechaReserva;
+    }
+
+    public void setFechaReserva(LocalDateTime fechaReserva) {
+        this.fechaReserva = fechaReserva;
     }
 }

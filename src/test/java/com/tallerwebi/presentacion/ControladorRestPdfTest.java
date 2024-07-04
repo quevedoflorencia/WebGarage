@@ -32,7 +32,7 @@ public class ControladorRestPdfTest {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
         Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
-        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, null);
+        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, null, LocalDateTime.now());
 
         String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
@@ -74,7 +74,7 @@ public class ControladorRestPdfTest {
         Long reservaID = 1L;
         Usuario usuario = new Usuario(1L, "Test", "test@unlam.edu.ar", "test", "USER", true);
         Garage garage = new Garage(1, "Garage 1", null, null, "0.0", "0.0", "rutaFoto.jpg");
-        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, new EstadoReserva("Confirmada"));
+        Reserva reserva = new Reserva(usuario, garage, new GarageTipoVehiculo(), "2024-05-05", "10:00", "12:00", 100.0, new EstadoReserva("Confirmada"), LocalDateTime.now());
 
         when(servicioReserva.buscarPorId(reservaID)).thenReturn(reserva);
 

@@ -89,4 +89,31 @@ public class ServicioEmailImpl implements ServicioEmail {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void enviarMailMensaje(Reserva reserva, String mensaje, String asunto) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(reserva.getUsuario().getEmail());
+
+            helper.setSubject(asunto);
+
+            String body = "<html><body>"
+                    + "<img src='cid:logoImage' style=' width: 5%;'><br><br>"
+                    + mensaje
+                    + "</body></html>";
+
+            helper.setText(body, true);
+
+            File logo = new File(LOGO_IMG_PATH);
+            helper.addInline("logoImage", logo);
+
+            emailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 }
