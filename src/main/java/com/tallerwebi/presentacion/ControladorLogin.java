@@ -43,7 +43,6 @@ public class ControladorLogin {
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
 
             if (from != null && from.contains("garage/")) {
-                // Si 'from' contiene 'garage/', extraer el ID del garage
                 String[] parts = from.split("/");
                 if (parts.length > 1) {
                     String garageId = parts[1];
