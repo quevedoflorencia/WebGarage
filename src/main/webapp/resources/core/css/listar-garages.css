@@ -30,3 +30,13 @@ h5.subtitle {
 .card-text {
     text-align: start!important;
 }
+
+.garage-card {
+    height: 400px;
+}
+
+.garage-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

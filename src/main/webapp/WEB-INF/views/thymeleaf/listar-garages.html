@@ -15,7 +15,7 @@
             <div class="container">
                 <h1 class="title">Estacionamientos</h1>
                 <h5 class="subtitle">¡Buscá los mejores estacionamientos de tu zona!</h5>
-                
+
 <!-- PROXIMAMENTE BUSCADOR ACA
                 <div class="filtros-container">
                     <div th:class="col-2" th:if="${!#lists.isEmpty(garages)}">
@@ -62,9 +62,9 @@
                         </div>
 
                         <div class="col-10" th:if="${!#lists.isEmpty(garages)}">
-                            <div class="row justify-content-around">
+                            <div class="row">
                                 <div class="col-3 my-3" th:each="garage : ${garages}">
-                                    <div class="card grid-item round">
+                                    <div class="card grid-item round garage-card">
                                         <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${garage.nombre}"></h5>
@@ -80,7 +80,7 @@
                         </div>
                     </div>
 
-                    <div class="row" th:if="${!#lists.isEmpty(garages)}">
+                    <div class="row mt-5" th:if="${!#lists.isEmpty(garages)}">
                         <nav class="w-100 d-flex justify-content-center">
                             <ul class="pagination justify-content-end">
                                 <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
