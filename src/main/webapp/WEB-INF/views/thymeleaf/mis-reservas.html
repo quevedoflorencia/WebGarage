@@ -77,8 +77,12 @@
             </div>
 
             <div class="reservas-container">
-                <div class="row">
-                    <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}">Historial de reservas</h3>
+                <div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h3>Historial de reservas</h3>
+                    </div>
+                </div>
+                <div class="row" th:if="${!reservasVencidas.isEmpty()}">
                     <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
                         <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
                             <!-- <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt=""> -->
@@ -91,6 +95,12 @@
 
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center" th:unless="${!reservasVencidas.isEmpty()}">
+                    <div class="col reservas-vacias text-center">
+                        <h5>Acá verás todas tus reservas anteriores o vencidas. </h5>
+                        <h5>Podrás saber toda la información de cada una de tus reservas. </h5>
                     </div>
                 </div>
             </div>
