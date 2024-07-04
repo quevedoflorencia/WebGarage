@@ -17,6 +17,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -111,29 +112,4 @@ public class ControladorGarageTest {
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat((List<TipoVehiculo>) mav.getModel().get("tipoVehiculos"), equalTo(tiposVehiculos));
     }
-
-/*
-    @Test
-    public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesOrdenadosPorCalificacion() {
-        // Arrange
-        List<Garage> garages = new ArrayList<>();
-        garages.add(new Garage(3, "Recoleta", LocalTime.parse("07:00:00"), LocalTime.parse("21:00:00"), "-34.588", "-58.397", "garageRecoleta.jpg", 7.0));
-        garages.add(new Garage(4, "Palermo", LocalTime.parse("10:00:00"), LocalTime.parse("20:00:00"), "-34.581", "-58.423", "garagePalermo.jpg", 4.0));
-        garages.add(new Garage(5, "Belgrano", LocalTime.parse("06:00:00"), LocalTime.parse("18:00:00"), "-34.555", "-58.445", "garageBelgrano.jpg", 3.0));
-
-        // Act
-        when(servicioGarage.getPaginacion(1, 3, true)).thenReturn(garages);
-        when(servicioGarage.traerTodos()).thenReturn(garages);
-
-        ModelAndView mav = controladorGarage.inicio(1, 3, null, true);
-
-        // Assert
-        assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
-        List<Garage> garagesOrdenados = (List<Garage>) mav.getModel().get("garages");
-
-        assertThat(garagesOrdenados, is(not(empty())));
-        assertThat(garagesOrdenados.get(0).getPromedio(), equalTo(7.0));
-        assertThat(garagesOrdenados.get(1).getPromedio(), equalTo(4.0));
-        assertThat(garagesOrdenados.get(2).getPromedio(), equalTo(3.0));
-    }*/
 }

@@ -59,7 +59,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario o clave que ingresaste son incorrectos, intentá nuevamente."));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
 	}
 	
@@ -101,7 +101,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El email que ingresaste ya está registrado"));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Lo sentimos, hubo un error al registrar"));
 	}
 
 	@Test
