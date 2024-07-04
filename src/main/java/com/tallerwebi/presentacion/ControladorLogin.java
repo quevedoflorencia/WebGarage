@@ -55,7 +55,7 @@ public class ControladorLogin {
                 return new ModelAndView("redirect:/garages/listado/");
             }
         } else {
-            model.put("error", "Usuario o clave incorrecta");
+            model.put("error", "El usuario o clave que ingresaste son incorrectos, intentá nuevamente.");
         }
         return new ModelAndView("login", model);
     }
@@ -77,10 +77,10 @@ public class ControladorLogin {
         try{
             servicioLogin.registrar(usuario);
         } catch (ExcepcionUsuarioExiste e){
-            model.put("error", "El usuario ya existe");
+            model.put("error", "El email que ingresaste ya está registrado");
             return new ModelAndView("nuevo-usuario", model);
         } catch (Exception e){
-            model.put("error", "Error al registrar el nuevo usuario");
+            model.put("error", "Lo sentimos, hubo un error al registrar");
             return new ModelAndView("nuevo-usuario", model);
         }
         return new ModelAndView("redirect:/login");

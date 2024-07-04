@@ -1,0 +1,26 @@
+body {
+    height: 100vh;
+    background-color: #394A8F;
+}
+
+hr {
+    border:1px dashed;
+}
+
+.login-container {
+    height: 100vh;
+}
+
+.login-box {
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+    -moz-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+    box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 79%);
+}
+
+.btn-block {
+    width: 100%;
+}
