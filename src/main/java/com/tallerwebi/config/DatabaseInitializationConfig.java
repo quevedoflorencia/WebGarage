@@ -18,6 +18,7 @@ public class DatabaseInitializationConfig {
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("sql/garage-data.sql"));
         populator.addScript(new ClassPathResource("sql/data.sql"));
 
         DataSourceInitializer initializer = new DataSourceInitializer();

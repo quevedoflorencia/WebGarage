@@ -29,7 +29,6 @@ public class ControladorLogin {
     public ModelAndView irALogin(@RequestParam(required = false) String from) {
         ModelMap modelo = new ModelMap();
         modelo.put("loginData", new DatosLoginDTO());
-        System.out.println("From recibido: " + from);
         modelo.put("from", from);
         return new ModelAndView("login", modelo);
     }
@@ -37,7 +36,6 @@ public class ControladorLogin {
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("loginData") DatosLoginDTO datosLoginDTO, @RequestParam(required = false) String from, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-        System.out.println("From recibido: " + from);
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
         if (usuarioBuscado != null) {
@@ -52,10 +50,10 @@ public class ControladorLogin {
                     return new ModelAndView("redirect:/reservas/start/" + garageId);
                 }
             }else{
-                return new ModelAndView("redirect:/garages/listado/");
+                return new ModelAndView("redirect:/garages/listado");
             }
         } else {
-            model.put("error", "Usuario o clave incorrecta");
+            model.put("error", "El usuario o clave que ingresaste son incorrectos, intentá nuevamente.");
         }
         return new ModelAndView("login", model);
     }
@@ -77,10 +75,10 @@ public class ControladorLogin {
         try{
             servicioLogin.registrar(usuario);
         } catch (ExcepcionUsuarioExiste e){
-            model.put("error", "El usuario ya existe");
+            model.put("error", "El email que ingresaste ya está registrado");
             return new ModelAndView("nuevo-usuario", model);
         } catch (Exception e){
-            model.put("error", "Error al registrar el nuevo usuario");
+            model.put("error", "Lo sentimos, hubo un error al registrar");
             return new ModelAndView("nuevo-usuario", model);
         }
         return new ModelAndView("redirect:/login");

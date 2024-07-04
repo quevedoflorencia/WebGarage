@@ -12,7 +12,7 @@ public interface ServicioGarage {
 
     List<Garage> getGaragesPorCapacidad(Integer capacidadBuscada);
     List<Garage> obtenerGaragesPorTipoVehiculo(Integer tipoVehiculoId);
-    List<Garage> getPaginacion(Integer page, Integer size);
+    List<Garage> getPaginacion(Integer page, Integer size, Boolean orderByCalificacion);
     Integer calcularTotalPaginas(Integer totalGarages, Integer size);
     List<Integer> generarNumerosPagina(Integer totalPages);
     Integer validarPagina(Integer pagina);

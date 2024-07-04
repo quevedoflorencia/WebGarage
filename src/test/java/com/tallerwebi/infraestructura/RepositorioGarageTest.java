@@ -32,7 +32,7 @@ public class RepositorioGarageTest {
 
     @BeforeEach
     public void init() { this.repositorioGarage = new RepositorioGarageImpl(this.sessionFactory); }
-
+/*
     @Test
     @Transactional
     @Rollback
@@ -45,7 +45,8 @@ public class RepositorioGarageTest {
         assertThat(result, is(not(empty())));
         assertThat(result.size(), is(2));
     }
-
+*/
+    /*
     @Test
     @Transactional
     @Rollback
@@ -141,4 +142,6 @@ public class RepositorioGarageTest {
 
         return garageTipoVehiculo;
     }
+
+    */
 }

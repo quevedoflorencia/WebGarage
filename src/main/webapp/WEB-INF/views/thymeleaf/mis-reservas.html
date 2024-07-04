@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/default.html :: head">
+    <th:block th:fragment="propiedadesAdicionales">
+        <link rel="stylesheet" th:href="@{/css/mis-reservas.css}"/>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+    </th:block>
+</head>
+
+<body>
+    <div th:replace="layouts/default.html :: nav"></div>
+
+    <div class="overlay"></div>
+
+    <div class="main-wrapper">
+
+        <div class="container">
+            <h1>¡Hola <span th:text="${username}"></span>!</h1>
+
+            <div class="reservas-container">
+                <div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h3>Reservas activas</h3> <a class="btn btnreserva btn-info btn-lg" href="/garages/listado">Nueva Reserva</a>
+                    </div>
+                </div>
+
+                <!--tarjetas de reservas activas-->
+                <div class="row reservas-activas" th:if="${!reservasActivas.isEmpty()}">
+                    <div th:each="reserva : ${reservasActivas}" class="col mx-2" th:if="${reserva.getEstado().getId() != estadosReserva.CANCELADA}">
+                        <div class="card grid-item round">
+                            <div class="card-body mx-2">
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
+
+                                    <p th:switch="${reserva.getEstado().getId()}">
+                                        <span th:case="2" class="status-indicator confirmada">Confirmada</span>
+                                        <span th:case="3" class="status-indicator pagada">PAGADA</span>
+                                    </p>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>
+                                        <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                                        <p class="card-text">Está reservado de <span th:text="${reserva.getHorarioInicio()}"></span>Hs. a <span th:text="${reserva.getHorarioFin()}">Hs.</span>Hs.</p>
+                                    </div>
+
+
+                                    <div class="d-flex align-items-end" th:if="${reserva.getEstado().getId() != estadosReserva.CANCELADA}" >
+                                        <a th:if="${reserva.getEstado().getId() == estadosReserva.CONFIRMADA}" type="button" data-bs-toggle="tooltip" title="Realizar Pago" th:href="@{'/pago/formulario-pago/' + ${reserva.id}}" class="btn btn-pago btn-success mx-1" ><i class="fas fa-credit-card"></i></a>
+
+                                        <button type="button" class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"  th:attr="data-id=${reserva.getId()}">
+                                            <span type="button" data-bs-toggle="tooltip" title="Cancelar la reserva">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </button>
+
+                                        <a class="btn btn-outline-secondary mx-1" data-bs-toggle="tooltip" title="Imprimir PDF" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+
+                                        <div class="mx-1" th:if="${reserva.getEstado().getId() == estadosReserva.PAGADA}" >
+                                            <a type="button"  data-bs-toggle="tooltip" title="Detener Reserva" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fas fa-stop-circle"></i></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center" th:unless="${!reservasActivas.isEmpty()}">
+                    <div class="col reservas-vacias text-center">
+                        <h5>Aún no tienes reservas activas :( </h5>
+                        <h5>Pero no te preocupes, puedes iniciar una nueva haciendo <a href="/garages/listado">click acá</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reservas-container">
+                <div class="row">
+                    <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}">Historial de reservas</h3>
+                    <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
+                        <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
+                            <!-- <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt=""> -->
+                            <div class="card-body mx-2">
+                                    <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
+                                <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                                <p class="card-text">Reserva Expirada</p>
+
+                                <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmDeleteModalLabel">Confirmar cancelación</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cancelar la reserva Id: <span id="idReserva"></span>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-danger align-content-end" id="confirmDeleteButton">Continuar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layouts/default.html :: footer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            $('.reservas-activas').slick({
+                infinite: false,
+                slidesToShow: 2,
+                slidesToScroll: 2
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let modal = document.getElementById('confirmDeleteModal');
+            modal.addEventListener('show.bs.modal', function (event) {
+                let button = event.relatedTarget;
+                let reservaId = button.getAttribute('data-id');
+                let confirmButton = document.querySelector('#confirmDeleteButton');
+                let idReserva = document.querySelector('#idReserva');
+                idReserva.innerText = reservaId;
+                confirmButton.href = '/reservas/cancelar/' + reservaId;
+            });
+        });
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+</body>
+
+</html>

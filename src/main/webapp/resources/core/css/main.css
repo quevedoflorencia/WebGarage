@@ -11,8 +11,19 @@ h2{
 	color:#394A8F;
 }
 
-main{
+main {
     margin-top: 7rem;
+}
+
+.overlay {
+    padding: 6rem 0 300px;
+    background: rgb(43,40,93);
+    background: linear-gradient(34deg, rgba(43,40,93,1) 15%, rgba(57,74,143,1) 74%);
+    border-radius: 0 0 15px 15px;
+}
+
+.main-wrapper {
+    margin-top: -225px;
 }
 
 .navbar-brand{

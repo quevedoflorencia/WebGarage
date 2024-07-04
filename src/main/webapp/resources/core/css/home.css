@@ -146,9 +146,7 @@ ul li{
 .lista{
     text-align:left;
     background-color: left;
-
     padding-left: 0%;
-
 }
 
 .lista li{
@@ -161,33 +159,28 @@ ul li{
 
 }
 
+.hero-container {
+    margin: 0 0.5rem 0 0.5rem;
+}
 
-
-.foto{
-    display: flex;
+.hero-image {
+    border-radius: 2rem 2rem 0 0;
     height: 100vh;
-    width: 100sv;
     opacity: 0.9;
-    background-image: url("../img/home/garage.jpg");
+    background-image: url("../img/home/hero_image.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 
-.foto h2{
+.hero-image h2{
     text-align: center;
-    width: 70%;
-    margin: auto;
     font-size: 72px;
     color: #fff;
     font-weight: 700;
 }
 
-.foto a{
-    position: absolute;
-    top: 60rem;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.hero-image a{
     padding: 20px 40px;
     font-size: 18px;
     background-color: #394A8F;
