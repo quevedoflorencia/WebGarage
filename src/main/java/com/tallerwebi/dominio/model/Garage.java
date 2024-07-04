@@ -32,7 +32,7 @@ public class Garage {
 
     public Garage() {}
 
-    public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto) {
+    public Garage(Integer id, String nombre, LocalTime horarioApertura, LocalTime horarioCierre, String latitud, String longitud, String rutaFoto, Double promedio) {
         this.id = id;
         this.nombre = nombre;
         this.horarioApertura = horarioApertura;
@@ -40,6 +40,7 @@ public class Garage {
         this.latitud = latitud;
         this.longitud = longitud;
         this.rutaFoto = rutaFoto;
+        this.promedio = promedio;
     }
 
     public Integer getId() { return id; }

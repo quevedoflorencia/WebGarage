@@ -35,7 +35,7 @@ public class RepositorioGarageImpl implements RepositorioGarage {
     }
 
     @Override
-    public List<Garage> obtenerPaginacion(Integer page, Integer size) {
+    public List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion) {
         Session session = sessionFactory.getCurrentSession();
 
         // Asegurar que page sea al menos 1
@@ -44,20 +44,25 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         // Calcular el offset basado en la página y el tamaño de la página
         int offset = (pageNumber - 1) * size;
 
-        // NOTA: si lo hacia con criteria daba error con el distinct por eso busqué otra forma.
-        String sqlQuery = "SELECT * FROM Garage " +
-                "ORDER BY id " +
-                "LIMIT :size OFFSET :offset";
+        StringBuilder sqlQuery = new StringBuilder("SELECT * FROM Garage ");
 
-        // Crear la consulta utilizando Query de Hibernate
-        Query query = session.createNativeQuery(sqlQuery, Garage.class);
+        // Agregar ordenación según el parámetro orderByCalificacion
+        if (orderByCalificacion) {
+            sqlQuery.append("ORDER BY promedio DESC "); // ordenamiento en
+        } else {
+            sqlQuery.append("ORDER BY id "); // Ordenar por ID
+        }
+
+        sqlQuery.append("LIMIT :size OFFSET :offset");
+
+        // Crea la consulta utilizando Query de Hibernate
+        Query query = session.createNativeQuery(sqlQuery.toString(), Garage.class);
         query.setParameter("size", size);
         query.setParameter("offset", offset);
 
         List<Garage> garagesPaginados = query.getResultList();
 
         return garagesPaginados;
-
     }
 
     @Override
