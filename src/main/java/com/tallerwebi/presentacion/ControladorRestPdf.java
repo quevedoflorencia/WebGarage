@@ -48,7 +48,7 @@ public class ControladorRestPdf {
         documento.close();
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename="+nombrePdf+".pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=WebGarage_"+nombrePdf+".pdf");
         response.setContentLength(flujoDeSalidaMemoria.size());
 
         flujoDeSalidaMemoria.writeTo(response.getOutputStream());
