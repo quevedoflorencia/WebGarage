@@ -18,7 +18,10 @@ public class ServicioScheduledTasks {
     private ServicioEmail servicioEmail;
     private ServicioNotificacion servicioNotificacion;
 
+    //Se define el tiempo desde que se confirmo la reserva.
     private final int tiempoImpagas=1;
+    //Se define el tiempo desde que se notifico que esta impaga y se cancela.
+    private final int tiempoNotificada=2;
 
     private final String mensajeImpagas = "Le recordamos que tiene una reserva que esta sin abonarse y puede quedar cancelada de no pagarse en los proximos "+ tiempoImpagas + "minutos. Recomendamos visitar sus reservas para resolverlo. Gracias";
 
@@ -32,11 +35,11 @@ public class ServicioScheduledTasks {
 
     @Scheduled(cron= "0 * * * * ?")
     public void scheduleVerificarReservasImpagas() {
-        List<Reserva> reservas = validarReservasImpagas();
+        List<Reserva> reservas = validarReservasImpagasYNotificadas(tiempoImpagas);
         if(reservas!=null){
             for(Reserva res : reservas){
-                System.out.println("Enviando mail de mensaje impagas ");
                 if(!notificado(res)){
+                    System.out.println("Enviando mail de mensaje impagas ");
                     enviarMail(res,mensajeImpagas,asuntoImpagas );
                     notificar(res);
                 }
@@ -44,6 +47,20 @@ public class ServicioScheduledTasks {
             }
         }
         System.out.println("Se verificaron Reservas Impagas");
+    }
+
+    @Scheduled(cron= "0 * * * * ?")
+    public void scheduleCancelarReservasImpagas() {
+        List<Reserva> reservas = validarReservasImpagasYNotificadas(tiempoNotificada);
+        if(reservas!=null){
+            for(Reserva res : reservas){
+                if(notificado(res)){
+                    System.out.println("Cancelando facturas Impagas");
+                    cancelandoReservas(res);
+                }
+
+            }
+        }
     }
 
     private boolean notificado(Reserva res) {
@@ -57,11 +74,11 @@ public class ServicioScheduledTasks {
     }
 
 
-    private List<Reserva> validarReservasImpagas() {
+    private List<Reserva> validarReservasImpagasYNotificadas(int tiempo) {
         List<Reserva> reservas =servicioReserva.traerPorEstado(EstadoReserva.CONFIRMADA);
         List<Reserva> reservasValidadas = new ArrayList<>();
         for (Reserva res: reservas){
-            if(res.getFechaReserva()!=null && validarMinutos(res.getFechaReserva(),tiempoImpagas)){
+            if(res.getFechaReserva()!=null && validarMinutos(res.getFechaReserva(),tiempo)){
                 reservasValidadas.add(res);
             }
         }
@@ -74,5 +91,9 @@ public class ServicioScheduledTasks {
 
     private Boolean validarMinutos(LocalDateTime horarioReserva, int intervalo) {
         return ChronoUnit.MINUTES.between(horarioReserva, LocalDateTime.now())>intervalo;
+    }
+
+    private void cancelandoReservas(Reserva res) {
+        servicioReserva.cancelar(res.getId());
     }
 }
