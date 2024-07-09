@@ -105,7 +105,8 @@
         <form id="payment-form" action="#" th:action="@{/pago/validar}" method="POST" th:object="${pagoData}">
             <div class="form-group">
                 <label for="card-name">Nombre en la Tarjeta</label>
-                <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" pattern="[a-zA-Z\s]+" title="Solo letras y espacios" class="form-control" required>
+               <!-- <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" pattern="/^[a-zA-Z][a-zA-Z\s](?!\s*$){1,19}$/+" class="form-control" required>-->
+                <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" oninput="soloLetras(event)" required >
             </div>
             <div class="form-group">
                 <label for="card-number">Número de la Tarjeta</label>
@@ -113,15 +114,15 @@
             </div>
             <div class="form-group">
                 <label for="card-expiry">Fecha de Expiración</label>
-                <input th:field="*{fechaVencimiento}" type="text" id="card-expiry"
-                    placeholder="MM/YY" class="form-control" required>
+             <!--   <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" placeholder="MM/YY" class="form-control" required> -->
+                <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" placeholder="MM/YY" oninput="formatearFecha(event); validarFechaVencimiento(event)" required>
             </div>
             <div class="form-group">
                 <label for="card-cvc">Código CVV</label>
                 <input th:field="*{cvv}" type="text" id="card-cvc" class="form-control" required>
             </div>
 
-            <!--<input  type="hidden" th:field="${reserva.getId()}">-->
+
             <input type="hidden" th:field="*{idReserva}" th:value="${pagoData.idReserva}">
             <div class="d-flex justify-content-between w-100 my-3 align-items-center">
                 <div>
@@ -160,18 +161,75 @@
                 cvc: '•••'
             }
         });
-        // Validación adicional con JavaScript
-        document.getElementById('payment-form').addEventListener('submit', function(event) {
-            var cardName = document.getElementById('card-name').value;
-            /*var namePattern = /^[a-zA-Z\s]+$/;
-            var namePattern = /^(?!\s*$)[a-zA-Z\s]{1,20}$/;
-            var namePattern = /^[a-zA-Z][a-zA-Z\s](?!\s*$){0,19}$/;*/
-            var namePattern = /^[a-zA-Z][a-zA-Z\s]{1,19}$/;
-            if (!namePattern.test(cardName)) {
-                alert('El nombre en la tarjeta solo puede contener letras y espacios.');
-                event.preventDefault();
-                return;
+        function soloLetras(event) {
+            const input = event.target;
+            let valor = input.value;
+            // Expresión regular para permitir solo letras y espacios
+            const regex = /^[a-zA-Z\s]*$/;
+
+            if (!regex.test(valor)) {
+                // Elimina los caracteres no válidos
+                valor = valor.replace(/[^a-zA-Z\s]/g, '');
             }
+
+            // Elimina espacios en blanco al inicio del campo
+            valor = valor.replace(/^\s+/, '');
+
+            input.value = valor;
+        }
+function validarFechaVencimiento(event) {
+            const input = event.target;
+            let valor = input.value;
+
+            // Agregar automáticamente la barra
+            if (valor.length === 2 && !valor.includes('/')) {
+                valor = valor + '/';
+            }
+            input.value = valor;
+
+            // Expresión regular para validar el formato MM/YY
+            const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+            if (!regex.test(valor)) {
+                input.setCustomValidity('Mes inválido, reingresar fecha.');
+                return;
+            } else {
+                input.setCustomValidity('');
+            }
+
+            // Separar el mes y el año
+            const partes = valor.split('/');
+            const mes = parseInt(partes[0], 10);
+            const año = parseInt('20' + partes[1], 10);
+
+            // Obtener la fecha actual
+            const fechaActual = new Date();
+            const mesActual = fechaActual.getMonth() + 1;
+            const añoActual = fechaActual.getFullYear();
+
+            // Verificar si la fecha ingresada ya pasó
+            if (año < añoActual || (año === añoActual && mes < mesActual)) {
+                input.setCustomValidity('Tarjeta vencida.');
+            } else {
+                input.setCustomValidity('');
+            }
+        }
+
+        function formatearFecha(event) {
+            const input = event.target;
+            let valor = input.value.replace(/\D/g, ''); // Eliminar todos los caracteres no numéricos
+
+            if (valor.length > 2) {
+                valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
+            }
+
+            input.value = valor;
+        }
+
+
+        // Validación adicional con JavaScript
+
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
 
             var cardExpiry = document.getElementById('card-expiry').value;
             if (!isValidExpiryDate(cardExpiry)) {
@@ -196,6 +254,9 @@
             var expiryDate = new Date(year, month, 0); // El último día del mes
             return expiryDate >= today;
         }
+
+
+
     </script>
 
 
