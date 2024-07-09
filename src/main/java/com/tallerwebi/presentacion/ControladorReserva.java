@@ -73,7 +73,7 @@ public class ControladorReserva {
         model.put("reservasVencidas", reservasVencidas);
         model.put("estadosReserva", EstadoReserva.class);
 
-        return new ModelAndView("my-reservation", model);
+        return new ModelAndView("mis-reservas", model);
     }
 
     private void ordenarReservasEntreActivasYVencidas(List<Reserva> reservas, List<Reserva> reservasVencidas, List<Reserva> reservasActivas) {

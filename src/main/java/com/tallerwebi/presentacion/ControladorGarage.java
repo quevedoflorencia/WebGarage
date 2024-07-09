@@ -33,35 +33,33 @@ public class ControladorGarage {
         this.servicioCalificacion = servicioCalificacion;
     }
 
-    @RequestMapping(path = "/listado/", method = RequestMethod.GET)
+    @RequestMapping(path = "/listado", method = RequestMethod.GET)
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
-                               @RequestParam(defaultValue = "3") Integer size,
-                               @RequestParam(required = false) String  tipoVehiculo) {
+                               @RequestParam(defaultValue = "12") Integer size,
+                               @RequestParam(required = false) String  tipoVehiculo,
+                               @RequestParam(defaultValue = "false") Boolean ordernarPorCalificacion) {
 
         ModelMap model = new ModelMap();
         page = servicioGarage.validarPagina(page);
         size = servicioGarage.validarTamanioPagina(size);
         Integer tipoVehiculoId = null;
 
+
         List<Garage> garagesPaginados;
+        garagesPaginados = servicioGarage.getPaginacion(page, size, ordernarPorCalificacion);
 
         Integer totalGarages;
 
         if (tipoVehiculo != null && !tipoVehiculo.isEmpty() && !"null".equals(tipoVehiculo)) {
             tipoVehiculoId = Integer.parseInt(tipoVehiculo);
-
-            garagesPaginados = servicioGarage.getPaginacion(page, size);
             totalGarages = servicioGarage.obtenerGaragesPorTipoVehiculo(tipoVehiculoId).size();
-        }
-        else {
-            garagesPaginados = servicioGarage.getPaginacion(page, size);
+        } else {
             totalGarages = servicioGarage.traerTodos().size();
-
         }
+
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
         List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
 
-        //Listado de tipo de vehiculos
         List<TipoVehiculo> tiposVehiculos = servicioTipoVehiculo.traerTodos();
 
         model.put("garages", garagesPaginados);
@@ -70,6 +68,8 @@ public class ControladorGarage {
         model.put("pageSize", size);
         model.put("tipoVehiculos", tiposVehiculos);
         model.put("tipoVehiculoSeleccionado", tipoVehiculoId);
+        model.put("ordernarPorCalificacion", ordernarPorCalificacion);
+
 
         return new ModelAndView("listar-garages", model);
     }
@@ -100,9 +100,7 @@ public class ControladorGarage {
         servicioGarage.guardarPromedio(garage);
 
         model.put("promedioActualizado", promedioActualizado);
-        /*
-        Double promedio =servicioCalificacion.calcularPromedio(garage.getId());
-        model.put("promedio", promedio); */
-        return new ModelAndView("home", model);
+
+        return new ModelAndView("redirect:/home");
     }
 }

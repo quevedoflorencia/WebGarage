@@ -47,11 +47,8 @@ public class ControladorRestReserva {
     }
 
     private void traerHorasOcupadas(List<String> horasOcupadas, String selectedDate, Integer garageTipoVehiculoId, Integer garageId) {
-
-
         horasOcupadas.addAll(servicioDisponibilidad.traerHorasOcupadasPorDiaYTipoVehiculo(selectedDate, garageTipoVehiculoId));
         horasOcupadas.addAll(servicioDisponibilidad.traerHorasCierre(garageId));
-
     }
 
 }

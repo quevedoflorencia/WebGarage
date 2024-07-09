@@ -39,7 +39,7 @@ public class ServicioGarageImpl implements ServicioGarage {
     }
 
     @Override
-    public List<Garage> getPaginacion(Integer page, Integer size) {
+    public List<Garage> getPaginacion(Integer page, Integer size, Boolean orderByCalificacion) {
         // Validar la página y el tamaño de la página
         page = validarPagina(page);
         size = validarTamanioPagina(size);
@@ -54,12 +54,12 @@ public class ServicioGarageImpl implements ServicioGarage {
         }
 
         // Obtengo la lista paginada de garages
-        List<Garage> garagesPaginados = repositorioGarage.obtenerPaginacion(page, size);
+        List<Garage> garagesPaginados = repositorioGarage.obtenerPaginacion(page, size, orderByCalificacion);
 
         // Si la pagina solicitada no contiene elementos y no es la primera página, ajustar a una página válida
         if (garagesPaginados.isEmpty() && page > 1) {
             page = totalPages > 0 ? totalPages : 1;
-            garagesPaginados = repositorioGarage.obtenerPaginacion(page, size);
+            garagesPaginados = repositorioGarage.obtenerPaginacion(page, size, orderByCalificacion);
         }
 
         return garagesPaginados;
