@@ -105,20 +105,20 @@
         <form id="payment-form" action="#" th:action="@{/pago/validar}" method="POST" th:object="${pagoData}">
             <div class="form-group">
                 <label for="card-name">Nombre en la Tarjeta</label>
-                <input th:field="*{titularTarjeta}" type="text" id="card-name"  required>
+                <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" pattern="[a-zA-Z\s]+" title="Solo letras y espacios" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="card-number">Número de la Tarjeta</label>
-                <input th:field="*{numeroTarjeta}" type="text" id="card-number"required>
+                <input th:field="*{numeroTarjeta}" type="text" id="card-number" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="card-expiry">Fecha de Expiración</label>
                 <input th:field="*{fechaVencimiento}" type="text" id="card-expiry"
-                    placeholder="MM/YY" required>
+                    placeholder="MM/YY" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="card-cvc">Código CVV</label>
-                <input th:field="*{cvv}" type="text" id="card-cvc"  required>
+                <input th:field="*{cvv}" type="text" id="card-cvc" class="form-control" required>
             </div>
 
             <!--<input  type="hidden" th:field="${reserva.getId()}">-->
@@ -128,7 +128,7 @@
                     <a th:href="@{'/reservas/listar'}" class="btn btn-outline-dark btn-light">Pagar luego</a>
                 </div>
                 <div>
-                    <button type="submit" class="submit-btn mt-0">Pagar</button>
+                    <button type="submit" class="submit-btn mt-0 btn btn-primary">Pagar</button>
                 </div>
             </div>
             <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
@@ -160,6 +160,42 @@
                 cvc: '•••'
             }
         });
+        // Validación adicional con JavaScript
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            var cardName = document.getElementById('card-name').value;
+            /*var namePattern = /^[a-zA-Z\s]+$/;
+            var namePattern = /^(?!\s*$)[a-zA-Z\s]{1,20}$/;
+            var namePattern = /^[a-zA-Z][a-zA-Z\s](?!\s*$){0,19}$/;*/
+            var namePattern = /^[a-zA-Z][a-zA-Z\s]{1,19}$/;
+            if (!namePattern.test(cardName)) {
+                alert('El nombre en la tarjeta solo puede contener letras y espacios.');
+                event.preventDefault();
+                return;
+            }
+
+            var cardExpiry = document.getElementById('card-expiry').value;
+            if (!isValidExpiryDate(cardExpiry)) {
+                alert('La fecha de expiración no es válida o la tarjeta está vencida.');
+                event.preventDefault();
+            }
+        });
+
+        function isValidExpiryDate(expiry) {
+            var today = new Date();
+            var parts = expiry.split('/');
+            if (parts.length !== 2) {
+                return false;
+            }
+            var month = parseInt(parts[0], 10);
+            var year = parseInt(parts[1], 10) + 2000;
+
+            if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+                return false;
+            }
+
+            var expiryDate = new Date(year, month, 0); // El último día del mes
+            return expiryDate >= today;
+        }
     </script>
 
 
