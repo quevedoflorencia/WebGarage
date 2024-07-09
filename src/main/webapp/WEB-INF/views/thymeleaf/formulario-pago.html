@@ -161,6 +161,7 @@
                 cvc: '•••'
             }
         });
+
         function soloLetras(event) {
             const input = event.target;
             let valor = input.value;
@@ -177,7 +178,8 @@
 
             input.value = valor;
         }
-function validarFechaVencimiento(event) {
+
+        function validarFechaVencimiento(event) {
             const input = event.target;
             let valor = input.value;
 
@@ -226,40 +228,7 @@ function validarFechaVencimiento(event) {
             input.value = valor;
         }
 
-
-        // Validación adicional con JavaScript
-
-        document.getElementById('payment-form').addEventListener('submit', function(event) {
-
-            var cardExpiry = document.getElementById('card-expiry').value;
-            if (!isValidExpiryDate(cardExpiry)) {
-                alert('La fecha de expiración no es válida o la tarjeta está vencida.');
-                event.preventDefault();
-            }
-        });
-
-        function isValidExpiryDate(expiry) {
-            var today = new Date();
-            var parts = expiry.split('/');
-            if (parts.length !== 2) {
-                return false;
-            }
-            var month = parseInt(parts[0], 10);
-            var year = parseInt(parts[1], 10) + 2000;
-
-            if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
-                return false;
-            }
-
-            var expiryDate = new Date(year, month, 0); // El último día del mes
-            return expiryDate >= today;
-        }
-
-
-
     </script>
-
-
 
 </body>
 
