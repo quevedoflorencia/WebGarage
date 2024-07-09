@@ -105,7 +105,6 @@
         <form id="payment-form" action="#" th:action="@{/pago/validar}" method="POST" th:object="${pagoData}">
             <div class="form-group">
                 <label for="card-name">Nombre en la Tarjeta</label>
-               <!-- <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" pattern="/^[a-zA-Z][a-zA-Z\s](?!\s*$){1,19}$/+" class="form-control" required>-->
                 <input th:field="*{titularTarjeta}" type="text" id="card-name" maxlength="20" oninput="soloLetras(event)" required >
             </div>
             <div class="form-group">
@@ -114,14 +113,12 @@
             </div>
             <div class="form-group">
                 <label for="card-expiry">Fecha de Expiración</label>
-             <!--   <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" placeholder="MM/YY" class="form-control" required> -->
                 <input th:field="*{fechaVencimiento}" type="text" id="card-expiry" placeholder="MM/YY" oninput="formatearFecha(event); validarFechaVencimiento(event)" required>
             </div>
             <div class="form-group">
                 <label for="card-cvc">Código CVV</label>
                 <input th:field="*{cvv}" type="text" id="card-cvc" class="form-control" required>
             </div>
-
 
             <input type="hidden" th:field="*{idReserva}" th:value="${pagoData.idReserva}">
             <div class="d-flex justify-content-between w-100 my-3 align-items-center">
@@ -133,7 +130,6 @@
                 </div>
             </div>
             <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
-
 
         </form>
     </div>
