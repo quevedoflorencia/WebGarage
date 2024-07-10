@@ -9,9 +9,9 @@ VALUES
 
 INSERT INTO tipo_vehiculo(id,descripcion, icono)
 VALUES
+    (null, 'Moto', 'fa-motorcycle'),
     (null, 'Auto', 'fa-car-side'),
-    (null, 'Camioneta', 'fa-truck'),
-    (null, 'Moto', 'fa-motorcycle');
+    (null, 'Camioneta', 'fa-truck');
 
 INSERT INTO Usuario(id, nombre, email, password, rol, activo)
 VALUES
