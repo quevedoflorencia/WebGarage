@@ -5,9 +5,9 @@ VALUES
     (null, 'ALEJANDRA', 'DIRECTORIO AV.', '1376', '1406', '09:00:00', '21:00:00', '-34.6303863084295', '-58.4467255774124',null, 'parque_avellaneda.jpg'),
     (null, 'APART CAR', 'MAIPU', '373', '1006', '07:30:00', '19:30:00', '-34.6036705695018', '-58.3764226925051', null,'puerto_madero.jpg'),
     (null, 'APART CAR', 'AZCUENAGA', '1048', '1115', '08:30:00', '20:30:00', '-34.5958595964495', '-58.4003827133644', null,'garagePalermo.jpg'),
-    (null, 'AVELLANEDA PARKING', 'AVELLANEDA AV.', '1966', '1406', '07:00:00', '19:00:00', '-34.6225501176177', null,'-58.4589046009435', 'parque_avellaneda.jpg'),
+    (null, 'AVELLANEDA PARKING', 'AVELLANEDA AV.', '1966', '1406', '07:00:00', '19:00:00', '-34.6225501176177', '-58.4589046009435', null, 'parque_avellaneda.jpg'),
     (null, 'AYRTON', 'BRAVO, MARIO', '963', '1175', '08:00:00', '20:00:00', '-34.5985280807753', '-58.4157039896768', 2.1,'garageRecoleta.jpg'),
-    (null, 'BIO DIAGONOSTICO BUENOS AIRES', 'MITRE, BARTOLOME', '860', '1036', '09:00:00', '21:00:00', '-34.6073174302334', 3.5,'-58.3786323911372', 'teatro_colon.jpg'),
+    (null, 'BIO DIAGONOSTICO BUENOS AIRES', 'MITRE, BARTOLOME', '860', '1036', '09:00:00', '21:00:00', '-34.6073174302334', '-58.3786323911372', 3.5, 'teatro_colon.jpg'),
     (null, 'BULNES', 'HUMAHUACA', '3824', '1191', '07:30:00', '19:30:00', '-34.6024342311705', '-58.4183228649631', 3.5,'mueso_arte_mod.jpg'),
     (null, 'CAECE', 'YRIGOYEN, HIPOLITO', '877', '1086', '08:30:00', '20:30:00', '-34.609210991623', '-58.3787058819741', 4.5,'garageSanTelmo.jpg'),
     (null, 'CENTENARIO', 'GALLARDO, ANGEL AV.', '135', '1405', '07:00:00', '19:00:00', '-34.6029816227493', '-58.4345655733532', 2.5,'museo_ciencias_nat.jpg'),
@@ -47,7 +47,7 @@ VALUES
     (null, 'SANTA CATALINA', 'RECONQUISTA', '970', '1003', '07:30:00', '19:30:00', '-34.5994962565303', '-58.3712882601751',  4.0,'plaza_mayo.jpg'),
     (null, 'SANTA CECILIA', 'SARMIENTO', '1968', '1044', '08:30:00', '20:30:00', '-34.6082288847962', '-58.4022139347261', 3.4 ,'fac_derecho.jpg'),
     (null, 'SANTA MARIA', 'LARREA', '837', '1117', '07:00:00', '19:00:00', '-34.600536336902', '-58.4038978051145',  3.5,'fac_medicina.jpg'),
-    (null, 'SANTO DOMINGO', 'QUINTINO BOCAYUVA', '327', '1185', '08:00:00', '20:00:00', '-34.6147740007217',  3.0,'-58.4140895051558', 'mueso_arte_mod.jpg'),
+    (null, 'SANTO DOMINGO', 'QUINTINO BOCAYUVA', '327', '1185', '08:00:00', '20:00:00', '-34.6147740007217', '-58.4140895051558', 3.0, 'mueso_arte_mod.jpg'),
     (null, 'SC', 'ALVEAR', '1523', '1125', '09:00:00', '21:00:00', '-34.5888270087581', '-58.3916459469357',  3.0,'plaza_francia.jpg'),
     (null, 'SERVIQUIN', 'MEXICO', '330', '1097', '07:30:00', '19:30:00', '-34.6133811113965', '-58.3751985861617', 3.0,'basilica_santa_rosa.jpg'),
     (null, 'TAMBA', 'SAN MARTIN', '900', '1004', '08:30:00', '20:30:00', '-34.600117364351', '-58.3720576760832', 4.0,'garageRetiro.jpg'),
@@ -166,3 +166,70 @@ VALUES
     (null, 54, 1, 2890, 30),
     (null, 54, 2, 4560, 20),
     (null, 54, 3, 4120, 10);
+
+INSERT INTO calificacion(id, puntaje, comentario, garage_id)
+VALUES
+    (null, 1, 'Muy mala experiencia', 32),
+    (null, 1, 'No lo recomiendo', 32),
+    (null, 1, 'Muy sucio y desorganizado', 7),
+    (null, 1, 'Muy sucio', 48),
+    (null, 1, 'Malo', 7),
+    (null, 1, 'No volvería', 32),
+    (null, 1, 'Muy malo', 38),
+    (null, 1, 'No lo recomiendo', 43),
+
+    (null, 2, 'Regular, podría mejorar', 21),
+    (null, 2, 'Regular', 21),
+
+    (null, 3, 'Cumplio con lo minimo', 45),
+    (null, 3, 'Nada especial', 9),
+    (null, 3, 'Decente, pero hay mejores', 7),
+    (null, 3, 'Cumplió con las expectativas', 20),
+    (null, 3, 'Aceptable, pero necesita mejorar', 21),
+    (null, 3, 'Decente', 7),
+    (null, 3, 'Cumple', 9),
+    (null, 3, 'Aceptable', 21),
+    (null, 3, 'Acorde al precio, regular', 38),
+    (null, 3, 'Satisfactorio', 39),
+
+    (null, 4, 'Buen servicio, pero puede mejorar', 1),
+    (null, 4, 'Buen lugar, recomendable', 10),
+    (null, 4, 'Muy bueno, limpio', 34),
+    (null, 4, 'Buen lugar, falta un poco de limpieza', 50),
+    (null, 4, 'Buena relación calidad-precio', 9),
+    (null, 4, 'Buen servicio, volvería', 20),
+    (null, 4, 'Recomendado', 50),
+    (null, 4, 'Buen lugar, volvería', 2),
+    (null, 4, 'Buen servicio', 2),
+    (null, 4, 'Lugar agradable', 3),
+    (null, 4, 'Satisfactorio', 3),
+    (null, 4, 'Cumple con lo necesario', 4),
+    (null, 4, 'Buena ubicación', 4),
+    (null, 4, 'Buen servicio', 5),
+    (null, 4, 'Recomendado', 5),
+    (null, 4, 'Buena atención', 6),
+    (null, 4, 'Lugar limpio', 6),
+    (null, 4, 'Buen lugar', 13),
+    (null, 4, 'Buena opción', 18),
+
+    (null, 5,'Muy limpio, vuelvo seguro' , 15),
+    (null, 5,'Excelente', 14),
+    (null, 5, 'Todo perfecto', 1),
+    (null, 5, 'Excelente ubicación y servicio', 10),
+    (null, 5, 'Muy recomendable', 34),
+    (null, 4, 'Buena opción', 47),
+    (null, 5, 'Excelente', 1),
+    (null, 5, 'Muy limpio', 10),
+    (null, 5, 'Muy buen lugar', 50),
+    (null, 5, 'Excelente servicio', 36),
+    (null, 4, 'Recomendado', 36),
+    (null, 5, 'Perfecto', 37),
+    (null, 5, 'Excelente servicio, volveré', 50);
+
+
+
+
+
+
+
+
