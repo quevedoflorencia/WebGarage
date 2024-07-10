@@ -48,6 +48,11 @@ a {
     box-shadow: 0px 0px 5px 0px #1aa11a9e;
 }
 
+.status-indicator .activada {
+    background-color: #394A8F;
+    box-shadow: 0px 0px 5px 0px #394A8F;
+}
+
 
 -- old css properties
 
