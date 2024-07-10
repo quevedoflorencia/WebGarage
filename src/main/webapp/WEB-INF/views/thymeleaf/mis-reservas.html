@@ -81,13 +81,15 @@
                     <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
                         <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
                             <!-- <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt=""> -->
-                            <div class="card-body mx-2 d-flex justify-content-between">
-                                <div>
+                            <div class="card-body mx-2">
+
                                     <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
-                                <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
-                                <p class="card-text">Reserva Expirada</p>
-                                <a class="btn btn-outline-secondary" title="Imprimir PDF" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
-                                <a type="button"  data-bs-toggle="tooltip" title="Calificar Garage" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fa fa-star"></i></a>
+                                    <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                                    <p class="card-text">La reserva ya expiró</p>
+
+                                    <a class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="Imprimir detalle en PDF" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+                                    <a type="button" data-bs-toggle="tooltip" title="Calificar Garage" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fa fa-star"></i></a>
+
                             </div>
                         </div>
                     </div>
