@@ -19,6 +19,6 @@ VALUES
     (null, 'Alan', 'adigio@outlook.com', '1234', 'ADMIN', true),
     (null, 'Flor', 'quevedoflorencia@gmail.com', '1234', 'ADMIN', true),
     (null, 'Rocio', 'rociomonaco@gmail.com', '1234', 'ADMIN', true),
-    (null, 'Virginia', 'virginia@outlook.com', '1234', 'ADMIN', true),
+    (null, 'Virginia', 'v.prats@hotmail.com.ar', '1234', 'ADMIN', true),
     (null, 'Nicolas', 'nicolas@outlook.com', '1234', 'ADMIN', true);
 
