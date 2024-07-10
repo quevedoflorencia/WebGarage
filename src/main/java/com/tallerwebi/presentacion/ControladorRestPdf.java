@@ -72,6 +72,8 @@ public class ControladorRestPdf {
             flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("Numero de reserva:..........." +reserva.getId());
             flujoContenidoPagina.newLine();
+            flujoContenidoPagina.showText("Estado de reserva:..........." +reserva.getEstado().getDescripcion());
+            flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("Fecha de transaccion:..........." + now.format(formatter));
             flujoContenidoPagina.newLine();
             flujoContenidoPagina.showText("Fecha a reservar:......................." + reserva.getDia());
