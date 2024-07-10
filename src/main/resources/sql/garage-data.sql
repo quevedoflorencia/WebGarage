@@ -12,7 +12,7 @@ VALUES
     (null, 'SAN TELMO', 'YRIGOYEN, HIPOLITO', '877', '1086', '08:30:00', '20:00:00', '-34.609210991623', '-58.3787058819741', 4.5,'garageSanTelmo.jpg'),
     (null, 'MUSEO DE CIENCIAS NATURALES', 'GALLARDO, ANGEL AV.', '135', '1405', '07:00:00', '19:00:00', '-34.6029816227493', '-58.4345655733532', 2.5,'museo_ciencias_nat.jpg'),
     (null, 'LEZAMA', 'BONIFACIO, JOSE', '2636', '1406', '08:00:00', '20:00:00', '-34.6339129197993', '-58.4645930608871', null,'parque_lezama.jpg'),
-    (null, 'LA BOMONERA', 'MORENO', '1445', '1093', '09:00:00', '21:00:00', '-34.6119845651443', '-58.3866373417561', null,'cancha_boca.jpg'),
+    (null, 'LA BOMBONERA', 'MORENO', '1445', '1093', '09:00:00', '21:00:00', '-34.6119845651443', '-58.3866373417561', null,'cancha_boca.jpg'),
     (null, 'MEZQUITA', 'BELGRANO', '790', '1092', '07:00:00', '19:00:00', '-34.6132013331327', '-58.3773508882091', 3.5,'mezquita.jpg'),
     (null, 'PLAZA DE MAYO', 'SARMIENTO', '753', '1041', '08:00:00', '20:00:00', '-34.6043798851552', '-58.3774156822352', 5.0,'plaza_mayo.jpg'),
     (null, 'BARRANCAS', 'PERON, EVA AV.', '1792', '1406', '07:00:00', '19:00:00', '-34.6357891171669', '-58.4479163072015', 1.5,'barrancas_belgrano.jpg'),
