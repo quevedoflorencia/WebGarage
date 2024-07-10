@@ -104,6 +104,14 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
+    public void activar(Long reservaId) {
+        Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
+        EstadoReserva estadoActivada = servicioEstadoReserva.obtenerPorId(EstadoReserva.ACTIVA);
+        reserva.setEstado(estadoActivada);
+        repositorioReserva.actualizar(reserva);
+    }
+
+    @Override
     public void cancelar(Long reservaId) {
         Reserva reserva = repositorioReserva.obtenerPorId(reservaId);
         EstadoReserva estadoCancelada = servicioEstadoReserva.obtenerPorId(EstadoReserva.CANCELADA);

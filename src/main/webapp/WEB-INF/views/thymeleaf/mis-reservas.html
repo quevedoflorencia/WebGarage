@@ -36,7 +36,8 @@
 
                                     <p th:switch="${reserva.getEstado().getId()}">
                                         <span th:case="2" class="status-indicator confirmada">Confirmada</span>
-                                        <span th:case="3" class="status-indicator pagada">PAGADA</span>
+                                        <span th:case="3" class="status-indicator pagada">Pagada</span>
+                                        <span th:case="4" class="status-indicator activada">Activa</span>
                                     </p>
                                 </div>
 
