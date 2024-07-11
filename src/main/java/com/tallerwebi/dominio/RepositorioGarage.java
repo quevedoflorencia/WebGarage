@@ -10,8 +10,9 @@ public interface RepositorioGarage {
     Garage findById(Integer id);
 
     List<Garage> getGarageSegunCapacidad(Integer capacidadBuscada);
-    List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion);
+    List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion, String busqueda);
     List<Garage> getGaragesPorTipoVehiculo(Integer tipoVehiculoId);
+    Integer getCount(String busqueda);
 
     void guardarPromedio(Garage garage);
 }

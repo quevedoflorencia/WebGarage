@@ -40,10 +40,10 @@ public class ControladorGarageTest {
     public void queAlSolicitarLaPantallaDeListarGarageSeMuestreLaVistaListarGaragesConUnaListaVacia() {
         List<Garage> garages = Collections.emptyList();
 
-        when(servicioGarage.getPaginacion(1, 3,false)).thenReturn(garages);
+        when(servicioGarage.getPaginacion(1, 3,false, null)).thenReturn(garages);
         when(servicioGarage.traerTodos()).thenReturn(garages);
 
-        ModelAndView mav = controladorGarage.inicio(1, 3, null, false);
+        ModelAndView mav = controladorGarage.inicio(1, 3, null, false, null);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat((List<Garage>) mav.getModel().get("garages"), equalTo(garages));
@@ -56,14 +56,14 @@ public class ControladorGarageTest {
             garagesMock.add(new Garage());
         }
 
-        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(garagesMock.subList(0, 3));
+        when(servicioGarage.getPaginacion(1, 3, false, null)).thenReturn(garagesMock.subList(0, 3));
         when(servicioGarage.traerTodos()).thenReturn(garagesMock);
         when(servicioGarage.validarPagina(null)).thenReturn(1);
         when(servicioGarage.validarTamanioPagina(null)).thenReturn(3);
         when(servicioGarage.calcularTotalPaginas(10, 3)).thenReturn(4);
         when(servicioGarage.generarNumerosPagina(4)).thenReturn(List.of(1, 2, 3, 4));
 
-        ModelAndView mav = this.controladorGarage.inicio(null, null, null, false);
+        ModelAndView mav = this.controladorGarage.inicio(null, null, null, false, null);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat(mav.getModel().get("currentPage"), equalTo(1));
@@ -80,14 +80,14 @@ public class ControladorGarageTest {
             garages.add(new Garage());
         }
 
-        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(garages.subList(0, 3));
+        when(servicioGarage.getPaginacion(1, 3, false, null)).thenReturn(garages.subList(0, 3));
         when(servicioGarage.obtenerGaragesPorTipoVehiculo(1)).thenReturn(garages);
         when(servicioGarage.validarPagina(1)).thenReturn(1);
         when(servicioGarage.validarTamanioPagina(3)).thenReturn(3);
         when(servicioGarage.calcularTotalPaginas(5, 3)).thenReturn(2);
         when(servicioGarage.generarNumerosPagina(2)).thenReturn(List.of(1, 2));
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3, "1", false);
+        ModelAndView mav = this.controladorGarage.inicio(1, 3, "1", false, null);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat(mav.getModel().get("currentPage"), equalTo(1));
@@ -103,11 +103,11 @@ public class ControladorGarageTest {
         tipoVehiculo.setDescripcion("Bicicleta");
         tiposVehiculos.add(tipoVehiculo);
 
-        when(servicioGarage.getPaginacion(1, 3, false)).thenReturn(Collections.emptyList());
+        when(servicioGarage.getPaginacion(1, 3, false, null)).thenReturn(Collections.emptyList());
         when(servicioGarage.traerTodos()).thenReturn(Collections.emptyList());
         when(servicioTipoVehiculo.traerTodos()).thenReturn(tiposVehiculos);
 
-        ModelAndView mav = this.controladorGarage.inicio(1, 3, null, false);
+        ModelAndView mav = this.controladorGarage.inicio(1, 3, null, false, null);
 
         assertThat(mav.getViewName(), equalToIgnoringCase("listar-garages"));
         assertThat((List<TipoVehiculo>) mav.getModel().get("tipoVehiculos"), equalTo(tiposVehiculos));

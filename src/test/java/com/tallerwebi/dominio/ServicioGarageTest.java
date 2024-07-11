@@ -65,10 +65,10 @@ public class ServicioGarageTest {
         Integer page = 1;
         Integer size = 3;
 
-        when(repositorioGarage.obtenerPaginacion(page, size, false)).thenReturn(garagesMock.subList(0, 3));
+        when(repositorioGarage.obtenerPaginacion(page, size, false, null)).thenReturn(garagesMock.subList(0, 3));
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
-        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false);
+        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false, null);
 
         assertThat(paginados, is(notNullValue()));
         assertThat(paginados, hasSize(size));
@@ -131,10 +131,10 @@ public class ServicioGarageTest {
         );
         int page = 1;
         int size = 3;
-        when(repositorioGarage.obtenerPaginacion(page, size, false)).thenReturn(garagesMock.subList(0, size));
+        when(repositorioGarage.obtenerPaginacion(page, size, false, null)).thenReturn(garagesMock.subList(0, size));
         when(repositorioGarage.findAll()).thenReturn(garagesMock);
 
-        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false);
+        List<Garage> paginados = servicioGarage.getPaginacion(page, size, false, null);
 
         assertThat(paginados, hasSize(size));
         assertThat(paginados, containsInAnyOrder(garagesMock.subList(0, size).toArray(new Garage[0])));
