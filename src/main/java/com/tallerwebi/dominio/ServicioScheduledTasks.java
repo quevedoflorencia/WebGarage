@@ -27,9 +27,9 @@ public class ServicioScheduledTasks {
     //Este tiempo refiere entre que se creo y cuando se activa. Como es una validacion que no se va a utilizar y que traiga todas las reservas se deja en 0.
     private final int tiempoActivar=0;
 
-    private final String mensajeImpagas = "Le recordamos que tiene una reserva que esta sin abonarse y puede quedar cancelada de no pagarse en los proximos "+ tiempoImpagas + "minutos. Recomendamos visitar sus reservas para resolverlo. Gracias";
+    private final String mensajeImpagas = "Le recordamos que tiene una reserva pendiente de pago y de no abonarse quedara cancelada en los proximos " + tiempoImpagas + " minutos. <br> <br> Recomendamos visitar sus reservas para resolverlo. <br> <br> Gracias";
 
-    private final String asuntoImpagas = "Reserva impaga";
+    private final String asuntoImpagas = "Reserva pendiente de pago";
 
     public ServicioScheduledTasks(ServicioReserva servicioReserva, ServicioEmail servicioEmail, ServicioNotificacion servicioNotificacion) {
         this.servicioReserva = servicioReserva;
