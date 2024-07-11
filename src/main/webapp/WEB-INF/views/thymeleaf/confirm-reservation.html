@@ -18,19 +18,32 @@
                 <h5 class="subtitle">Verifica si los datos están bien</h5>
 
                 <div class="box">
-                    <h4 style="color: #394A8F">Detalles de la reserva:</h4>
-                    <h5 class="card-title text-muted">Has realizado una reserva para el garage <span th:text="${garage.getNombre()}"></span> el día <span th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'EEEE dd MMMM yyyy')}"></span></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Horario de inicio: <span th:text="${reserva.getHorarioInicio()}"></span> - Horario de finalización:<span th:text="${reserva.getHorarioFin()}"></span></h6>
+                    <h4 style="color: #394A8F">Detalles:</h4>
+                    <div class="detail">
 
-                    <div class="selection_tipo_vehiculo d-flex w-100 text-muted">
-                        <p class="text-gray">Tipo Vehículo</p>
-                        <div class="unselected selection active">
-                            <i class="fas" th:classappend="${tipoVehiculo.icono}"></i>
-                            <p th:text="${tipoVehiculo.descripcion}"></p>
+                        <h4 class="card-title text-muted">Has realizado una reserva para el garage <span th:text="${#strings.capitalizeWords(#strings.toLowerCase(garage.getNombre()))}"></span> </h4>
+
+                        <div class="my-3">
+                            <h4 class="card-title text-muted">Día <span th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'EEEE dd MMMM yyyy')}"></span></h4>
+                            <h5 class="card-subtitle mb-2 text-muted">Horario de inicio: <span th:text="${reserva.getHorarioInicio()}"></span> - Horario de finalización:<span th:text="${reserva.getHorarioFin()}"></span></h5>
                         </div>
-                    </div>
-                    <div>
-                        <p class="text-gray fw-bolder">Precio Total de la reserva: $<span th:text="${reserva.getPrecio()}"></span></p>
+
+
+                        <div class="selection_tipo_vehiculo d-flex w-100 text-muted">
+
+                            <span class="text-gray">Tipo de vehiculo seleccionado: </span>
+
+                            <div class="vehiculo ">
+                                <i class="fas" th:classappend="${tipoVehiculo.icono}"></i>
+                                <span th:text="${tipoVehiculo.descripcion}"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <h4 class="text-gray fw-bolder">Precio Total de la reserva: $<span th:text="${reserva.getPrecio()}"></span></h4>
+                        </div>
+
                     </div>
 
                     <div class="row">
@@ -54,10 +67,10 @@
                             <div>
                                 <a type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-danger">Cancelar</a>
                             </div>
-                            <div>
-                                <a type="button" data-bs-toggle="modal" data-bs-target="#confirmEditModal" class="btn btn-warning mx-3">Modificar</a>
+                            <div class="d-flex">
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#confirmEditModal" class="btn btn-outline-warning mx-3">Modificar</a>
 
-                                <button type="submit" name="submit" class="btn btn-success">Confirmar</button>
+                                <button type="submit" name="submit" class="btn btn-confirm btn-">Confirmar</button>
                             </div>
                         </div>
 

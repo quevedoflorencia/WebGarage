@@ -1,0 +1,26 @@
+.detail {
+    border: 2px dotted #394A8F;
+    border-radius: 10px;
+    padding: 2rem;
+    background-color: #394A8F10;
+}
+
+.btn-confirm{
+    width: 100%;
+    border-radius: 10px;
+    background-color: #394A8F;
+    color: white;
+    padding: 0 40px;
+}
+
+.btn.btn-modify{
+    width: 100%;
+    border-radius: 10px;
+
+    color: white;
+
+}
+
+.vehiculo {
+    margin-left: 10px;
+}
