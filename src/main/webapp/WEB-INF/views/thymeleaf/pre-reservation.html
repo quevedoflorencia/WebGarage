@@ -39,6 +39,7 @@
                                 <h3>Garage <span th:text="${#strings.capitalizeWords(#strings.toLowerCase(garage.getNombre()))}"></span></h3>
                                 <div class="info-box col">
                                     <h6>Calificación</h6>
+
                                     <span class="calification" th:if="${garage.getPromedio() != null}" th:with="promedio=${garage.getPromedio()}">
                                         <span th:each="i : ${#numbers.sequence(1, 5)}"
                                               th:class="star"
@@ -46,6 +47,10 @@
                                             &#9733;
                                         </span>
                                     </span>
+                                    <span class="calification" th:unless="${garage.getPromedio() != null}">
+                                        <h5 class="text-muted">Sin calificaciones</h5>
+                                    </span>
+
                                 </div>
                                 <div class="info-box col d-flex flex-column justify-content-center">
                                     <h6>Dirección</h6>
