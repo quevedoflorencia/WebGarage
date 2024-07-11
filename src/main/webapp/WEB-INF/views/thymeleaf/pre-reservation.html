@@ -22,19 +22,43 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col">
-                        <h1 class="title"><span th:text="${garage.nombre}"></span></h1>
-                        <h5 class="subtitle">Reservá tu estacionamiento en el garage <span th:text="${garage.nombre}"></span></h5>
+                        <h1 class="title"><span th:text="${#strings.toUpperCase(garage.nombre)}"></span></h1>
+                        <h5 class="subtitle">Reservá tu estacionamiento en el garage</h5>
                     </div>
                 </div>
             </div>
 
             <div class="container-fluid">
+
                 <div class="row justify-content-center">
 
                     <div class="col-6">
+
                         <div class="box">
+                            <div class="row">
+                                <h3>Garage <span th:text="${#strings.capitalizeWords(#strings.toLowerCase(garage.getNombre()))}"></span></h3>
+                                <div class="info-box col">
+                                    <h6>Calificación</h6>
+                                    <span class="calification" th:if="${garage.getPromedio() != null}" th:with="promedio=${garage.getPromedio()}">
+                                        <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                              th:class="star"
+                                              th:classappend="|${i <= T(java.lang.Math).floor(promedio) ? 'star-filled' : ''} ${i - 1 == T(java.lang.Math).floor(promedio) && promedio % 1.0 >= 0.5 ? 'star-half' : ''} ${i > T(java.lang.Math).floor(promedio) ? 'star-gray' : ''}|">
+                                            &#9733;
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="info-box col d-flex flex-column justify-content-center">
+                                    <h6>Dirección</h6>
+                                    <h5><span th:text="${garage.getCalle()} + ' ' + ${garage.getAltura()} + ' (C.P. ' + ${garage.getCodigoPostal()} + ')'"></span></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <h3>Ubicación en el mapa</h3>
                             <div id="map"></div>
                         </div>
+
                         <div class="box">
                             <h3>Opiniones de los clientes</h3>
 
@@ -61,6 +85,13 @@
 
                             </div>
 
+                            <div class="row" th:if="${calificaciones.isEmpty()}">
+                                <div class="col sin-opiniones" >
+                                    <span>Aún no hay calificaciones</span>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
 
@@ -85,14 +116,14 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="unselected selection col justify-content-around align-items-center"
+                                        <div class="unselected selection col justify-content-start align-items-center"
                                              th:classappend="${garageTipoVehiculoDtoItem.habilitado ? '' : 'disabled'}"
                                              th:attrappend="data-bs-toggle=${garageTipoVehiculoDtoItem.habilitado ? '' : 'tooltip'}, data-placement=${garageTipoVehiculoDtoItem.habilitado ? '': 'top'}, title=${garageTipoVehiculoDtoItem.habilitado ? '': 'El garage no tiene disponibilidad para este tipo de vehiculo'}"
                                              th:id="${garageTipoVehiculoDtoItem.idGarageTipoVehiculo}"
                                              th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}"
                                         >
                                             <i class="fas icon-vehicle" th:classappend="${garageTipoVehiculoDtoItem.icono}"></i>
-                                            <div>
+                                            <div class="text-vehicle">
                                                 <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
                                                 <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
                                                     Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
@@ -181,6 +212,7 @@
             var longitudGarage = [[${ garage.longitud }]];
             var calle = [[${garage.calle}]];
             var altura = [[${garage.altura}]];
+            var nombreGarage = [[${#strings.capitalizeWords(#strings.toLowerCase(garage.getNombre()))}]];
             var idGarage = [[${ garage.id }]];
         </script>
 

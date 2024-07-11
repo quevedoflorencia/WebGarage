@@ -161,8 +161,14 @@ document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(functio
     }
 });
 
-let map = L.map('map').setView([latitudGarage, longitudGarage], 15);
+var map = L.map('map').setView([latitudGarage, longitudGarage], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-L.marker([latitudGarage, longitudGarage]).addTo(map);
+let customPopup = `<div><h5>${nombreGarage}</h5> <div>${calle} ${altura}</div></div>`
+
+L.marker([latitudGarage, longitudGarage]).addTo(map)
+    .bindPopup(customPopup)
+    .openPopup();

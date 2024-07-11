@@ -70,8 +70,15 @@
                                         <img class="card-img-top round-img" th:src="@{'/img/garages/' + ${garage.rutaFoto}}" alt="imagen-garage">
                                         <div class="card-body">
                                             <h5 class="card-title" th:text="${garage.nombre}"></h5>
-                                            <p class="card-title">
-                                                <i class="fas fa-star"></i><span th:text="${garage.promedio > 0 ? garage.promedio + ' ' : 'Sin Calificación'}"></span><i class="fas fa-star"></i>
+                                            <p class="calification" th:if="${garage.getPromedio() != null}" th:with="promedio=${garage.getPromedio()}">
+                                                <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                                      th:class="star"
+                                                      th:classappend="|${i <= T(java.lang.Math).floor(promedio) ? 'star-filled' : ''} ${i - 1 == T(java.lang.Math).floor(promedio) && promedio % 1.0 >= 0.5 ? 'star-half' : ''} ${i > T(java.lang.Math).floor(promedio) ? 'star-gray' : ''}|">
+                                                    &#9733;
+                                                </span>
+                                            </p>
+                                            <p class="calification" th:unless="${garage.getPromedio() != null}">
+                                                <span class="no-calification">Sin calificaciones</span>
                                             </p>
                                             <p class="card-text"><i class="far fa-clock"></i> <span th:text="${garage.horarioApertura}"></span>Hs. a <span th:text="${garage.horarioCierre}"></span>Hs.</p>
                                             <a th:href="@{'/reservas/start/' + ${garage.id}}" class="btn btn-reserva">Reservar</a>
