@@ -92,16 +92,16 @@
                             <nav class="w-100 d-flex justify-content-center">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
-                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '&filter=' + ${filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion}}">Anterior</a>
+                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${currentPage - 1} + '&size=' + ${pageSize} + '&filter=' + ${filter == null ? '' : filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion == null ? '' : ordenarPorCalificacion}}">Anterior</a>
                                     </li>
 
                                     <li class="page-item" th:each="pageNumber : ${pageNumbers}"
                                         th:classappend="${pageNumber == currentPage} ? 'active' : ''">
-                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${pageNumber} + '&size=' + ${pageSize} + '&filter=' + ${filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion}}" th:text="${pageNumber}"></a>
+                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${pageNumber} + '&size=' + ${pageSize} + '&filter=' + ${filter == null ? '' : filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion == null ? '' : ordenarPorCalificacion}}" th:text="${pageNumber}"></a>
                                     </li>
 
                                     <li class="page-item" th:classappend="${currentPage == pageNumbers.size()} ? 'disabled' : ''">
-                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '&filter=' + ${filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion}}">Siguiente</a>
+                                        <a class="page-link" th:href="@{'/garages/listado?page=' + ${currentPage + 1} + '&size=' + ${pageSize} + '&filter=' + ${filter == null ? '' : filter} + '&tipoVehiculo=' + ${tipoVehiculo == null ? '' : tipoVehiculo} + '&ordenarPorCalificacion=' + ${ordenarPorCalificacion == null ? '' : ordenarPorCalificacion}}">Siguiente</a>
                                     </li>
                                 </ul>
                             </nav>
