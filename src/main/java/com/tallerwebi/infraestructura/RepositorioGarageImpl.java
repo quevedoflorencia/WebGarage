@@ -36,7 +36,7 @@ public class RepositorioGarageImpl implements RepositorioGarage {
     }
 
     @Override
-    public List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion, String busqueda) {
+    public List<Garage> obtenerPaginacion(Integer page, Integer size, Integer idTipoVehiculo, String orderByCalificacion, String busqueda) {
         Session session = sessionFactory.getCurrentSession();
 
         // Asegurar que page sea al menos 1
@@ -45,16 +45,26 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         // Calcular el offset basado en la página y el tamaño de la página
         int offset = (pageNumber - 1) * size;
 
-        StringBuilder sqlQuery = new StringBuilder("SELECT * FROM Garage ");
+        StringBuilder sqlQuery = new StringBuilder("SELECT DISTINCT g.* FROM Garage g ");
 
-        if(busqueda != null && !busqueda.isEmpty()) {
-            sqlQuery.append("WHERE nombre LIKE '%").append(busqueda).append("%' ");
-            sqlQuery.append("OR calle LIKE '%").append(busqueda).append("%' ");
+        sqlQuery.append("LEFT JOIN garage_tipo_vehiculo gtv ON g.id = gtv.id_garage ");
+
+        if (idTipoVehiculo != null) {
+            sqlQuery.append("WHERE gtv.id_tipo_vehiculo = :idTipoVehiculo ");
+        }
+
+        if (busqueda != null && !busqueda.isEmpty()) {
+            if (idTipoVehiculo != null) {
+                sqlQuery.append("AND ");
+            } else {
+                sqlQuery.append("WHERE ");
+            }
+            sqlQuery.append("(g.nombre LIKE :busqueda OR g.calle LIKE :busqueda) ");
         }
 
         // Agregar ordenación según el parámetro orderByCalificacion
-        if (orderByCalificacion) {
-            sqlQuery.append("ORDER BY promedio DESC "); // ordenamiento en
+        if (orderByCalificacion != null && !orderByCalificacion.isEmpty() && (orderByCalificacion.equalsIgnoreCase("asc") || orderByCalificacion.equalsIgnoreCase("desc"))) {
+            sqlQuery.append("ORDER BY promedio ").append(orderByCalificacion).append(" "); // ordenamiento en
         } else {
             sqlQuery.append("ORDER BY id "); // Ordenar por ID
         }
@@ -66,28 +76,56 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         query.setParameter("size", size);
         query.setParameter("offset", offset);
 
+        if (idTipoVehiculo != null) {
+            query.setParameter("idTipoVehiculo", idTipoVehiculo);
+        }
+        if (busqueda != null && !busqueda.isEmpty()) {
+            query.setParameter("busqueda", "%" + busqueda + "%");
+        }
+
         List<Garage> garagesPaginados = query.getResultList();
 
         return garagesPaginados;
     }
 
     @Override
-    public Integer getCount(String busqueda) {
+    public Integer getCount(Integer idTipoVehiculo, String busqueda) {
         Session session = sessionFactory.getCurrentSession();
 
-        StringBuilder sqlQuery = new StringBuilder("SELECT COUNT(*) FROM Garage ");
+        StringBuilder sqlQuery = new StringBuilder("SELECT DISTINCT COUNT(g.id) FROM Garage g ");
 
-        if(busqueda != null && !busqueda.isEmpty()) {
-            sqlQuery.append("WHERE nombre LIKE '%").append(busqueda).append("%' ");
-            sqlQuery.append("OR calle LIKE '%").append(busqueda).append("%' ");
+        boolean whereClauseAdded = false;
+
+        if (idTipoVehiculo != null) {
+            sqlQuery.append("LEFT JOIN garage_tipo_vehiculo gtv ON g.id = gtv.id_garage ");
+            sqlQuery.append("WHERE gtv.id_tipo_vehiculo = :idTipoVehiculo ");
+            whereClauseAdded = true;
+        }
+
+        if (busqueda != null && !busqueda.isEmpty()) {
+            if (whereClauseAdded) {
+                sqlQuery.append("AND ");
+            } else {
+                sqlQuery.append("WHERE ");
+                whereClauseAdded = true;
+            }
+            sqlQuery.append("(g.nombre LIKE :busqueda OR g.calle LIKE :busqueda) ");
         }
 
         Query query = session.createNativeQuery(sqlQuery.toString());
+
+        if (idTipoVehiculo != null) {
+            query.setParameter("idTipoVehiculo", idTipoVehiculo);
+        }
+        if (busqueda != null && !busqueda.isEmpty()) {
+            query.setParameter("busqueda", "%" + busqueda + "%");
+        }
 
         BigInteger count = (BigInteger) query.getSingleResult();
 
         return count.intValue();
     }
+
 
     @Override
     public void guardarPromedio(Garage garage) {

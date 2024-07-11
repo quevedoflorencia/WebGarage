@@ -62,6 +62,10 @@ form label{
     color: white;
 }
 
+.btn-block {
+    width: 100%;
+}
+
 .btn-pdf{
     background-color: #64CAED;
     margin-right: 5px;

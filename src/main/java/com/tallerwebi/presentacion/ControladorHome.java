@@ -26,7 +26,7 @@ public class ControladorHome {
 
         ModelMap model = new ModelMap();
 
-        List<Garage> garages = servicioGarage.getPaginacion(1, 8, true, null);
+        List<Garage> garages = servicioGarage.getPaginacion(1, 8, null, null, null);
 
         model.put("garages", garages);
 
