@@ -114,7 +114,7 @@ public class ControladorReserva {
         List<Calificacion> calificaciones = servicioCalificacion.obtenerPorGarage(garageId, orden);
 
         if (garage == null) {
-            return new ModelAndView("redirect:../home");
+            return new ModelAndView("redirect:/");
         }
 
         Long userId = (Long) request.getSession().getAttribute("ID");

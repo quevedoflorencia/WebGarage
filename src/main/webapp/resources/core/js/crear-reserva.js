@@ -34,6 +34,7 @@ function resetForm() {
     errorHour.innerText = "";
     errorHourUntil.innerText = "";
 
+    //document.getElementById("datepicker_from").value = '';
     document.getElementById("timepicker_from").value = '';
     document.getElementById("timepicker_until").value = '';
     containerHourPicker.classList.add("d-none");
@@ -52,26 +53,51 @@ function getFiledHours(selectedDate) {
     })
         .then(response => response.json())
         .then(data => {
-            //const dataDummy = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20,21,22,23];
-            const dataDummy = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-
             filedHours = data;
-
             if (filedHours.length !== 0) {
                 if (filedHours.length === totalHours) {
                     errorHour.innerText = "Todos los horarios están ocupados, por favor selecciona otra fecha."
                 }
 
-                // Obtener el elemento select
                 let selectElement = document.getElementById("timepicker_from");
                 filedHours.forEach(hour => {
                     disabledFiledHour(hour, selectElement)
                 });
             }
+            // Obtener la fecha de hoy en formato yyyy-mm-dd (sin la hora)
+            const hoy = new Date();
+            const year = hoy.getFullYear();
+            const month = String(hoy.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+            const day = String(hoy.getDate()).padStart(2, '0');
+
+            const fechaHoy = `${year}-${month}-${day}`;
+
+            if(datePickerFrom == fechaHoy){
+                disablePastHours()
+            }
         })
         .catch(error => console.log('Error fetching data:', error));
     containerHourPicker.classList.remove("d-none");
 }
+
+
+function resetOptions(){
+    let options = document.querySelectorAll("option");
+    options.forEach(option => {
+        option.disabled = false;
+    });
+}
+
+function disablePastHours() {
+    const currentHour = new Date().getHours();
+    let options = document.querySelectorAll("option");
+    options.forEach(option => {
+        if (option.value && parseInt(option.value) <= currentHour) {
+            option.disabled = true;
+        }
+    });
+}
+
 
 function disabledFiledHour(hour, selectElement) {
     // Convertir la hora ocupada a formato 'HH:mm'
@@ -83,6 +109,7 @@ function disabledFiledHour(hour, selectElement) {
         option.disabled = true;
     }
 }
+
 
 // al seleccionar el horario de inicio
 document.getElementById("timepicker_from").addEventListener("change", function () {
@@ -104,7 +131,28 @@ document.getElementById("timepicker_from").addEventListener("change", function (
             options[i].disabled = false;
         }
     }
+
+
+    disableInvalidToOptions(filedHours);
 });
+
+function disableInvalidToOptions(filedHours) {
+    const timepickerUntil = document.getElementById("timepicker_until");
+    const options = timepickerUntil.options;
+    let foundContiguous = false;
+
+    for (let i = 0; i < options.length; i++) {
+        const hour = parseInt(options[i].value, 10);
+        if (hour > timePickerFrom) {
+            if (filedHours.includes(hour.toString())) {
+                foundContiguous = true;
+            }
+            if (foundContiguous) {
+                options[i].disabled = true;
+            }
+        }
+    }
+}
 
 //al seleccionar el horario de finalizacion
 document.getElementById("timepicker_until").addEventListener("change", function () {
