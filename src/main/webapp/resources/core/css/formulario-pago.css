@@ -1,6 +1,6 @@
  body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(34deg, rgba(43,40,93,1) 15%, rgba(57,74,143,1) 74%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,7 +82,7 @@
  }
 
  .margen-superior{
-     margin-top: 140px;
+     margin-top: 5rem;
  }
 
  .payment-form h2 {

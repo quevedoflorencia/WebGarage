@@ -9,10 +9,7 @@ import com.tallerwebi.presentacion.dto.ReservaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +28,7 @@ public class ControladorReserva {
     private ServicioReserva servicioReserva;
     private ServicioGarageTipoVehiculo servicioGarageTipoVehiculo;
     private ServicioEmail servicioEmail;
+    private ServicioCalificacion servicioCalificacion;
 
     @Autowired
     public ControladorReserva(
@@ -39,7 +37,8 @@ public class ControladorReserva {
             ServicioReserva servicioReserva,
             ServicioTipoVehiculo servicioTipoVehiculo,
             ServicioGarageTipoVehiculo servicioGarageTipoVehiculo,
-            ServicioEmail servicioEmail
+            ServicioEmail servicioEmail,
+            ServicioCalificacion servicioCalificacion
     ) {
         this.servicioUsuario = servicioUsuario;
         this.servicioGarage = servicioGarage;
@@ -47,6 +46,7 @@ public class ControladorReserva {
         this.servicioTipoVehiculo = servicioTipoVehiculo;
         this.servicioGarageTipoVehiculo = servicioGarageTipoVehiculo;
         this.servicioEmail = servicioEmail;
+        this.servicioCalificacion = servicioCalificacion;
     }
 
     @RequestMapping(path = "/listar", method = RequestMethod.GET)
@@ -105,12 +105,13 @@ public class ControladorReserva {
     }
 
     @RequestMapping("/start/{id}")
-    public ModelAndView preReserva(HttpServletRequest request, @PathVariable("id") Integer garageId) {
+    public ModelAndView preReserva(HttpServletRequest request, @PathVariable("id") Integer garageId, @RequestParam(defaultValue = "ASC", required = false) String orden) {
         ModelMap model = new ModelMap();
 
         List<String> listaTotalDeHoras = Arrays.asList("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00");
 
         Garage garage = servicioGarage.buscarPorId(garageId);
+        List<Calificacion> calificaciones = servicioCalificacion.obtenerPorGarage(garageId, orden);
 
         if (garage == null) {
             return new ModelAndView("redirect:../home");
@@ -122,7 +123,7 @@ public class ControladorReserva {
             return new ModelAndView("redirect:/login?from=garage/"+garageId);
         }
 
-        List <GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
+        List<GarageTipoVehiculoDTO> garageTipoVehiculoDTOList = generarDTOTipoVehiculo(garage);
 
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setGarageId(garage.getId());
@@ -131,6 +132,7 @@ public class ControladorReserva {
         model.put("garageId", garageId);
 
         model.put("garage", garage);
+        model.put("calificaciones", calificaciones);
         model.put("totalHours", listaTotalDeHoras);
         model.put("reserva", reservaDTO);
         model.put("garageTipoVehiculoDto", garageTipoVehiculoDTOList);
