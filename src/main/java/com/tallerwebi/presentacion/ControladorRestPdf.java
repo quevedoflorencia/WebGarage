@@ -43,11 +43,21 @@ public class ControladorRestPdf  {
         String rutaLogo = "E:/Taller 1/Sistema Web Garage/WebGarage/src/main/webapp/resources/core/img/navbar/logo.png";
         PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, documento);
 
-
+        private static final String LOGO_IMG_PATH = "src/main/webapp/resources/core/img/navbar/logo.png";
 
         //PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, documento);
         flujoContenidoPagina.drawImage(logo, 20, 720, 50, 50);
-*/
+
+
+
+
+        final String rutaLogo = "src/main/webapp/resources/core/img/navbar/logo.png";
+        PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, documento);
+        flujoContenidoPagina.drawImage(logo, 20, 720, 50, 50);*/
+        final String rutaLogo = "src/main/webapp/resources/core/img/navbar/logo.png";
+        PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, documento);
+        flujoContenidoPagina.drawImage(logo, 20, 720, 50, 50);
+
         flujoContenidoPagina.beginText();
         flujoContenidoPagina.setFont(PDType1Font.HELVETICA, 12);
         flujoContenidoPagina.setLeading(18f);
