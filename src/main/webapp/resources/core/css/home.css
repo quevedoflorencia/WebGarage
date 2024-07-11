@@ -53,6 +53,12 @@ html{
     color: white;
 }
 
+.btn-search {
+    background-color: #394A8F;
+    color: #f1f1f1;
+    font-weight: 600;
+}
+
 .round {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;

@@ -6,10 +6,6 @@ h2, h3, h4, h5, h6 {
     color: #394A8F!important;
 }
 
-.btn-block {
-    width: 100%;
-}
-
 .garage-img {
     width: 100px;
     height: 100px;
@@ -29,7 +25,7 @@ h2, h3, h4, h5, h6 {
     border-radius: 5px;
 }
 
-.selection_tipo_vehiculo{
+_tipo_vehiculo{
     color: #3C3B3B;
 }
 
