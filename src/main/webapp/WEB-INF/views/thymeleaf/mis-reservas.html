@@ -80,7 +80,6 @@
 
                     <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
                         <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
-                            <!-- <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt=""> -->
                             <div class="card-body mx-2">
 
                                     <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
