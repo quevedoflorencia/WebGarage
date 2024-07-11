@@ -131,6 +131,32 @@ public class ServicioReservaImpl implements ServicioReserva {
     }
 
     @Override
+    public void validarActivarReservas(List<Reserva> reservas) {
+        for (Reserva reserva : reservas) {
+            if(estaActiva(reserva)){
+                EstadoReserva estadoVencida = servicioEstadoReserva.obtenerPorId(EstadoReserva.ACTIVA);
+                reserva.setEstado(estadoVencida);
+                repositorioReserva.actualizar(reserva);
+            }
+        }
+    }
+
+    private boolean estaActiva(Reserva reserva) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH");
+        LocalDate fechaReserva = LocalDate.parse(reserva.getDia(),formatter);
+        LocalDate fechaActual = LocalDate.now();
+
+        String horaActual = LocalTime.now().format(formatter2);
+        String horaReserva = LocalTime.parse(reserva.getHorarioInicio()).format(formatter2);
+
+        if(fechaReserva.isEqual(fechaActual) && horaActual.equals(horaReserva)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void pagar(Reserva reserva) {
         EstadoReserva estadoPagada = servicioEstadoReserva.obtenerPorId(EstadoReserva.PAGADA);
         reserva.setEstado(estadoPagada);

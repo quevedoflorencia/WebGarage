@@ -29,6 +29,8 @@ public interface ServicioReserva {
 
     void validarVencimientoReservas(List<Reserva> reservas);
 
+    void validarActivarReservas(List<Reserva> reservas);
+
     boolean estaVencida(Reserva reserva);
 
     void pagar(Reserva reserva);

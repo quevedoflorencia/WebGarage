@@ -63,6 +63,7 @@ public class ControladorReserva {
         Usuario usuario = servicioUsuario.get(userId);
         List<Reserva> reservas = servicioReserva.obtenerReservasByUserId(userId);
         servicioReserva.validarVencimientoReservas(reservas);
+        servicioReserva.validarActivarReservas(reservas);
         List<Reserva> reservasVencidas = new ArrayList<>();
         List<Reserva> reservasActivas = new ArrayList<>();
 
