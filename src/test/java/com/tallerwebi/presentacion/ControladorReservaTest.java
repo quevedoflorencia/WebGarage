@@ -35,6 +35,7 @@ public class ControladorReservaTest {
     private ServicioEmail servicioEmail;
     private ServicioLogin servicioLoginMock;
     private ControladorLogin controladorLogin;
+    private ServicioCalificacion servicioCalificacion;
 
     private static final String VISTA_MIS_RESERVAS = "mis-reservas";
 
@@ -49,7 +50,8 @@ public class ControladorReservaTest {
         servicioTipoVehiculo = mock(ServicioTipoVehiculo.class);
         servicioGarageTipoVehiculo = mock(ServicioGarageTipoVehiculo.class);
         servicioEmail = mock(ServicioEmailImpl.class);
-        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, servicioEmail);
+        servicioCalificacion = mock(ServicioCalificacionImpl.class);
+        controladorReserva = new ControladorReserva(servicioUsuario, servicioGarage, servicioReserva, servicioTipoVehiculo, servicioGarageTipoVehiculo, servicioEmail, servicioCalificacion);
         servicioLoginMock = mock(ServicioLogin.class);
         controladorLogin = new ControladorLogin(servicioLoginMock);
     }
@@ -142,7 +144,7 @@ public class ControladorReservaTest {
         when(servicioGarageTipoVehiculo.listar()).thenReturn(Collections.singletonList(garageTipoVehiculo));
         when(servicioTipoVehiculo.traerTodos()).thenReturn(Arrays.asList(tipoVehiculoAuto, tipoVehiculoMoto));
 
-        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
+        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId, "ASC");
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("pre-reservation"));
     }
@@ -155,7 +157,7 @@ public class ControladorReservaTest {
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ID")).thenReturn(null);
 
-        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
+        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId, "ASC");
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login?from=garage/"+garageId));
     }
@@ -168,7 +170,7 @@ public class ControladorReservaTest {
         when(sessionMock.getAttribute("ID")).thenReturn(userId);
         when(servicioGarage.buscarPorId(garageId)).thenReturn(null);
 
-        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId);
+        ModelAndView modelAndView = controladorReserva.preReserva(requestMock, garageId, "ASC");
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:../home"));
     }

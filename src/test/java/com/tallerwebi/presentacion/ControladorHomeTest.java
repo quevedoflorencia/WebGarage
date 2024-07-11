@@ -31,7 +31,7 @@ public class ControladorHomeTest {
     public void homeDeberiaTraerLaPaginaHomeConUnaListaDeGaragesVacia() {
         List<Garage> garages = Collections.emptyList();
 
-        when(servicioGarage.getPaginacion(1, 10, false)).thenReturn(garages);
+        when(servicioGarage.getPaginacion(1, 10, null, null, null)).thenReturn(garages);
 
         ModelAndView mav = this.controladorHome.inicio();
 

@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.model.Garage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.mockito.Mockito.*;
@@ -27,7 +28,7 @@ public class ServicioCalificacionTest {
         Integer puntaje = 5;
         String comentario = "Excelente servicio";
 
-        Calificacion calificacion = new Calificacion(puntaje, comentario, garage);
+        Calificacion calificacion = new Calificacion(puntaje, comentario, garage, LocalDateTime.now());
 
         servicioCalificacion.guardarCalificacion(puntaje, comentario, garage);
 

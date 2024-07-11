@@ -56,7 +56,7 @@ public class RepositorioGarageTest {
             dadoUnGarage();
         }
 
-        List<Garage> result = this.repositorioGarage.obtenerPaginacion(1, 3, false);
+        List<Garage> result = this.repositorioGarage.obtenerPaginacion(1, 3, null, null, null);
 
         assertThat(result, is(not(empty())));
         assertThat(result.size(), is(3));

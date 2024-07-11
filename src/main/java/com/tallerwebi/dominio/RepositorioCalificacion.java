@@ -6,10 +6,10 @@ import com.tallerwebi.dominio.model.Garage;
 import java.util.List;
 
 public interface RepositorioCalificacion {
-    void guardarCalificacion (Calificacion calificacion);
 
+    void guardarCalificacion(Calificacion calificacion);
 
-   // List <Calificacion> getCalificacionesSegunGarage (Integer idGarage);
+    List<Calificacion> obtenerPorGarageYOrden(Integer idGarage, String orden);
 
     List<Calificacion> buscarCalificacionPorId(Integer idGarage);
 }

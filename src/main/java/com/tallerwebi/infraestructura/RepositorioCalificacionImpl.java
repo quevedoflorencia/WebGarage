@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,11 +34,21 @@ public class RepositorioCalificacionImpl implements RepositorioCalificacion {
         return ((Criteria) criteria).list();
     }
 
-    /*
+
     @Override
-    public List<Calificacion> getCalificacionesSegunGarage(Integer idGarage) {
-        return  sessionFactory.getCurrentSession().createCriteria(Garage.class).add(Restrictions.eq("idGarage", idGarage)).list();
-    }*/
+    public List<Calificacion> obtenerPorGarageYOrden(Integer idGarage, String orden) {
+
+        if (!orden.equalsIgnoreCase("asc") && !orden.equalsIgnoreCase("desc")) {
+            throw new IllegalArgumentException("Orden inválido: " + orden);
+        }
+
+        String hql = "FROM Calificacion C WHERE C.garage.id = :idGarage ORDER BY C.fechaCreacion " + orden;
+
+        Query<Calificacion> query = this.sessionFactory.getCurrentSession().createQuery(hql, Calificacion.class);
+        query.setParameter("idGarage", idGarage);
+
+        return query.list();
+    }
 
 
 }

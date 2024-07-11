@@ -16,9 +16,23 @@
       <div class="container-fluid text-center">
         <div class="hero-image d-flex align-items-center justify-content-center">
           <div class="row align-items-center justify-content-center">
-            <div class="col-md-9">
+            <div class="col-md-11">
+
               <h2>Estacioná seguro y #SinVueltas</h2>
+
+              <form id="tipoVehiculoForm" action="#" th:action="@{/garages/listado}" method="get">
+                <div class="box">
+
+                    <div class="input-group">
+                      <input type="text" class="form-control" th:name="filter" id="filtroBusqueda" placeholder="Busca garage por nombre o direccion"  />
+                      <button class="btn btn-search" type="submit" id="button-addon2">Buscar garages</button>
+                    </div>
+
+                </div>
+              </form>
+
               <a class="button-on-image" href="#estacionamientos">¡Reservá ahora!</a>
+
             </div>
           </div>
         </div>

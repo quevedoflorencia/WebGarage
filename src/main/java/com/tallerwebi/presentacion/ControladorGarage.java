@@ -36,26 +36,19 @@ public class ControladorGarage {
     @RequestMapping(path = "/listado", method = RequestMethod.GET)
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "12") Integer size,
-                               @RequestParam(required = false) String  tipoVehiculo,
-                               @RequestParam(defaultValue = "false") Boolean ordernarPorCalificacion) {
+                               @RequestParam(required = false) Integer tipoVehiculo,
+                               @RequestParam(required = false) String ordenarPorCalificacion,
+                               @RequestParam(required = false) String filter
+    ) {
 
         ModelMap model = new ModelMap();
         page = servicioGarage.validarPagina(page);
         size = servicioGarage.validarTamanioPagina(size);
-        Integer tipoVehiculoId = null;
-
 
         List<Garage> garagesPaginados;
-        garagesPaginados = servicioGarage.getPaginacion(page, size, ordernarPorCalificacion);
+        garagesPaginados = servicioGarage.getPaginacion(page, size, tipoVehiculo, ordenarPorCalificacion, filter);
 
-        Integer totalGarages;
-
-        if (tipoVehiculo != null && !tipoVehiculo.isEmpty() && !"null".equals(tipoVehiculo)) {
-            tipoVehiculoId = Integer.parseInt(tipoVehiculo);
-            totalGarages = servicioGarage.obtenerGaragesPorTipoVehiculo(tipoVehiculoId).size();
-        } else {
-            totalGarages = servicioGarage.traerTodos().size();
-        }
+        Integer totalGarages = servicioGarage.obtenerCantidadTotal(tipoVehiculo, filter);
 
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
         List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
@@ -66,9 +59,10 @@ public class ControladorGarage {
         model.put("pageNumbers", pageNumbers);
         model.put("currentPage", page);
         model.put("pageSize", size);
+        model.put("filter", filter);
         model.put("tipoVehiculos", tiposVehiculos);
-        model.put("tipoVehiculoSeleccionado", tipoVehiculoId);
-        model.put("ordernarPorCalificacion", ordernarPorCalificacion);
+        model.put("tipoVehiculo", tipoVehiculo);
+        model.put("ordenarPorCalificacion", ordenarPorCalificacion);
 
 
         return new ModelAndView("listar-garages", model);

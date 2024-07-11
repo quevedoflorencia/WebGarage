@@ -18,7 +18,7 @@
         <div class="container">
             <h1>¡Hola <span th:text="${username}"></span>!</h1>
 
-            <div class="reservas-container">
+            <div class="box">
                 <div>
                     <div class="d-flex justify-content-between align-items-start">
                         <h3>Reservas activas</h3> <a class="btn btnreserva btn-info btn-lg" href="/garages/listado">Nueva Reserva</a>
@@ -36,7 +36,8 @@
 
                                     <p th:switch="${reserva.getEstado().getId()}">
                                         <span th:case="2" class="status-indicator confirmada">Confirmada</span>
-                                        <span th:case="3" class="status-indicator pagada">PAGADA</span>
+                                        <span th:case="3" class="status-indicator pagada">Pagada</span>
+                                        <span th:case="4" class="status-indicator activada">Activa</span>
                                     </p>
                                 </div>
 
@@ -58,9 +59,6 @@
 
                                         <a class="btn btn-outline-secondary mx-1" data-bs-toggle="tooltip" title="Imprimir PDF" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
 
-                                        <div class="mx-1" th:if="${reserva.getEstado().getId() == estadosReserva.PAGADA}" >
-                                            <a type="button"  data-bs-toggle="tooltip" title="Detener Reserva" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fas fa-stop-circle"></i></a>
-                                        </div>
                                     </div>
 
                                 </div>
@@ -76,18 +74,20 @@
                 </div>
             </div>
 
-            <div class="reservas-container">
+            <div class="box">
                 <div class="row">
                     <h3 th:class="align-content-center" th:if="${!reservasVencidas.isEmpty()}">Historial de reservas</h3>
+
                     <div th:each="reserva : ${reservasVencidas}" class="col-3 my-3" >
                         <div th:class="${reserva.getEstado().getId() == estadosReserva.VENCIDA ? 'card grid-item round vencida' : 'card grid-item round'}">
-                            <!-- <img class="card-img-top round-img" src="img/home/bombonera.jpg" alt=""> -->
                             <div class="card-body mx-2">
-                                    <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
-                                <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
-                                <p class="card-text">Reserva Expirada</p>
 
-                                <a class="btn btn-outline-secondary" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+                                    <h5 class="card-title" th:text="${#temporals.format(#temporals.createDate(reserva.getDia()), 'dd MMM yyyy')}"></h5>
+                                    <h4 class="card-title" th:text="${reserva.getGarage().getNombre()}"></h4>
+                                    <p class="card-text">La reserva ya expiró</p>
+
+                                    <a class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="Imprimir detalle en PDF" th:href="@{'/generate-pdf?reservaID='+ ${reserva.getId()}}"><i class="fa fa-print"></i></a>
+                                    <a type="button" data-bs-toggle="tooltip" title="Calificar Garage" th:href="@{'/garages/calificar/' + ${reserva.getGarage().getId()}}" class="btn align-content-end btn-pago btn-warning me-1" ><i class="fa fa-star"></i></a>
 
                             </div>
                         </div>
