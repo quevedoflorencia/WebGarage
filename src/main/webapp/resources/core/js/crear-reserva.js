@@ -33,8 +33,8 @@ function resetForm() {
     datePickerUntil = null;
     errorHour.innerText = "";
     errorHourUntil.innerText = "";
+    resetOptions()
 
-    //document.getElementById("datepicker_from").value = '';
     document.getElementById("timepicker_from").value = '';
     document.getElementById("timepicker_until").value = '';
     containerHourPicker.classList.add("d-none");
@@ -71,6 +71,7 @@ function getFiledHours(selectedDate) {
             const day = String(hoy.getDate()).padStart(2, '0');
 
             const fechaHoy = `${year}-${month}-${day}`;
+
 
             if(datePickerFrom == fechaHoy){
                 disablePastHours()
