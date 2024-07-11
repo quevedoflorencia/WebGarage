@@ -40,3 +40,16 @@ h5.subtitle {
     flex-direction: column;
     justify-content: space-between;
 }
+
+.calification {
+    text-align: start!important;
+}
+
+.calification .star {
+    font-size: 15px!important;
+}
+
+.calification .no-calification {
+    color: #6c757d70!important;
+    font-size: 12px!important;
+}

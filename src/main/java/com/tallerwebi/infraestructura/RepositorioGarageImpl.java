@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.util.List;
 
 @Repository("garageRepository")
@@ -35,7 +36,7 @@ public class RepositorioGarageImpl implements RepositorioGarage {
     }
 
     @Override
-    public List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion) {
+    public List<Garage> obtenerPaginacion(Integer page, Integer size, Boolean orderByCalificacion, String busqueda) {
         Session session = sessionFactory.getCurrentSession();
 
         // Asegurar que page sea al menos 1
@@ -45,6 +46,11 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         int offset = (pageNumber - 1) * size;
 
         StringBuilder sqlQuery = new StringBuilder("SELECT * FROM Garage ");
+
+        if(busqueda != null && !busqueda.isEmpty()) {
+            sqlQuery.append("WHERE nombre LIKE '%").append(busqueda).append("%' ");
+            sqlQuery.append("OR calle LIKE '%").append(busqueda).append("%' ");
+        }
 
         // Agregar ordenación según el parámetro orderByCalificacion
         if (orderByCalificacion) {
@@ -63,6 +69,24 @@ public class RepositorioGarageImpl implements RepositorioGarage {
         List<Garage> garagesPaginados = query.getResultList();
 
         return garagesPaginados;
+    }
+
+    @Override
+    public Integer getCount(String busqueda) {
+        Session session = sessionFactory.getCurrentSession();
+
+        StringBuilder sqlQuery = new StringBuilder("SELECT COUNT(*) FROM Garage ");
+
+        if(busqueda != null && !busqueda.isEmpty()) {
+            sqlQuery.append("WHERE nombre LIKE '%").append(busqueda).append("%' ");
+            sqlQuery.append("OR calle LIKE '%").append(busqueda).append("%' ");
+        }
+
+        Query query = session.createNativeQuery(sqlQuery.toString());
+
+        BigInteger count = (BigInteger) query.getSingleResult();
+
+        return count.intValue();
     }
 
     @Override

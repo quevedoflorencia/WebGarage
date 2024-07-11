@@ -37,7 +37,9 @@ public class ControladorGarage {
     public ModelAndView inicio(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "12") Integer size,
                                @RequestParam(required = false) String  tipoVehiculo,
-                               @RequestParam(defaultValue = "false") Boolean ordernarPorCalificacion) {
+                               @RequestParam(defaultValue = "false") Boolean ordernarPorCalificacion,
+                               @RequestParam(name = "filter", required=false) String busqueda
+    ) {
 
         ModelMap model = new ModelMap();
         page = servicioGarage.validarPagina(page);
@@ -46,17 +48,17 @@ public class ControladorGarage {
 
 
         List<Garage> garagesPaginados;
-        garagesPaginados = servicioGarage.getPaginacion(page, size, ordernarPorCalificacion);
+        garagesPaginados = servicioGarage.getPaginacion(page, size, ordernarPorCalificacion, busqueda);
 
-        Integer totalGarages;
-
+        Integer totalGarages = servicioGarage.obtenerCantidadTotal(busqueda);
+/*
         if (tipoVehiculo != null && !tipoVehiculo.isEmpty() && !"null".equals(tipoVehiculo)) {
             tipoVehiculoId = Integer.parseInt(tipoVehiculo);
             totalGarages = servicioGarage.obtenerGaragesPorTipoVehiculo(tipoVehiculoId).size();
         } else {
             totalGarages = servicioGarage.traerTodos().size();
         }
-
+*/
         Integer totalPages = servicioGarage.calcularTotalPaginas(totalGarages, size);
         List<Integer> pageNumbers = servicioGarage.generarNumerosPagina(totalPages);
 
@@ -66,6 +68,7 @@ public class ControladorGarage {
         model.put("pageNumbers", pageNumbers);
         model.put("currentPage", page);
         model.put("pageSize", size);
+        model.put("busqueda", busqueda);
         model.put("tipoVehiculos", tiposVehiculos);
         model.put("tipoVehiculoSeleccionado", tipoVehiculoId);
         model.put("ordernarPorCalificacion", ordernarPorCalificacion);

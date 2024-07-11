@@ -88,3 +88,21 @@ form label{
     background-color: #fff!important;
     color: #394A8F!important;
 }
+.star {
+    font-size: 24px;
+    color: gray;
+}
+.star-filled {
+    color: gold;
+}
+.star-half {
+    position: relative;
+    display: inline-block;
+}
+.star-half::before {
+    content: "\2605"; /* Unicode estrella completa */
+    position: absolute;
+    width: 50%;
+    overflow: hidden;
+    color: gold;
+}
