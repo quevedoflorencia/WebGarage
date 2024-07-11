@@ -73,7 +73,6 @@ function getFiledHours(selectedDate) {
     containerHourPicker.classList.remove("d-none");
 }
 
-
 function disabledFiledHour(hour, selectElement) {
     // Convertir la hora ocupada a formato 'HH:mm'
     let formattedHour = formatHour(hour)
@@ -84,7 +83,6 @@ function disabledFiledHour(hour, selectElement) {
         option.disabled = true;
     }
 }
-
 
 // al seleccionar el horario de inicio
 document.getElementById("timepicker_from").addEventListener("change", function () {
@@ -130,9 +128,6 @@ function formatHour(hour) {
     return hour < 10 ? '0' + hour + ':00' : hour + ':00';
 }
 
-
-
-
 // Iterar sobre cada elemento ".selection"
 document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(function (element) {
     var id = element.getAttribute("id")
@@ -166,12 +161,8 @@ document.querySelectorAll(".selection_tipo_vehiculo .selection").forEach(functio
     }
 });
 
-var map = L.map('map').setView([latitudGarage, longitudGarage], 13);
+let map = L.map('map').setView([latitudGarage, longitudGarage], 15);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-L.marker([latitudGarage, longitudGarage]).addTo(map)
-    .bindPopup('El garage se encuentra aquí!')
-    .openPopup();
+L.marker([latitudGarage, longitudGarage]).addTo(map);

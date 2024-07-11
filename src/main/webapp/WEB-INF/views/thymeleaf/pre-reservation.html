@@ -36,7 +36,31 @@
                             <div id="map"></div>
                         </div>
                         <div class="box">
-                            <h3>Opiniones sobre el garage</h3>
+                            <h3>Opiniones de los clientes</h3>
+
+                            <div class="row" th:each="calificacion : ${calificaciones}">
+                                <div class="col calificacion-box" >
+
+                                    <div class="d-flex justify-content-between flex-row">
+                                        <div th:with="puntaje=${calificacion.puntaje}">
+                                            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                                                  th:class="star"
+                                                  th:classappend="${i <= puntaje ? ' star-filled' : ''}">
+                                                &#9733;
+                                            </span>
+                                        </div>
+
+                                        <span class="calificacion-fecha d-flex align-items-center" th:text="${#temporals.format(calificacion.getFechaCreacion(), 'dd MMM yyyy')}"></span>
+                                    </div>
+
+
+                                    <div class="calificacion-text">
+                                        <span th:text="${calificacion.getComentario()}"></span>
+                                    </div>
+                                 </div>
+
+                            </div>
+
                         </div>
                     </div>
 
@@ -61,23 +85,20 @@
                                     </div>
 
                                     <div class="row">
-
-
-                                    <div class="unselected selection col justify-content-around align-items-center"
-                                         th:classappend="${garageTipoVehiculoDtoItem.habilitado ? '' : 'disabled'}"
-                                         th:attrappend="data-toggle=${garageTipoVehiculoDtoItem.habilitado ? '' : 'tooltip'}, data-placement=${garageTipoVehiculoDtoItem.habilitado ? '': 'top'}, title=${garageTipoVehiculoDtoItem.habilitado ? '': 'El garage no tiene disponibilidad para este tipo de vehiculo'}"
-                                         th:id="${garageTipoVehiculoDtoItem.idGarageTipoVehiculo}"
-                                         th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}"
-                                    >
-                                        <i class="fas icon-vehicle" th:classappend="${garageTipoVehiculoDtoItem.icono}"></i>
-                                        <div>
-                                            <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
-                                            <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
-                                                Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
-                                            </p>
+                                        <div class="unselected selection col justify-content-around align-items-center"
+                                             th:classappend="${garageTipoVehiculoDtoItem.habilitado ? '' : 'disabled'}"
+                                             th:attrappend="data-bs-toggle=${garageTipoVehiculoDtoItem.habilitado ? '' : 'tooltip'}, data-placement=${garageTipoVehiculoDtoItem.habilitado ? '': 'top'}, title=${garageTipoVehiculoDtoItem.habilitado ? '': 'El garage no tiene disponibilidad para este tipo de vehiculo'}"
+                                             th:id="${garageTipoVehiculoDtoItem.idGarageTipoVehiculo}"
+                                             th:each="garageTipoVehiculoDtoItem : ${garageTipoVehiculoDto}"
+                                        >
+                                            <i class="fas icon-vehicle" th:classappend="${garageTipoVehiculoDtoItem.icono}"></i>
+                                            <div>
+                                                <p th:text="${garageTipoVehiculoDtoItem.descripcion}"></p>
+                                                <p th:if="${garageTipoVehiculoDtoItem.habilitado == true}" class="text-precio">
+                                                    Precio min: $<span th:text="${garageTipoVehiculoDtoItem.precio}"></span>
+                                                </p>
+                                            </div>
                                         </div>
-
-                                    </div>
                                     </div>
 
                                 </div>
@@ -120,7 +141,6 @@
                                                 </select>
                                             </div>
 
-
                                             <div class="form-group d-none col-6" id="timepicker_until_container">
                                                 <label for="timepicker_until">Hasta</label>
                                                 <select class="form-control" id="timepicker_until" th:field="*{horarioFin}">
@@ -130,7 +150,9 @@
                                                 </select>
                                                 <p class="text-danger" id="hourErrorUntil"></p>
                                             </div>
+
                                             <p class="text-danger" id="hourError"></p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -157,12 +179,13 @@
             var totalHours = [[${ totalHours }]];
             var latitudGarage = [[${ garage.latitud }]];
             var longitudGarage = [[${ garage.longitud }]];
+            var calle = [[${garage.calle}]];
+            var altura = [[${garage.altura}]];
             var idGarage = [[${ garage.id }]];
-
         </script>
+
         <script type="text/javascript" th:src="@{/js/crear-reserva.js}"></script>
         <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-
 
     </body>
 

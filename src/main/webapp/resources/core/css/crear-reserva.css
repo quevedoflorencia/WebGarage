@@ -102,3 +102,29 @@ h2, h3, h4, h5 {
     opacity: .5;
     cursor: not-allowed;
 }
+
+.star {
+    font-size: 24px;
+    color: gray;
+}
+.star-filled {
+    color: gold;
+}
+
+.calificacion-box {
+    border: 2px dotted #394A8F73;
+    border-radius: 0 15px 15px 15px;
+    margin: 0.5rem 0;
+}
+
+.calificacion-fecha {
+    color: #394A8F95;
+    font-weight: 600;
+}
+
+.calificacion-text {
+    padding: 1rem;
+    background-color: #394A8F10;
+    border-radius: 10px;
+    margin: 0 0.5rem 0.5rem 0;
+}
